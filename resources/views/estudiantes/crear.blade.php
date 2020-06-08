@@ -1,0 +1,163 @@
+@extends('plantilla.plantilla')
+
+@section('titulo', 'Nuevo estudiante')
+
+@section('breadcrumb')
+    <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+    <li class="breadcrumb-item"><a href="{{route('estudiante.index')}}">Estudiantes</a></li>
+    <li class="breadcrumb-item active">Nuevo estudiante</li>
+@endsection
+
+@section('alerta')
+  @if (session('error')=='ERROR')
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>ERROR</strong> Ya existe estudiante con ese mismo registro o carne. Por favor verificar que los datos sean correctos. 
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>       
+  @endif    
+@endsection
+
+@section('contenido')
+<div class="card">
+  <div class="card-header">
+    <h3>Crear nuevo estudiante</h3> 
+  </div>
+  <div class="card-body">
+  <form class="needs-validation" method="POST" action="{{route('estudiante.guardar')}}" novalidate >    
+    @csrf
+    <div class="form-row">
+      <div class="col-md-6 col-sm-12 mb-3">
+        <label for="validationCustom01">Nombres</label>
+        <input type="text" class="form-control" id="validationCustom01" required name="nombre" autofocus>
+        <div class="invalid-feedback">
+          Por favor ingrese nombre del estudiante
+        </div>
+      </div>      
+      <div class="col-md-6 col-sm-12 mb-3">
+        <label for="validationCustom02">Apellidos</label>
+        <input type="text" class="form-control" id="validationCustom02" required name="apellido">
+        <div class="invalid-feedback">
+          Por favor ingrese apellido del estudiante 
+        </div>
+      </div>      
+    </div>
+    <div class="form-row">
+      <div class="col-md-8 col-sm-12">
+        <div class="row">
+            <div class="col-md-4 col-sm-12 mb-3">
+                <label for="validationCustom03">Carne</label>
+                <input type="text" class="form-control" id="validationCustom03" minlength="13" placeholder="2600000000001" required name="carne">
+                <div class="invalid-feedback">
+                Valor incorrecto. El carne es el valor del DPI
+                </div>
+            </div>      
+            <div class="col-md-4 col-sm-12 mb-3">
+                <label for="validationCustom04">Registro</label>
+                <input type="text" class="form-control" id="validationCustom04" minlength="9" placeholder="201700001" required name="registro">
+                <div class="invalid-feedback">
+                Por favor ingresar numero de registro correcto
+                </div>
+            </div>      
+            <div class="col-md-4 col-sm-12 mb-3">
+                <label for="validationCustom05">Teléfono</label>
+                <input type="text" class="form-control" id="validationCustom05" minlength="8" required name="telefono" >
+                <div class="invalid-feedback">
+                Por favor ingresar número de teléfono
+                </div>
+            </div>      
+        </div>        
+      </div>    
+        <div class="col-md-4 col-sm-12 mb-3">
+            <label for="validationCustom06">Correo</label>
+            <input type="email" class="form-control" id="validationCustom06" required name="correo">
+            <div class="invalid-feedback">
+            Por favor ingresar email
+            </div>
+        </div>    
+    </div>
+    <div class="form-row">
+        <div class="col-md-4 col-sm-12 mb-3">
+            <label for="validationCustom07">Carrera</label>
+            <select id="validationCustom07" class="form-control" required name="carrera_id">
+                <option disabled>Seleccione una carrera</option>
+                @foreach ($carreras as $c)
+                <option value="{{$c->id}}">{{$c->nombre}}</option>
+                @endforeach
+            </select>
+            <div class="invalid-feedback">
+            Por favor seleccione una carrera
+            </div>
+        </div>           
+        <div class="col-md-8 col-sm-12 mb-3">
+            <div class="row">
+                <div class="col-md-2 col-sm-12 mb-3">
+                    <label for="validationCustom08">Promedio</label>
+                    <input type="text" class="form-control" id="validationCustom08" required name="promedio">
+                    <div class="invalid-feedback">
+                    Por favor ingresar un valor numérico
+                    </div>
+                </div>      
+                <div class="col-md-2 col-sm-12 mb-3">
+                    <label for="validationCustom09">Créditos</label>
+                    <input type="number" min="250" class="form-control" id="validationCustom09" required name="creditos">
+                    <div class="invalid-feedback">
+                    Por favor ingresar un valor numérico
+                    </div>
+                </div>      
+                <div class="col-md-4 col-sm-12 mb-3">
+                    <label for="validationCustom07">Semestre actual</label>
+                    <select id="validationCustom07" class="form-control" required name="semestre">
+                        <option value="1" selected>Primer semestre</option>
+                        <option value="2">Segundo semestre</option>
+                    </select>
+                    <div class="invalid-feedback">
+                    Por favor seleccione una carrera
+                    </div>
+                </div>   
+                <div class="col-md-4 col-sm-12 mb-3">
+                    @php $hoy = date('yy-m-d');
+                    @endphp
+                    <label for="validationCustom09">Fecha prácticas intermedias</label>
+                    <input type="date" max="{{$hoy}}" class="form-control" id="validationCustom09" required name="practicas">
+                    <div class="invalid-feedback">
+                    Por favor seleccione una fecha válida
+                    </div>
+                </div>  
+            </div>                
+        </div>            
+    </div>
+    <div class="float-sm-right">
+      <button class="btn btn-primary" type="submit">Crear</button>
+      <a class="btn btn-secondary" href="{{route('carrera.index')}}" role="cancelar">Regresar</a>
+    </div>    
+  </form>
+  </div>
+</div>
+@endsection
+
+
+@section('page_script')
+<!-- page script -->
+<script>
+// Example starter JavaScript for disabling form submissions if there are invalid fields
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
+</script>
+@endsection
