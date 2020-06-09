@@ -153,6 +153,31 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </ul>
           </li>
 
+
+          <li class="nav-item has-treeview menu-open">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-cog"></i>
+              <p>
+                Configuracion
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{route('estudiante.index')}}" class="nav-link">
+                  <i class="far fa-user nav-icon"></i>
+                  <p>Usuarios</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{route('rol.index')}}" class="nav-link">
+                  <i class="far fa-check-square nav-icon"></i>
+                  <p>Roles</p>
+                </a>
+              </li>
+            </ul>
+          </li>   
+
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

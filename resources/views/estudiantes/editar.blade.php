@@ -106,9 +106,9 @@
                 </div>      
                 <div class="col-md-2 col-sm-12 mb-3">
                     <label for="validationCustom09">Créditos</label>
-                    <input type="number" min="250" class="form-control" id="validationCustom09" required name="creditos" value="{{$estudiante->creditos}}">
+                    <input type="number" min="200" class="form-control" id="validationCustom09" required name="creditos" value="{{$estudiante->creditos}}">
                     <div class="invalid-feedback">
-                    Por favor ingresar un valor numérico
+                    Por favor ingresar un valor numérico mayor a 200.
                     </div>
                 </div>      
                 <div class="col-md-4 col-sm-12 mb-3">

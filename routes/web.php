@@ -36,3 +36,12 @@ Route::get('estudiante/{id}/ver', 'EstudianteController@ver')->name('estudiante.
 Route::post('estudiante', 'EstudianteController@guardar')->name('estudiante.guardar');
 Route::put('estudiante/{id}', 'EstudianteController@actualizar')->name('estudiante.actualizar');
 Route::delete('estudiante', 'EstudianteController@eliminar')->name('estudiante.eliminar');
+
+//Roles
+Route::get('rol', 'RolController@index')->name('rol.index');
+Route::get('rol/crear', 'RolController@crear')->name('rol.crear');
+Route::get('rol/{id}/editar', 'RolController@editar')->name('rol.editar');
+Route::get('rol/{id}/ver', 'RolController@ver')->name('rol.ver');
+Route::post('rol', 'RolController@guardar')->name('rol.guardar');
+Route::put('rol/{id}', 'RolController@actualizar')->name('rol.actualizar');
+Route::delete('rol', 'RolController@eliminar')->name('rol.eliminar');
