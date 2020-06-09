@@ -37,7 +37,7 @@ class EstudianteController extends Controller
         $direction = 'desc';
         if($request->has('direction')) $direction = $request->direction;
   
-        $estudiantes = Estudiante::select('estudiante.*', 'carrera.nombre as carrera', 'persona.*');
+        $estudiantes = Estudiante::select('estudiante.*', 'carrera.nombre as carrera', 'persona.*', 'estudiante.id as estudiante_id');
 
         $estudiantes ->join('carrera', 'carrera_id', '=', 'carrera.id');
 
@@ -64,7 +64,7 @@ class EstudianteController extends Controller
         }  
          
         if ($request->has('many')) {
-          $estudiantes = $carrestudianteseras->orderBy($sort_by, $direction)->paginate($many);          
+          $estudiantes = $estudiantes->orderBy($sort_by, $direction)->paginate($many);          
         }
         else {
           $estudiantes = $estudiantes->orderBy($sort_by, $direction)->get();

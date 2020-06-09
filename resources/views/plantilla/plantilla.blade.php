@@ -101,7 +101,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <a href="#" class="d-block">Nombre Apellido</a>
         </div>
       </div>      
-      @include('plantilla.sidebar',['sidebar'=>$sidebar])
+      @include('plantilla.sidebar_simple',['sidebar'=>$sidebar])
     </div>
     <!-- /.sidebar -->
   </aside>
