@@ -1,4 +1,4 @@
-@extends('plantilla.plantilla')
+@extends('plantilla.plantilla',['sidebar'=>30])
 
 @section('titulo', 'Estudiantes')
 

@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 
 use App\Models\Carrera;
 use App\Models\Rol;
+use App\Models\Persona;
 
 class DefaultSeeder extends Seeder
 {
@@ -31,7 +32,11 @@ class DefaultSeeder extends Seeder
         Rol::create(['id' => 4, 'nombre' => 'Supervisor industrial', 'descripcion'=>'Supervisor de prácticas de la carrera de Ingenieria Industrial', ]);
         Rol::create(['id' => 5, 'nombre' => 'Supervisor mecánica-industrial', 'descripcion'=>'Supervisor de prácticas de la carrera de Ingenieria Mecánica-Industrial', ]);
         Rol::create(['id' => 6, 'nombre' => 'Supervisor sistemas', 'descripcion'=>'Supervisor de prácticas de la carrera de Ingeniería en ciencias y sistemas', ]);
-        Rol::create(['id' => 7, 'nombre' => 'Invitado', 'descripcion'=>'Usuario invitado', ]);
+        
+        //Personas
+        Persona::create(['id' => 1, 'nombre' => 'Administrador', 'apellido'=>'--', 'telefono'=>1, 'correo'=>'admin@kodsolutions.net' ]);
+
+        //Usuario
         
     }
 }

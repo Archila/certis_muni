@@ -13,12 +13,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="{{ URL::asset('plugins/fontawesome-free/css/all.min.css') }} ">
+  <!-- pace-progress -->
+  <link rel="stylesheet" href="{{URL::asset('plugins/pace-progress/themes/black/pace-theme-flat-top.css') }}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ URL::asset('dist/css/adminlte.min.css') }}">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini pace-danger">
 <div class="wrapper">
 
   <!-- Navbar -->
@@ -98,89 +100,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <div class="info">
           <a href="#" class="d-block">Nombre Apellido</a>
         </div>
-      </div>
-
-      <!-- Sidebar Menu -->
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-          <li class="nav-item has-treeview menu-open">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-users"></i>
-              <p>
-                Estudiantes
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{route('estudiante.index')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Listado</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{route('estudiante.crear')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Crear nuevo</p>
-                </a>
-              </li>
-            </ul>
-          </li>   
-
-          <li class="nav-item has-treeview menu-close">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-bars"></i>
-              <p>
-                Carreras
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{route('carrera.index')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Listado</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{route('carrera.crear')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Crear nueva carrera</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-
-
-          <li class="nav-item has-treeview menu-open">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-cog"></i>
-              <p>
-                Configuracion
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{route('estudiante.index')}}" class="nav-link">
-                  <i class="far fa-user nav-icon"></i>
-                  <p>Usuarios</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{route('rol.index')}}" class="nav-link">
-                  <i class="far fa-check-square nav-icon"></i>
-                  <p>Roles</p>
-                </a>
-              </li>
-            </ul>
-          </li>   
-
-        </ul>
-      </nav>
-      <!-- /.sidebar-menu -->
+      </div>      
+      @include('plantilla.sidebar',['sidebar'=>$sidebar])
     </div>
     <!-- /.sidebar -->
   </aside>

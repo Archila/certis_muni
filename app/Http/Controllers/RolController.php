@@ -73,14 +73,14 @@ class RolController extends Controller
 
         $rol = Rol::where('nombre', '=',$request->nombre)->first();
 
-        if ($carrera) {            
+        if ($rol) {            
             return redirect()->route('rol.crear')->with('error', 'ERROR');             
         }
 
         $rol = new Rol();
         $rol->nombre = $request->nombre;
         $rol->descripcion = $request->descripcion;
-        $carrera->save();
+        $rol->save();
 
         return redirect()->route('rol.index')->with('creado', $rol->id);        
     }

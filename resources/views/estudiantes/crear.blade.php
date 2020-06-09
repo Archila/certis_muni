@@ -1,4 +1,4 @@
-@extends('plantilla.plantilla')
+@extends('plantilla.plantilla',['sidebar'=>31])
 
 @section('titulo', 'Nuevo estudiante')
 
@@ -130,7 +130,7 @@
     </div>
     <div class="float-sm-right">
       <button class="btn btn-primary" type="submit">Crear</button>
-      <a class="btn btn-secondary" href="{{route('carrera.index')}}" role="cancelar">Regresar</a>
+      <a class="btn btn-secondary" href="{{route('estudiante.index')}}" role="cancelar">Regresar</a>
     </div>    
   </form>
   </div>

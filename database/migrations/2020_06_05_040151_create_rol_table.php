@@ -22,8 +22,8 @@ class CreateRolTable extends Migration
         });
 
         Schema::table('users', function (Blueprint $table) {
-          $table->unsignedBigInteger('rol_id');
-          $table->unsignedBigInteger('persona_id');
+          $table->unsignedBigInteger('rol_id')->default(1);
+          $table->unsignedBigInteger('persona_id')->default(1);
 
           $table->foreign('rol_id')->references('id')->on('rol')
                                                       ->onDelete('cascade')->onUpdate('cascade');

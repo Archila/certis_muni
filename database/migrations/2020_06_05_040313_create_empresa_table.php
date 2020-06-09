@@ -16,6 +16,7 @@ class CreateEmpresaTable extends Migration
         Schema::create('tipo_empresa', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nombre', 60);
+            $table->string('descripcion', 200)->nullable();
             $table->boolean('activo')->default(1);
             $table->timestamps();
         });
