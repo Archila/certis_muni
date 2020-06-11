@@ -59,15 +59,6 @@ Route::post('supervisor', 'SupervisorController@guardar')->name('supervisor.guar
 Route::put('supervisor/{id}', 'SupervisorController@actualizar')->name('supervisor.actualizar');
 Route::delete('supervisor', 'SupervisorController@eliminar')->name('supervisor.eliminar');
 
-//Supervisores
-Route::get('supervisor', 'SupervisorController@index')->name('supervisor.index');
-Route::get('supervisor/crear', 'SupervisorController@crear')->name('supervisor.crear');
-Route::get('supervisor/{id}/editar', 'SupervisorController@editar')->name('supervisor.editar');
-Route::get('supervisor/{id}/ver', 'SupervisorController@ver')->name('supervisor.ver');
-Route::post('supervisor', 'SupervisorController@guardar')->name('supervisor.guardar');
-Route::put('supervisor/{id}', 'SupervisorController@actualizar')->name('supervisor.actualizar');
-Route::delete('supervisor', 'SupervisorController@eliminar')->name('supervisor.eliminar');
-
 //TipoEmpresa
 Route::get('tipo_empresa', 'TipoEmpresaController@index')->name('tipo_empresa.index');
 Route::get('tipo_empresa/crear', 'TipoEmpresaController@crear')->name('tipo_empresa.crear');
@@ -85,3 +76,12 @@ Route::get('empresa/{id}/ver', 'EmpresaController@ver')->name('empresa.ver');
 Route::post('empresa', 'EmpresaController@guardar')->name('empresa.guardar');
 Route::put('empresa/{id}', 'EmpresaController@actualizar')->name('empresa.actualizar');
 Route::delete('empresa', 'EmpresaController@eliminar')->name('empresa.eliminar');
+
+//Encargado
+Route::get('encargado', 'EncargadoController@index')->name('encargado.index');
+Route::get('encargado/crear', 'EncargadoController@crear')->name('encargado.crear');
+Route::get('encargado/{id}/editar', 'EncargadoController@editar')->name('encargado.editar');
+Route::get('encargado/{id}/ver', 'EncargadoController@ver')->name('encargado.ver');
+Route::post('encargado', 'EncargadoController@guardar')->name('encargado.guardar');
+Route::put('encargado/{id}', 'EncargadoController@actualizar')->name('encargado.actualizar');
+Route::delete('encargado', 'EncargadoController@eliminar')->name('encargado.eliminar');

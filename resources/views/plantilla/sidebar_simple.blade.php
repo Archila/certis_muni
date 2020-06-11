@@ -49,6 +49,16 @@
                 Estudiantes
               </p>
             </a>            
+          </li>     
+
+          @if($sidebar<=49 && $sidebar>=40) @php $emp='active'; $menu4='menu-open' @endphp  @endif
+          <li class="nav-item">            
+            <a href="{{route('empresa.index')}}" class="nav-link {{$emp ?? ''}}">
+              <i class="nav-icon fas fa-industry"></i>
+              <p>
+                Empresas
+              </p>
+            </a>            
           </li>              
           
           <li class="nav-header">Administración</li>
