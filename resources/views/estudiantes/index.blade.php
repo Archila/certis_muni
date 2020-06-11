@@ -9,30 +9,15 @@
 
 @section('alerta')
     @if(session('creado')>0)
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-    <strong>Registro guardado exitosamente</strong> 
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-    </div>
+    <script> alerta_create('Nuevo estudiante agregado exitosamente.')</script>
     @endif
 
     @if(session('eliminado')>0)
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    <strong>Registro eliminado exitosamente</strong> 
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-    </div>
+    <script> alerta_delete('Estudiante eliminado exitosamente.')</script>
     @endif
 
     @if(session('editado')>0)
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-    <strong>Registro editado exitosamente</strong> 
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-    </div>
+    <script> alerta_edit('Estudiante editado exitosamente.')</script>
     @endif
 @endsection
 
@@ -71,9 +56,9 @@
             <td>{{$e->carrera}}</td>    
             <td>
                 <div class="btn-group">
-                    <a href="{{route('estudiante.editar', $e->id)}}" type="button" class="btn btn-success btn-xs"><i class="fas fa-edit"></i></a>
+                    <a href="{{route('estudiante.editar', $e->estudiante_id)}}" type="button" class="btn btn-success btn-xs"><i class="fas fa-edit"></i></a>
                     <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" 
-                    data-target="#modal-eliminar" data-id="{{$e->id}}">
+                    data-target="#modal-eliminar" data-id="{{$e->estudiante_id}}">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
@@ -84,6 +69,16 @@
 </table>
   </div>
 </div>
+
+
+<button type="button" class="btn btn-success" onclick="Prueba()">
+                  Launch Success Toast
+                </button>
+
+                <button type="button" class="btn btn-default swalDefaultQuestion">
+                  Launch Question Toast
+                </button>
+
 
 <div class="modal fade" id="modal-eliminar">
     <div class="modal-dialog">
@@ -117,7 +112,7 @@
 
 @section('page_script')
 <!-- page script -->
-<script>
+<script type="text/javascript">
   $(function () {    
     $('#datatable').DataTable({
       "paging": true,
@@ -134,8 +129,10 @@
   var button = $(event.relatedTarget) // Button that triggered the modal
   var id = button.data('id') // Extract info from data-* attributes
   var modal = $(this)
-  document.getElementById('input').setAttribute('value',id)
-})
+  document.getElementById('input').setAttribute('value',id) 
+    })   
+  
 </script>
+
 @endsection
 

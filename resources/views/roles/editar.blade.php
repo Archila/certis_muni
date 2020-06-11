@@ -10,13 +10,8 @@
 
 @section('alerta')
   @if (session('error')=='ERROR')
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-      <strong>ERROR</strong> Ya existe un rol con ese nombre, intente nuevo nombre.
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>       
-  @endif    
+  <script> alerta_error('Ya existe rol con ese nombre')</script>
+  @endif
 @endsection
 
 @section('contenido')

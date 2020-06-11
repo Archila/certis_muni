@@ -10,12 +10,7 @@
 
 @section('alerta')
   @if (session('error')=='ERROR')
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-      <strong>ERROR</strong> Ya existe estudiante con ese mismo registro o carne. Por favor verificar que los datos sean correctos. 
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>       
+  <script> alerta_error('Ya existe estudiante con ese registro o carne.')</script>
   @endif    
 @endsection
 

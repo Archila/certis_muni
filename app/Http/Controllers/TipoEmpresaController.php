@@ -76,7 +76,7 @@ class TipoEmpresaController extends Controller
             'descripcion' => 'nullable|string',
         ]);
         
-        $tipo = TipoEmpresa::where('nombre', '=',$request->nombree)->first();
+        $tipo = TipoEmpresa::where('nombre', '=',$request->nombre)->first();
 
         if ($tipo) {            
             return redirect()->route('tipo_empresa.crear')->with('error', 'ERROR');             
@@ -127,6 +127,12 @@ class TipoEmpresaController extends Controller
             'nombre' => 'required|string',
             'descripcion' => 'nullable|string',
         ]);
+
+        $tipo = TipoEmpresa::where('nombre',$request->nombre);
+
+        if ($tipo) {            
+            return redirect()->route('tipo_empresa.editar', $request->id)->with('error','ERROR');             
+        } 
 
         $tipo = TipoEmpresa::findOrFail($request->id);        
 

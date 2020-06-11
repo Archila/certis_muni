@@ -13,6 +13,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="{{ URL::asset('plugins/fontawesome-free/css/all.min.css') }} ">
+  <!-- SweetAlert2 -->
+  <link rel="stylesheet" href="{{ URL::asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+  <!-- Toastr -->
+  <link rel="stylesheet" href="{{ URL::asset('plugins/toastr/toastr.min.css') }}">
   <!-- iCheck for checkboxes and radio inputs -->
   <link rel="stylesheet" href="{{URL::asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
   <!-- pace-progress -->
@@ -127,8 +131,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     
     <!-- Main content -->
     <div class="content">
-      <div class="container-fluid">
-        @yield('alerta')
+      <div class="container-fluid">        
         @yield('contenido')
       
       </div><!-- /.container-fluid -->
@@ -166,19 +169,58 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="{{ URL::asset('plugins/jquery/jquery.min.js') }}"></script>
 <!-- Bootstrap 4 -->
 <script src="{{ URL::asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<!-- SweetAlert2 -->
+<script src="{{ URL::asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 <!-- DataTables -->
 <script src="{{ URL::asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
 <!-- Tempusdominus Bootstrap 4 -->
-<script src="../../plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<script src=".{{ URL::asset('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
 <!-- Bootstrap Switch -->
-<script src="../../plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+<script src="{{ URL::asset('plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
 
-@yield('page_script')
+<script type="text/javascript">
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3500
+  });    
 
+  function alerta_create(msg){
+    Toast.fire({
+        icon: 'success',
+        title: msg
+    })
+  }    
+
+  function alerta_edit(msg){
+    Toast.fire({
+        icon: 'success',
+        title: msg
+    })
+  }    
+
+  function alerta_delete(msg){
+    Toast.fire({
+        icon: 'warning',
+        title: msg
+    })
+  }    
+
+  function alerta_error(msg){
+    Toast.fire({
+        icon: 'error',
+        title: msg
+    })
+  }   
+</script>
+
+@yield('page_script')
+@yield('alerta')
 </body>
 </html>

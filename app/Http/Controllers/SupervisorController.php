@@ -143,6 +143,12 @@ class SupervisorController extends Controller
      */
     public function actualizar(Request $request)
     {   
+        $supervisor = supervisor::where('colegiado',$request->colegiado);
+
+        if ($supervisor) {            
+            return redirect()->route('supervisor.editar', $request->id)->with('error','ERROR');             
+        } 
+
         $supervisor = Supervisor::findOrFail($request->id);
 
         $persona = Persona::findOrFail($supervisor->persona_id);

@@ -1,23 +1,23 @@
-@extends('plantilla.plantilla',['sidebar'=>45])
+@extends('plantilla.plantilla',['sidebar'=>40])
 
-@section('titulo', 'Tipo Empresa')
+@section('titulo', 'Empresas')
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-    <li class="breadcrumb-item active">Tipo de empresas</li>
+    <li class="breadcrumb-item active">Empresas</li>
 @endsection
 
 @section('alerta')
     @if(session('creado')>0)
-    <script> alerta_create('Nuevo tipo de empresa agregado exitosamente.')</script>
+    <script> alerta_create('Nueva empresa agregada exitosamente.')</script>
     @endif
 
     @if(session('eliminado')>0)
-    <script> alerta_delete('Tipo de empresa eliminado exitosamente.')</script>
+    <script> alerta_delete('Empresa eliminada exitosamente.')</script>
     @endif
 
     @if(session('editado')>0)
-    <script> alerta_edit('Tipo de empresa editado exitosamente.')</script>
+    <script> alerta_edit('Empresa editada exitosamente.')</script>
     @endif
 @endsection
 
@@ -25,11 +25,14 @@
 <div class="card">
   <div class="card-header">
     <div class="row">
-        <div class="col-md-9 col-sm-12">
-            <h3>Listado de tipos de empresas</h3> 
+        <div class="col-md-8 col-sm-12">
+            <h3>Listado de empresas</h3> 
         </div>
-        <div class="col-md-3 col-sm-12">
-            <a class="btn btn-block btn-primary btn-sm" href="{{route('tipo_empresa.crear')}}">Nuevo tipo</a>
+        <div class="col-md-2 col-sm-12">
+            <a class="btn btn-block btn-primary btn-sm" href="{{route('empresa.crear')}}">Nueva empresa</a>
+        </div>
+        <div class="col-md-2 col-sm-12">
+            <a class="btn btn-block btn-info btn-sm" href="{{route('tipo_empresa.index')}}">Tipos</a>
         </div>
     </div>
     
@@ -39,30 +42,27 @@
     <thead>
         <tr>
             <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Activo</th>
-            <th>Creado</th>
+            <th>Dirección</th>
+            <th>Teléfono</th>
+            <th>Correo</th>
+            <th>Público</th>
+            <th>Calificación</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-    @foreach ($tipos as $t)
+    @foreach ($empresas as $e)
         <tr>
-            <td>{{$t->nombre}}</td>
-            <td>{{$t->descripcion}}</td>    
-            <td>
-            @if($t->activo==1)
-            <span class="badge bg-success">SI</span>
-            @else
-            <span class="badge bg-danger">NO</span>
-            @endif
-            </td>
-            <td>{{$t->created_at}}</td>    
+            <td>{{$e->nombre}}</td>
+            <td>{{$e->apellido}}</td>    
+            <td>{{$e->registro}}</td>    
+            <td>{{$e->carne}}</td>    
+            <td>{{$e->carrera}}</td>    
             <td>
                 <div class="btn-group">
-                    <a href="{{route('tipo_empresa.editar', $t->id)}}" type="button" class="btn btn-success btn-xs"><i class="fas fa-edit"></i></a>
+                    <a href="{{route('estudiante.editar', $e->id)}}" type="button" class="btn btn-success btn-xs"><i class="fas fa-edit"></i></a>
                     <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" 
-                    data-target="#modal-eliminar" data-id="{{$t->id}}">
+                    data-target="#modal-eliminar" data-id="{{$e->id}}">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
@@ -78,7 +78,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
         <div class="modal-header">
-            <h4 class="modal-title">Eliminar tipo empresa</h4>
+            <h4 class="modal-title">Eliminar estudiante</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
@@ -88,7 +88,7 @@
         </div>
         <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            <form  method="post" action="{{route('tipo_empresa.eliminar')}}" >
+            <form  method="post" action="{{route('estudiante.eliminar')}}" >
             @method('DELETE')
             @csrf
                 <input type="hidden" name="id" id="input" class="form-control">

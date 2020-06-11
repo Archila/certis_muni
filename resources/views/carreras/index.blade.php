@@ -9,30 +9,15 @@
 
 @section('alerta')
     @if(session('creado')>0)
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-    <strong>Registro guardado exitosamente</strong> 
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-    </div>
+    <script> alerta_create('Nueva carrera agregada exitosamente.')</script>
     @endif
 
     @if(session('eliminado')>0)
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    <strong>Registro eliminado exitosamente</strong> 
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-    </div>
+    <script> alerta_delete('Carrera eliminada exitosamente.')</script>
     @endif
 
     @if(session('editado')>0)
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-    <strong>Registro editado exitosamente</strong> 
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-    </div>
+    <script> alerta_edit('Carrera editada exitosamente.')</script>
     @endif
 @endsection
 
