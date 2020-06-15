@@ -46,6 +46,7 @@
             <th>Teléfono</th>
             <th>Correo</th>
             <th>Público</th>
+            <th>Validado</th>
             <th>Calificación</th>
             <th></th>
         </tr>
@@ -54,15 +55,40 @@
     @foreach ($empresas as $e)
         <tr>
             <td>{{$e->nombre}}</td>
-            <td>{{$e->apellido}}</td>    
-            <td>{{$e->registro}}</td>    
-            <td>{{$e->carne}}</td>    
-            <td>{{$e->carrera}}</td>    
+            <td>{{$e->direccion}}</td>    
+            <td>{{$e->telefono}}</td>    
+            <td>{{$e->correo}}</td>    
+            <td>
+            @if($e->publico==1)
+            <span class="badge bg-success">SI</span>
+            @else
+            <span class="badge bg-danger">NO</span>
+            @endif
+            </td>    
+            <td>
+            @if($e->valido==1)
+            <span class="badge bg-success">SI</span>
+            @else
+            <span class="badge bg-danger">NO</span>
+            @endif
+            </td>    
+            <td>            
+            @if($e->calificacion=="Bien")
+            <span class="badge bg-success">BIEN</span>
+            @elseif ($e->calificacion=="Regular")
+            <span class="badge bg-warning">REGULAR</span>
+            @elseif($e->calificacion=="Mala")
+            <span class="badge bg-danger">MALA</span>
+            @else
+            <span class="badge bg-secondary">Sin registro</span>
+            @endif              
+            </td>    
             <td>
                 <div class="btn-group">
-                    <a href="{{route('estudiante.editar', $e->id)}}" type="button" class="btn btn-success btn-xs"><i class="fas fa-edit"></i></a>
+                    <a href="{{route('empresa.ver', $e->empresa_id)}}" type="button" class="btn btn-info btn-xs"><i class="fas fa-eye"></i></a>
+                    <a href="{{route('empresa.editar', $e->empresa_id)}}" type="button" class="btn btn-success btn-xs"><i class="fas fa-edit"></i></a>
                     <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" 
-                    data-target="#modal-eliminar" data-id="{{$e->id}}">
+                    data-target="#modal-eliminar" data-id="{{$e->empresa_id}}">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
@@ -88,7 +114,7 @@
         </div>
         <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            <form  method="post" action="{{route('estudiante.eliminar')}}" >
+            <form  method="post" action="{{route('empresa.eliminar')}}" >
             @method('DELETE')
             @csrf
                 <input type="hidden" name="id" id="input" class="form-control">

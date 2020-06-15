@@ -161,9 +161,9 @@ class EstudianteController extends Controller
      */
     public function actualizar(Request $request)
     {
-        $estudiante = Estudiante::where('carne',$request->carne)->orWhere('registro',$request->registro);
+        $estudiante = Estudiante::where('id','!=',$request->id)->where('carne',$request->carne)->orWhere('registro',$request->registro);
 
-        if ($estudiante) {            
+        if (count($estudiante)>0) {            
             return redirect()->route('estudiante.editar', $request->id)->with('error','ERROR');             
         } 
 

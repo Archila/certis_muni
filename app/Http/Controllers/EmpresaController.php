@@ -76,9 +76,10 @@ class EmpresaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function crear()
     {
-        //
+        $tipos = TipoEmpresa::where('activo',1)->get();
+        return view('empresas.crear',compact('tipos'));
     }
 
     /**
@@ -87,9 +88,28 @@ class EmpresaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function guardar(Request $request)
     {
-        //
+        $empresa = Empresa::where('nombre', '=',$request->nombre)->first();
+
+        if ($empresa) {            
+            return redirect()->route('empresa.crear')->with('error', 'ERROR');             
+        }                
+              
+        $empresa = new Empresa();
+        $empresa->nombre = $request->nombre;
+        $empresa->direccion = $request->direccion;
+        $empresa->alias = $request->alias;
+        $empresa->correo = $request->correo;
+        $empresa->telefono = $request->telefono;
+        $empresa->contacto = $request->contacto;
+        $empresa->tel_contacto = $request->tel_contacto;
+        $empresa->correo_contacto = $request->correo_contacto;
+        $empresa->tipo_empresa_id = $request->tipo_empresa_id;        
+        $empresa->usuario_id = 1;
+        $empresa->save();
+        
+        return redirect()->route('empresa.index')->with('creado', $empresa->id);   
     }
 
     /**
@@ -98,9 +118,13 @@ class EmpresaController extends Controller
      * @param  \App\Empresa  $empresa
      * @return \Illuminate\Http\Response
      */
-    public function show(Empresa $empresa)
+    public function ver($id)
     {
-        //
+        $empresa = Empresa::select('empresa.*', 'tipo_empresa.nombre as tipo', 'empresa.id as empresa_id');
+        $empresa ->join('tipo_empresa', 'tipo_empresa_id', '=', 'tipo_empresa.id');
+        $empresa = $empresa->where('empresa.id',$id)->firstOrFail();
+
+        return view('empresas.ver', ['empresa'=>$empresa]);
     }
 
     /**
@@ -109,9 +133,15 @@ class EmpresaController extends Controller
      * @param  \App\Empresa  $empresa
      * @return \Illuminate\Http\Response
      */
-    public function edit(Empresa $empresa)
+    public function editar($id)
     {
-        //
+        $empresa = Empresa::select('empresa.*', 'tipo_empresa.nombre as tipo', 'empresa.id as empresa_id');
+        $empresa ->join('tipo_empresa', 'tipo_empresa_id', '=', 'tipo_empresa.id');
+        $empresa = $empresa->where('empresa.id',$id)->firstOrFail();
+
+        $tipos= TipoEmpresa::where('activo',1)->get();
+
+        return view('empresas.editar', ['empresa'=>$empresa, 'tipos'=>$tipos]);
     }
 
     /**
@@ -121,9 +151,32 @@ class EmpresaController extends Controller
      * @param  \App\Empresa  $empresa
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Empresa $empresa)
+    public function actualizar(Request $request)
     {
-        //
+        $empresa = Empresa::where('id','!=',$request->id)->where('nombre', '=',$request->nombre)->first();
+
+        if ($empresa) {            
+            return redirect()->route('empresa.editar', $request->id)->with('error', 'ERROR');             
+        }                
+              
+        $empresa = Empresa::findOrFail($request->id);;
+        $empresa->nombre = $request->nombre;
+        $empresa->direccion = $request->direccion;
+        $empresa->alias = $request->alias;
+        $empresa->correo = $request->correo;
+        $empresa->telefono = $request->telefono;
+        $empresa->contacto = $request->contacto;
+        $empresa->tel_contacto = $request->tel_contacto;
+        $empresa->correo_contacto = $request->correo_contacto;
+        $empresa->tipo_empresa_id = $request->tipo_empresa_id;  
+        $empresa->calificacion = $request->calificacion;
+        if($request->publico){ $publico=1; } else { $publico=0;}
+        if($request->valido){ $valido=1; } else { $valido=0;}
+        $empresa->publico = $publico;
+        $empresa->valido = $valido;
+        $condicion=$empresa->save();
+        
+        return redirect()->route('empresa.index')->with('editado', $condicion);  
     }
 
     /**
@@ -132,8 +185,12 @@ class EmpresaController extends Controller
      * @param  \App\Empresa  $empresa
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Empresa $empresa)
+    public function eliminar(Request $request)
     {
-        //
+        $empresa = Empresa::findOrFail($request->id);
+        $condicion = $empresa->delete();
+
+        //return dd($request->id);
+        return redirect()->route('empresa.index')->with('eliminado', true);
     }
 }

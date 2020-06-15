@@ -128,9 +128,9 @@ class TipoEmpresaController extends Controller
             'descripcion' => 'nullable|string',
         ]);
 
-        $tipo = TipoEmpresa::where('nombre',$request->nombre);
+        $tipo = TipoEmpresa::where('id','!=',$request->id)->where('nombre',$request->nombre)->get();
 
-        if ($tipo) {            
+        if (count($tipo)>0) {            
             return redirect()->route('tipo_empresa.editar', $request->id)->with('error','ERROR');             
         } 
 

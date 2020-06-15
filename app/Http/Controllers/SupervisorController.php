@@ -143,9 +143,9 @@ class SupervisorController extends Controller
      */
     public function actualizar(Request $request)
     {   
-        $supervisor = supervisor::where('colegiado',$request->colegiado);
+        $supervisor = Supervisor::where('id','!=',$request->id)->where('colegiado',$request->colegiado)->get();
 
-        if ($supervisor) {            
+        if (count($supervisor)>0) {            
             return redirect()->route('supervisor.editar', $request->id)->with('error','ERROR');             
         } 
 

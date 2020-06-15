@@ -176,12 +176,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="{{ URL::asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
-<!-- Tempusdominus Bootstrap 4 -->
-<script src=".{{ URL::asset('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
 <!-- Bootstrap Switch -->
 <script src="{{ URL::asset('plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}"></script>
 <!-- AdminLTE App -->
-<script src="dist/js/adminlte.min.js"></script>
+<script src="{{ URL::asset('dist/js/adminlte.min.js') }}"></script>
 
 <script type="text/javascript">
   const Toast = Swal.mixin({
@@ -215,6 +213,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
   function alerta_error(msg){
     Toast.fire({
         icon: 'error',
+        title: msg
+    })
+  }   
+
+  function alerta_info(msg){
+    Toast.fire({
+        icon: 'info',
         title: msg
     })
   }   

@@ -4,6 +4,7 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+    <li class="breadcrumb-item"><a href="{{route('empresa.index')}}">Empresas</a></li>
     <li class="breadcrumb-item active">Tipo de empresas</li>
 @endsection
 

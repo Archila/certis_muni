@@ -122,9 +122,9 @@ class RolController extends Controller
             'descripcion' => 'nullable|string',
         ]);
 
-        $rol = Rol::where('nombre',$request->nombre);
+        $rol = Rol::where('id','!=',$request->id)->where('nombre',$request->nombre)->get();
 
-        if ($rol) {            
+        if (count($rol)>0) {            
             return redirect()->route('rol.editar', $request->id)->with('error','ERROR');             
         } 
 

@@ -150,9 +150,9 @@ class CarreraController extends Controller
             'prefijo' => 'required|string',
         ]);
 
-        $carrera = Carrera::where('codigo',$request->codigo);
+        $carrera = Carrera::where('id','!=',$request->id)->where('codigo',$request->codigo)->get();
 
-        if ($carrera) {            
+        if (count($carrera)>0) {            
             return redirect()->route('carrera.editar', $request->id)->with('error','ERROR');             
         } 
 

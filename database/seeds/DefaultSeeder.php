@@ -6,6 +6,8 @@ use App\Models\Carrera;
 use App\Models\Rol;
 use App\Models\Persona;
 
+use App\User;
+
 class DefaultSeeder extends Seeder
 {
     /**
@@ -17,6 +19,7 @@ class DefaultSeeder extends Seeder
     {
         Carrera::unguard();
         Rol::unguard();
+        User::unguard();
 
         //Carreras
         Carrera::create(['id' => 1, 'nombre' => 'Ingeniería Civil', 'codigo'=>'33', 'prefijo'=>'CIVI']);
@@ -37,6 +40,13 @@ class DefaultSeeder extends Seeder
         Persona::create(['id' => 1, 'nombre' => 'Administrador', 'apellido'=>'--', 'telefono'=>1, 'correo'=>'admin@kodsolutions.net' ]);
 
         //Usuario
+        $user = new User();
+        $user->name = 'admin';
+        $user->email = 'admin@gmail.com';
+        $user->password = bcrypt('prueba123');
+        $user->persona_id = 1;
+        $user->rol_id = 1;
+        $user->save();
         
     }
 }
