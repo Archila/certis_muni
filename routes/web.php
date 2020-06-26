@@ -76,6 +76,7 @@ Route::get('empresa/{id}/ver', 'EmpresaController@ver')->name('empresa.ver');
 Route::post('empresa', 'EmpresaController@guardar')->name('empresa.guardar');
 Route::put('empresa/{id}', 'EmpresaController@actualizar')->name('empresa.actualizar');
 Route::delete('empresa', 'EmpresaController@eliminar')->name('empresa.eliminar');
+Route::get('empresa/{id}/encargado', 'EmpresaController@encargado')->name('empresa.encargado');
 
 //Encargado
 Route::get('encargado', 'EncargadoController@index')->name('encargado.index');
@@ -85,3 +86,12 @@ Route::get('encargado/{id}/ver', 'EncargadoController@ver')->name('encargado.ver
 Route::post('encargado', 'EncargadoController@guardar')->name('encargado.guardar');
 Route::put('encargado/{id}', 'EncargadoController@actualizar')->name('encargado.actualizar');
 Route::delete('encargado', 'EncargadoController@eliminar')->name('encargado.eliminar');
+
+//Area
+Route::get('area', 'AreaController@index')->name('area.index');
+Route::get('area/crear', 'AreaController@crear')->name('area.crear');
+Route::get('area/{id}/editar', 'AreaController@editar')->name('area.editar');
+Route::get('area/{id}/ver', 'AreaController@ver')->name('area.ver');
+Route::post('area', 'AreaController@guardar')->name('area.guardar');
+Route::put('area/{id}', 'AreaController@actualizar')->name('area.actualizar');
+Route::delete('area', 'AreaController@eliminar')->name('area.eliminar');

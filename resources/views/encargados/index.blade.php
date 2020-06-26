@@ -1,6 +1,6 @@
-@extends('plantilla.plantilla',['sidebar'=>40])
+@extends('plantilla.plantilla',['sidebar'=>50])
 
-@section('titulo', 'Empresas')
+@section('titulo', 'Encargados')
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="/">Inicio</a></li>
@@ -9,15 +9,15 @@
 
 @section('alerta')
     @if(session('creado')>0)
-    <script> alerta_create('Nueva empresa agregada exitosamente.')</script>
+    <script> alerta_create('Nuevo encargado agregado exitosamente.')</script>
     @endif
 
     @if(session('eliminado')>0)
-    <script> alerta_delete('Empresa eliminada exitosamente.')</script>
+    <script> alerta_delete('Encargado eliminado exitosamente.')</script>
     @endif
 
     @if(session('editado')>0)
-    <script> alerta_edit('Empresa editada exitosamente.')</script>
+    <script> alerta_edit('Encargado editado exitosamente.')</script>
     @endif
 @endsection
 
@@ -26,10 +26,10 @@
   <div class="card-header">
     <div class="row">
         <div class="col-md-8 col-sm-12">
-            <h3>Listado de empresas</h3> 
+            <h3>Listado de encargados</h3> 
         </div>
         <div class="col-md-2 col-sm-12">
-            <a class="btn btn-block btn-primary btn-sm" href="{{route('empresa.crear')}}">Nueva empresa</a>
+            <a class="btn btn-block btn-primary btn-sm" href="{{route('encargado.crear')}}">Nuevo encargado</a>
         </div>
         <div class="col-md-2 col-sm-12">
             <a class="btn btn-block btn-info btn-sm" href="{{route('tipo_empresa.index')}}">Tipos</a>
@@ -42,49 +42,23 @@
     <thead>
         <tr>
             <th>Nombre</th>
-            <th>Dirección</th>
+            <th>Apellido</th>
             <th>Teléfono</th>
             <th>Correo</th>
-            <th>Tipo</th>
-            <th>Público</th>
-            <th>Validado</th>
-            <th>Calificación</th>
+            <th>Area</th>
+            <th>Empresa</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-    @foreach ($empresas as $e)
+    @foreach ($encargados as $e)
         <tr>
             <td>{{$e->nombre}}</td>
-            <td>{{$e->direccion}}</td>    
+            <td>{{$e->apellido}}</td>    
             <td>{{$e->telefono}}</td>    
             <td>{{$e->correo}}</td>    
-            <td>{{$e->tipo}}</td>
-            <td>
-            @if($e->publico==1)
-            <span class="badge bg-success">SI</span>
-            @else
-            <span class="badge bg-danger">NO</span>
-            @endif
-            </td>    
-            <td>
-            @if($e->valido==1)
-            <span class="badge bg-success">SI</span>
-            @else
-            <span class="badge bg-danger">NO</span>
-            @endif
-            </td>    
-            <td>            
-            @if($e->calificacion=="Bien")
-            <span class="badge bg-success">BIEN</span>
-            @elseif ($e->calificacion=="Regular")
-            <span class="badge bg-warning">REGULAR</span>
-            @elseif($e->calificacion=="Mala")
-            <span class="badge bg-danger">MALA</span>
-            @else
-            <span class="badge bg-secondary">Sin registro</span>
-            @endif              
-            </td>    
+            <td>{{$e->area}}</td>
+            <td>{{$e->empresa}}</td>   
             <td>
                 <div class="btn-group">
                     <a href="{{route('empresa.ver', $e->empresa_id)}}" type="button" class="btn btn-info btn-xs"><i class="fas fa-eye"></i></a>

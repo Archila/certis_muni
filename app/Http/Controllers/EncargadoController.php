@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Encargado;
+use App\Models\Encargado;
+use App\Models\Area;
+use App\Models\Persona;
+use App\Models\AreaEncargado;
 use Illuminate\Http\Request;
 
 class EncargadoController extends Controller
@@ -27,47 +30,37 @@ class EncargadoController extends Controller
         $many = 5;
         if($request->has('many')) $many = $request->many;
   
-        $sort_by = 'estudiante.created_at';
-        if($request->has('sort_by')) $sort_by = 'estudiante.'.$request->sort_by;
+        $sort_by = 'encargado.created_at';
+        if($request->has('sort_by')) $sort_by = 'encargado.'.$request->sort_by;
   
         $direction = 'desc';
         if($request->has('direction')) $direction = $request->direction;
   
-        $estudiantes = Estudiante::select('estudiante.*', 'carrera.nombre as carrera', 'persona.*');
+        $encargados = Encargado::select('encargado.*', 'encargado.id as encargado_id', 'persona.*');
 
-        $estudiantes ->join('carrera', 'carrera_id', '=', 'carrera.id');
-
-        $estudiantes ->join('persona', 'persona_id', '=', 'persona.id');
+        $encargados ->join('persona', 'persona_id', '=', 'persona.id');
   
         if ($request->has('nombre')) {
-          $estudiantes->orWhere('nombre', 'LIKE', '%' . $request->nombre . '%');
+          $encargados->orWhere('nombre', 'LIKE', '%' . $request->nombre . '%');
         }  
 
         if ($request->has('apellido')) {
-            $estudiantes->orWhere('apellido', 'LIKE', '%' . $request->apellido . '%');
+            $encargados->orWhere('apellido', 'LIKE', '%' . $request->apellido . '%');
         }  
 
-        if ($request->has('carne')) {
-            $estudiantes->orWhere('carne', 'LIKE', '%' . $request->carne . '%');
-        }  
-
-        if ($request->has('registro')) {
-            $estudiantes->orWhere('registro', 'LIKE', '%' . $request->registro . '%');
-        }  
-
-        if ($request->has('carrera_id')) {
-            $estudiantes->orWhere('carrera_id', $request->carrera_id);
+        if ($request->has('colegiado')) {
+            $encargados->orWhere('colegiado', 'LIKE', '%' . $request->colegiado . '%');
         }  
          
         if ($request->has('many')) {
-          $estudiantes = $carrestudianteseras->orderBy($sort_by, $direction)->paginate($many);          
+          $encargados = $encargados->orderBy($sort_by, $direction)->paginate($many);          
         }
         else {
-          $estudiantes = $estudiantes->orderBy($sort_by, $direction)->get();
+          $encargados = $encargados->orderBy($sort_by, $direction)->get();
         }
   
         //return response()->json($carreras);
-        return view('estudiantes.index',compact('estudiantes'));
+        return view('encargados.index',compact('encargados'));
     }
 
     /**
@@ -75,7 +68,7 @@ class EncargadoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function crear()
     {
         //
     }
@@ -86,9 +79,41 @@ class EncargadoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function guardar(Request $request)
+    {   
+        if($request->nuevo){
+            $persona = new Persona();
+            $persona->nombre = $request->nombre;
+            $persona->apellido = $request->apellido;
+            $persona->telefono = $request->telefono;
+            $persona->correo = $request->correo;
+            $persona->save();
+
+            $encargado = new Encargado();
+            $encargado->colegiado = $request->colegiado;
+            $encargado->profesion = $request->profesion;
+            $encargado->persona_id = $persona->id;
+            $encargado->save();
+
+            $encargado_id = $encargado->id;
+        }
+        else{
+            $encargado_id=$request->encargado_id;
+        }
+
+        $area = new Area();
+        $area->nombre = $request->area;
+        $area->descripcion = $request->descripcion;
+        $area->empresa_id = $request->empresa_id;
+        $area->save();
+
+        $area_encargado =  new AreaEncargado();
+        $area_encargado->area_id = $area->id;
+        $area_encargado->encargado_id=$encargado_id;
+        $area_encargado->save();
+
+        return redirect()->route('empresa.ver', $request->empresa_id);      
+
     }
 
     /**
@@ -97,7 +122,7 @@ class EncargadoController extends Controller
      * @param  \App\Encargado  $encargado
      * @return \Illuminate\Http\Response
      */
-    public function show(Encargado $encargado)
+    public function ver(Encargado $encargado)
     {
         //
     }
@@ -108,7 +133,7 @@ class EncargadoController extends Controller
      * @param  \App\Encargado  $encargado
      * @return \Illuminate\Http\Response
      */
-    public function edit(Encargado $encargado)
+    public function editar(Encargado $encargado)
     {
         //
     }
@@ -120,7 +145,7 @@ class EncargadoController extends Controller
      * @param  \App\Encargado  $encargado
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Encargado $encargado)
+    public function actualizar(Request $request)
     {
         //
     }
@@ -131,7 +156,7 @@ class EncargadoController extends Controller
      * @param  \App\Encargado  $encargado
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Encargado $encargado)
+    public function eliminar(Encargado $encargado)
     {
         //
     }

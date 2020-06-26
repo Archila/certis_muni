@@ -111,13 +111,56 @@
         <label for="select_tipo">Tipo empresa</label>                  
         <input type="text" class="form-control" id="validationCustom09" name="tipo" value="{{$empresa->tipo}}" disabled>
       </div>
+    </div>    
+  </form>
+
+    <div class="card card-primary collapsed-card">
+        <div class="card-header">
+        <h3 class="card-title">Areas</h3>
+
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+            </button>
+        </div>
+        <!-- /.card-tools -->
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+        @empty($areas)
+        No hay areas para mostrar.  <a href="{{route('empresa.encargado', $empresa->empresa_id)}}">Agregar area.</a>
+        @else
+        <table class="table table-bordered table-hover">
+          <thead>
+            <th>Area</th>
+            <th>Encargado</th>
+            <th>Profesión</th>
+            <th>Teléfono</th>
+            <th>Correo</th>
+          </thead>
+          <tbody>
+          @foreach ($areas as $i)
+            <tr>
+              <td>{{$i->area}}</td>
+              <td>{{$i->nombre}}  {{$i->apellido}}</td>
+              <td>{{$i->profesion}}</td>
+              <td>{{$i->telefono}}</td>
+              <td>{{$i->correo}}</td>
+            </tr>
+          @endforeach
+          </tbody>        
+        <a href="{{route('empresa.encargado', $empresa->empresa_id)}}">Agregar area.</a>
+        </table>        
+        @endempty
+        </div>
+        <!-- /.card-body -->
     </div>
+    <!-- /.card -->
 
     <div class="float-sm-right">
     <a class="btn btn-warning" href="{{route('empresa.editar', $empresa->empresa_id)}}" >Editar</a>
-      <a class="btn btn-secondary" href="{{route('empresa.index')}}" role="cancelar">Regresar</a>
-    </div>    
-  </form>
+        <a class="btn btn-secondary" href="{{route('empresa.index')}}" role="cancelar">Regresar</a>
+    </div>       
+  
   </div>
 </div>
 @endsection

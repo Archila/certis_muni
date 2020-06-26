@@ -59,7 +59,17 @@
                 Empresas
               </p>
             </a>            
-          </li>              
+          </li>        
+          
+          @if($sidebar<=59 && $sidebar>=50) @php $enc='active'; $menu5='menu-open' @endphp  @endif
+          <li class="nav-item">            
+            <a href="{{route('encargado.index')}}" class="nav-link {{$enc ?? ''}}">
+              <i class="nav-icon fas fa-user-tie"></i>
+              <p>
+                Encargados
+              </p>
+            </a>            
+          </li>     
           
           <li class="nav-header">Administración</li>
 
