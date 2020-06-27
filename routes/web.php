@@ -95,3 +95,31 @@ Route::get('area/{id}/ver', 'AreaController@ver')->name('area.ver');
 Route::post('area', 'AreaController@guardar')->name('area.guardar');
 Route::put('area/{id}', 'AreaController@actualizar')->name('area.actualizar');
 Route::delete('area', 'AreaController@eliminar')->name('area.eliminar');
+
+//Bitacora
+Route::get('bitacora', 'BitacoraController@index')->name('bitacora.index');
+Route::get('bitacora/crear', 'BitacoraController@crear')->name('bitacora.crear');
+Route::get('bitacora/{id}/editar', 'BitacoraController@editar')->name('bitacora.editar');
+Route::get('bitacora/{id}/ver', 'BitacoraController@ver')->name('bitacora.ver');
+Route::post('bitacora', 'BitacoraController@guardar')->name('bitacora.guardar');
+Route::put('bitacora/{id}', 'BitacoraController@actualizar')->name('bitacora.actualizar');
+Route::delete('bitacora', 'BitacoraController@eliminar')->name('bitacora.eliminar');
+Route::get('bitacora/{id}/folio/crear', 'BitacoraController@crear_folio')->name('bitacora.crear_folio');
+
+//Folio
+Route::get('folio', 'FolioController@index')->name('folio.index');
+Route::get('folio/crear', 'FolioController@crear')->name('folio.crear');
+Route::get('folio/{id}/editar', 'FolioController@editar')->name('folio.editar');
+Route::get('folio/{id}/ver', 'FolioController@ver')->name('folio.ver');
+Route::post('folio', 'FolioController@guardar')->name('folio.guardar');
+Route::put('folio/{id}', 'FolioController@actualizar')->name('folio.actualizar');
+Route::delete('folio', 'FolioController@eliminar')->name('folio.eliminar');
+
+//Revision
+Route::get('revision', 'RevisionController@index')->name('revision.index');
+Route::get('revision/crear', 'RevisionController@crear')->name('revision.crear');
+Route::get('revision/{id}/editar', 'RevisionController@editar')->name('revision.editar');
+Route::get('revision/{id}/ver', 'RevisionController@ver')->name('revision.ver');
+Route::post('revision', 'RevisionController@guardar')->name('revision.guardar');
+Route::put('revision/{id}', 'RevisionController@actualizar')->name('revision.actualizar');
+Route::delete('revision', 'RevisionController@eliminar')->name('revision.eliminar');

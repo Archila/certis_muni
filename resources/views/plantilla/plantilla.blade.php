@@ -23,6 +23,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="{{URL::asset('plugins/pace-progress/themes/black/pace-theme-flat-top.css') }}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ URL::asset('dist/css/adminlte.min.css') }}">
+  <!-- summernote -->
+  <link rel="stylesheet" href="{{URL::asset('plugins/summernote/summernote-bs4.css')}}">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
@@ -180,6 +182,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="{{ URL::asset('plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ URL::asset('dist/js/adminlte.min.js') }}"></script>
+<!-- Summernote -->
+<script src="{{URL::asset('plugins/summernote/summernote-bs4.min.js')}}"></script>
 
 <script type="text/javascript">
   const Toast = Swal.mixin({

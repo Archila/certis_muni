@@ -15,7 +15,9 @@ class CreateBitacoraFolioTable extends Migration
     {
         Schema::create('bitacora', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('horas', 6);
+            $table->string('horas', 6)->default(0);
+            $table->integer('semestre');
+            $table->integer('year');
             $table->unsignedBigInteger('usuario_id');
 
             $table->timestamps();

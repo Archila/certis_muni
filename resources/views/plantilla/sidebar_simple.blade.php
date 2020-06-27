@@ -14,6 +14,9 @@
     ENCARGADOS
     50) Index   51) Crear   52) Editar  53) Ver 
 
+    Bitacora
+    60) Index   61) Crear   62) Editar  63) Ver 
+
     CARRERAS
     70) Index   71) Crear   72) Editar  73) Ver 
 
@@ -39,6 +42,16 @@
               </p>
             </a>
           </li>
+
+          @if($sidebar<=69 && $sidebar>=60) @php $bit='active'; $menu6='menu-open' @endphp  @endif
+          <li class="nav-item">            
+            <a href="{{route('bitacora.index')}}" class="nav-link {{$bit ?? ''}}">
+              <i class="nav-icon fas fa-clipboard"></i>
+              <p>
+                Bitacora
+              </p>
+            </a>            
+          </li>     
 
 
           @if($sidebar<=39 && $sidebar>=30) @php $est='active'; $menu3='menu-open' @endphp  @endif
