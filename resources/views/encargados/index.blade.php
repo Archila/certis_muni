@@ -25,14 +25,11 @@
 <div class="card">
   <div class="card-header">
     <div class="row">
-        <div class="col-md-8 col-sm-12">
+        <div class="col-md-9 col-sm-12">
             <h3>Listado de encargados</h3> 
         </div>
-        <div class="col-md-2 col-sm-12">
+        <div class="col-md-3 col-sm-12">
             <a class="btn btn-block btn-primary btn-sm" href="{{route('encargado.crear')}}">Nuevo encargado</a>
-        </div>
-        <div class="col-md-2 col-sm-12">
-            <a class="btn btn-block btn-info btn-sm" href="{{route('tipo_empresa.index')}}">Tipos</a>
         </div>
     </div>
     
@@ -45,7 +42,7 @@
             <th>Apellido</th>
             <th>Teléfono</th>
             <th>Correo</th>
-            <th>Area</th>
+            <th>Puesto</th>
             <th>Empresa</th>
             <th></th>
         </tr>
@@ -57,14 +54,13 @@
             <td>{{$e->apellido}}</td>    
             <td>{{$e->telefono}}</td>    
             <td>{{$e->correo}}</td>    
-            <td>{{$e->area}}</td>
-            <td>{{$e->empresa}}</td>   
+            <td>{{$e->puesto}}</td>
+            <td>{{$e->empresa ?? 'Sin empresa'}}</td>   
             <td>
-                <div class="btn-group">
-                    <a href="{{route('empresa.ver', $e->empresa_id)}}" type="button" class="btn btn-info btn-xs"><i class="fas fa-eye"></i></a>
-                    <a href="{{route('empresa.editar', $e->empresa_id)}}" type="button" class="btn btn-success btn-xs"><i class="fas fa-edit"></i></a>
+                <div class="btn-group">                    
+                    <a href="{{route('encargado.editar', $e->encargado_id)}}" type="button" class="btn btn-success btn-xs"><i class="fas fa-edit"></i></a>
                     <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" 
-                    data-target="#modal-eliminar" data-id="{{$e->empresa_id}}">
+                    data-target="#modal-eliminar" data-id="{{$e->encargado_id}}">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
@@ -90,7 +86,7 @@
         </div>
         <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            <form  method="post" action="{{route('empresa.eliminar')}}" >
+            <form  method="post" action="{{route('encargado.eliminar')}}" >
             @method('DELETE')
             @csrf
                 <input type="hidden" name="id" id="input" class="form-control">

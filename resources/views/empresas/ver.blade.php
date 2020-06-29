@@ -25,14 +25,19 @@
   <form class="needs-validation" method="POST" novalidate >   
     
     <div class="form-row">
-      <div class="col-md-5 mb-3">
+      <div class="col-md-4 mb-3">
         <label for="validationCustom03">Nombre de la empresa</label>
         <input type="text" class="form-control" id="validationCustom03"  name="nombre" value="{{$empresa->nombre}}" disabled>
         
       </div>    
-      <div class="col-md-7 mb-3">
+      <div class="col-md-4 mb-3">
         <label for="validationCustom04">Direccion</label>
         <input type="text" class="form-control" id="validationCustom04" required name="direccion" value="{{$empresa->direccion}}" disabled>
+        
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="validationCustom04">Ubicación</label>
+        <input type="text" class="form-control" id="validationCustom04" required name="ubicacion" value="{{$empresa->ubicacion}}" disabled>
         
       </div>
     </div>

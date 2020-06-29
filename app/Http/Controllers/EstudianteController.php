@@ -116,6 +116,7 @@ class EstudianteController extends Controller
         $estudiante->creditos = $request->creditos;
         $estudiante->practicas = $request->practicas;
         $estudiante->year = $year;
+        $estudiante->direccion = $request->direccion;
         $estudiante->persona_id = $persona->id;
         $estudiante->carrera_id = $request->carrera_id;
         $estudiante->save();
@@ -161,9 +162,13 @@ class EstudianteController extends Controller
      */
     public function actualizar(Request $request)
     {
-        $estudiante = Estudiante::where('id','!=',$request->id)->where('carne',$request->carne)->orWhere('registro',$request->registro);
+        $estudiante = Estudiante::where('registro',$request->registro)->where('estudiante.id','!=',$request->estudiante_id)->first();
+        if ($estudiante) {            
+            return redirect()->route('estudiante.editar', $request->id)->with('error','ERROR');             
+        } 
 
-        if (count($estudiante)>0) {            
+        $estudiante = Estudiante::where('carne',$request->carne)->where('estudiante.id','!=',$request->estudiante_id)->first();
+        if ($estudiante) {            
             return redirect()->route('estudiante.editar', $request->id)->with('error','ERROR');             
         } 
 
@@ -182,6 +187,7 @@ class EstudianteController extends Controller
         $estudiante->promedio = $request->promedio;
         $estudiante->creditos = $request->creditos;
         $estudiante->practicas = $request->practicas;
+        $estudiante->direccion = $request->direccion;
         $estudiante->persona_id = $persona->id;
         $estudiante->carrera_id = $request->carrera_id;
         $condicion = $estudiante->save();

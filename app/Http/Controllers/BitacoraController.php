@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Empresa;
+use App\Models\Encargado;
 use App\Models\Bitacora;
 use App\Models\Folio;
 use Illuminate\Http\Request;
@@ -33,7 +35,10 @@ class BitacoraController extends Controller
         $direction = 'desc';
         if($request->has('direction')) $direction = $request->direction;
   
-        $bitacoras = Bitacora::orderBy($sort_by, $direction);  
+        $bitacoras = Bitacora::select('bitacora.*', 'persona.*', 'empresa.nombre as empresa', 'encargado.*');  
+        $bitacoras->join('encargado', 'encargado_id', '=', 'encargado.id');
+        $bitacoras->join('empresa', 'empresa_id', '=', 'empresa.id');
+        $bitacoras->join('persona', 'encargado.persona_id', '=', 'persona.id');
          
         if ($request->has('year')) {
           $bitacoras->orWhere('year', '=', $request->codigo);
@@ -56,8 +61,13 @@ class BitacoraController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function crear()
-    {
-        return view('bitacoras.crear');
+    {   
+        $encargados = Encargado::select('encargado.*', 'persona.*', 'encargado.id as encargado_id');
+        $encargados = $encargados->join('persona', 'persona_id', '=','persona.id')->get();
+
+        $empresas = Empresa::all();
+
+        return view('bitacoras.crear', ['encargados'=>$encargados, 'empresas'=>$empresas]);
     }
 
     /**
@@ -68,11 +78,7 @@ class BitacoraController extends Controller
      */
     public function guardar(Request $request)
     {
-        $request->validate([
-            'semestre' => 'required|string',
-            'year' => 'required|string',
-        ]);
-
+       
         /*$bitacora = Bitacora::where('codigo', '=',$request->codigo)->first();
 
         if ($carrera) {            
@@ -82,6 +88,9 @@ class BitacoraController extends Controller
         $bitacora = new Bitacora();
         $bitacora->semestre = $request->semestre;
         $bitacora->year = $request->year;
+        $bitacora->tipo = $request->tipo;
+        $bitacora->empresa_id = $request->empresa_id;
+        $bitacora->encargado_id = $request->encargado_id;
         $bitacora->usuario_id = 1;
         $bitacora->save();
 

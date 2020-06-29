@@ -16,6 +16,7 @@ class CreateEncargadoTable extends Migration
         Schema::create('encargado', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('profesion', 60);
+            $table->string('puesto', 100);
             $table->string('colegiado', 20)->nullable();
             $table->unsignedBigInteger('persona_id');
 

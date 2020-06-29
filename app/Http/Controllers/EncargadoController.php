@@ -36,9 +36,11 @@ class EncargadoController extends Controller
         $direction = 'desc';
         if($request->has('direction')) $direction = $request->direction;
   
-        $encargados = Encargado::select('encargado.*', 'encargado.id as encargado_id', 'persona.*');
-
+        $encargados = Encargado::select('encargado.*', 'encargado.id as encargado_id', 'persona.*', 'empresa.nombre as empresa');
         $encargados ->join('persona', 'persona_id', '=', 'persona.id');
+        $encargados ->leftJoin('area_encargado', 'encargado.id', '=', 'area_encargado.encargado_id');
+        $encargados ->leftJoin('area', 'area_encargado.area_id', '=', 'area.id');
+        $encargados ->leftJoin('empresa', 'area.empresa_id', '=', 'empresa.id');
   
         if ($request->has('nombre')) {
           $encargados->orWhere('nombre', 'LIKE', '%' . $request->nombre . '%');
@@ -70,7 +72,7 @@ class EncargadoController extends Controller
      */
     public function crear()
     {
-        //
+        return view('encargados.crear');
     }
 
     /**
@@ -80,8 +82,9 @@ class EncargadoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function guardar(Request $request)
-    {   
-        if($request->nuevo){
+    {          
+        if((int)$request->solo_encargado){
+            
             $persona = new Persona();
             $persona->nombre = $request->nombre;
             $persona->apellido = $request->apellido;
@@ -92,28 +95,47 @@ class EncargadoController extends Controller
             $encargado = new Encargado();
             $encargado->colegiado = $request->colegiado;
             $encargado->profesion = $request->profesion;
+            $encargado->puesto = $request->puesto;
             $encargado->persona_id = $persona->id;
             $encargado->save();
 
-            $encargado_id = $encargado->id;
+            return redirect()->route('encargado.index')->with('creado', $encargado->id);   
         }
         else{
-            $encargado_id=$request->encargado_id;
+            if($request->nuevo){
+                $persona = new Persona();
+                $persona->nombre = $request->nombre;
+                $persona->apellido = $request->apellido;
+                $persona->telefono = $request->telefono;
+                $persona->correo = $request->correo;
+                $persona->save();
+    
+                $encargado = new Encargado();
+                $encargado->colegiado = $request->colegiado;
+                $encargado->profesion = $request->profesion;
+                $encargado->puesto = $request->puesto;
+                $encargado->persona_id = $persona->id;
+                $encargado->save();
+    
+                $encargado_id = $encargado->id;
+            }
+            else{
+                $encargado_id=$request->encargado_id;
+            }
+    
+            $area = new Area();
+            $area->nombre = $request->area;
+            $area->descripcion = $request->descripcion;
+            $area->empresa_id = $request->empresa_id;
+            $area->save();
+    
+            $area_encargado =  new AreaEncargado();
+            $area_encargado->area_id = $area->id;
+            $area_encargado->encargado_id=$encargado_id;
+            $area_encargado->save();
+    
+            return redirect()->route('empresa.ver', $request->empresa_id);  
         }
-
-        $area = new Area();
-        $area->nombre = $request->area;
-        $area->descripcion = $request->descripcion;
-        $area->empresa_id = $request->empresa_id;
-        $area->save();
-
-        $area_encargado =  new AreaEncargado();
-        $area_encargado->area_id = $area->id;
-        $area_encargado->encargado_id=$encargado_id;
-        $area_encargado->save();
-
-        return redirect()->route('empresa.ver', $request->empresa_id);      
-
     }
 
     /**
@@ -124,7 +146,7 @@ class EncargadoController extends Controller
      */
     public function ver(Encargado $encargado)
     {
-        //
+       
     }
 
     /**
@@ -156,8 +178,12 @@ class EncargadoController extends Controller
      * @param  \App\Encargado  $encargado
      * @return \Illuminate\Http\Response
      */
-    public function eliminar(Encargado $encargado)
+    public function eliminar(Request $request)
     {
-        //
+        $encargado = Encargado::findOrFail($request->id);
+        $condicion = $encargado->delete();
+
+        //return dd($request->id);
+        return redirect()->route('encargado.index')->with('eliminado', true);
     }
 }

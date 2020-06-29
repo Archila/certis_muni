@@ -101,6 +101,7 @@ class EmpresaController extends Controller
         $empresa = new Empresa();
         $empresa->nombre = $request->nombre;
         $empresa->direccion = $request->direccion;
+        $empresa->ubicacion = $request->ubicacion;
         $empresa->alias = $request->alias;
         $empresa->correo = $request->correo;
         $empresa->telefono = $request->telefono;
@@ -172,6 +173,7 @@ class EmpresaController extends Controller
         $empresa = Empresa::findOrFail($request->id);;
         $empresa->nombre = $request->nombre;
         $empresa->direccion = $request->direccion;
+        $empresa->ubicacion = $request->ubicacion;
         $empresa->alias = $request->alias;
         $empresa->correo = $request->correo;
         $empresa->telefono = $request->telefono;

@@ -35,13 +35,14 @@
     
   </div>
   <div class="card-body">
-  <table id="datatable" class="table table-bordered table-hover">
+  <table id="datatable" class="table table-responsive table-bordered table-hover">
     <thead>
         <tr>
             <th>Semestre</th>
             <th>Año</th>
             <th>Horas</th>
-            <th>Creado</th>
+            <th>Empresa</th>
+            <th>Encargado</th>
             <th></th>
         </tr>
     </thead>
@@ -51,7 +52,8 @@
             <td>{{$b->semestre}}</td>
             <td>{{$b->year}}</td>
             <td>{{$b->horas}}</td>    
-            <td>{{$b->created_at}}</td>
+            <td>{{$b->empresa}}</td>
+            <td>{{$b->nombre}}{{' '}}{{$b->apellido}} ({{$b->puesto}})</td>
             <td>
                 <div class="btn-group">
                     <a href="{{route('bitacora.ver', $b->id)}}" type="button" class="btn btn-success btn-xs"><i class="fas fa-edit"></i></a>

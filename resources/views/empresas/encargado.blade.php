@@ -22,7 +22,7 @@
   <div class="card-body">
   <form class="needs-validation" method="POST" action="{{route('encargado.guardar')}}" novalidate>   
     @csrf
-   
+    <input type="hidden" name="solo_encargado" value=0>
     <input type="hidden" name="empresa_id" value="{{$empresa->empresa_id}}">
     <div class="form-row">      
 
@@ -67,13 +67,20 @@
         </div>
 
         <div class="form-row">
-            <div class="col-md-3 mb-3">
+            <div class="col-md-2 mb-3">
                 <label for="validationCustom08">Colegiado</label>
                 <input type="text" class="form-control" id="validationCustom08" name="colegiado">                   
             </div>    
-            <div class="col-md-6 mb-3">
+            <div class="col-md-5 mb-3">
                 <label for="validationCustom08">Profesión</label>
                 <input type="text" class="form-control" id="validationCustom08" name="profesion" required> 
+                <div class="invalid-feedback">
+                Ingrese profesión del encargado.
+                </div>      
+            </div>        
+            <div class="col-md-5 mb-3">
+                <label for="validationCustom08">Puesto</label>
+                <input type="text" class="form-control" id="validationCustom08" name="puesto" required> 
                 <div class="invalid-feedback">
                 Ingrese profesión del encargado.
                 </div>      
@@ -85,14 +92,14 @@
         <div class="form-row">
             <div class="col-md-8 mb-3">
                 <label for="select_tipo">Encargados en el sistema</label>                   
-                <select id="select_tipo" class="form-control" required name="encargado_id">
-                    <option disabled >Seleccione un encargado</option>
+                <select id="select_tipo" class="form-control" name="encargado_id">
+                    <option disabled value=0 >Seleccione un encargado</option>
                     @foreach ($encargados as $e)                    
                     <option value="{{$e->encargado_id}}">{{$e->nombre}} {{$e->apellido}} ({{$e->profesion}})</option>                   
                     @endforeach
                 </select>
                 <div class="invalid-feedback">
-                Por favor seleccione un tipo de empresa
+                Por favor seleccione un encargado
                 </div>
             </div>
         </div>        
@@ -157,7 +164,7 @@
 <script>
 function cbxEncargado(){
     var forms = document.getElementsByClassName('needs-validation');
-    forms[0].classList.remove('was-validated');
+    //forms[0].classList.remove('was-validated');
     // Get the checkbox
     var checkBox = document.getElementById("cbx_encargado");    
 

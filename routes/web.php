@@ -123,3 +123,8 @@ Route::get('revision/{id}/ver', 'RevisionController@ver')->name('revision.ver');
 Route::post('revision', 'RevisionController@guardar')->name('revision.guardar');
 Route::put('revision/{id}', 'RevisionController@actualizar')->name('revision.actualizar');
 Route::delete('revision', 'RevisionController@eliminar')->name('revision.eliminar');
+
+//PDF
+Route::get('pdf', 'PDFController@index')->name('revision.index');
+Route::get('pdf/caratula', 'PDFController@index')->name('revision.caratula');
+Route::get('pdf/oficio', 'PDFController@index')->name('revision.oficio');

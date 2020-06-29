@@ -23,39 +23,39 @@
   <form class="needs-validation" method="POST" action="{{route('estudiante.guardar')}}" novalidate >    
     @csrf
     <div class="form-row">
-      <div class="col-md-6 col-sm-12 mb-3">
+      <div class="col-md-5 col-sm-12 mb-3">
         <label for="validationCustom01">Nombres</label>
         <input type="text" class="form-control" id="validationCustom01" required name="nombre" autofocus>
         <div class="invalid-feedback">
           Por favor ingrese nombre del estudiante
         </div>
       </div>      
-      <div class="col-md-6 col-sm-12 mb-3">
+      <div class="col-md-5 col-sm-12 mb-3">
         <label for="validationCustom02">Apellidos</label>
         <input type="text" class="form-control" id="validationCustom02" required name="apellido">
         <div class="invalid-feedback">
           Por favor ingrese apellido del estudiante 
         </div>
       </div>      
+      <div class="col-md-2 col-sm-12 mb-3">
+        <label for="validationCustom03">Carne</label>
+        <input type="text" class="form-control" id="validationCustom03" minlength="13" placeholder="2600000000001" required name="carne">
+        <div class="invalid-feedback">
+        Valor incorrecto. El carne es el valor del DPI
+        </div>
+      </div>      
     </div>
     <div class="form-row">
-      <div class="col-md-8 col-sm-12">
-        <div class="row">
-            <div class="col-md-4 col-sm-12 mb-3">
-                <label for="validationCustom03">Carne</label>
-                <input type="text" class="form-control" id="validationCustom03" minlength="13" placeholder="2600000000001" required name="carne">
-                <div class="invalid-feedback">
-                Valor incorrecto. El carne es el valor del DPI
-                </div>
-            </div>      
-            <div class="col-md-4 col-sm-12 mb-3">
+      <div class="col-md-4 col-sm-12">
+        <div class="row">            
+            <div class="col-md-6 col-sm-12 mb-3">
                 <label for="validationCustom04">Registro</label>
                 <input type="text" class="form-control" id="validationCustom04" minlength="9" placeholder="201700001" required name="registro">
                 <div class="invalid-feedback">
                 Por favor ingresar numero de registro correcto
                 </div>
             </div>      
-            <div class="col-md-4 col-sm-12 mb-3">
+            <div class="col-md-6 col-sm-12 mb-3">
                 <label for="validationCustom05">Teléfono</label>
                 <input type="text" class="form-control" id="validationCustom05" minlength="8" required name="telefono" >
                 <div class="invalid-feedback">
@@ -64,7 +64,14 @@
             </div>      
         </div>        
       </div>    
-        <div class="col-md-4 col-sm-12 mb-3">
+        <div class="col-md-5 col-sm-12 mb-3">
+            <label for="validationCustom06">Dirección</label>
+            <input type="text" class="form-control" id="validationCustom06" required name="direccion">
+            <div class="invalid-feedback">
+            Por favor ingresar su dirección
+            </div>
+        </div>    
+        <div class="col-md-3 col-sm-12 mb-3">
             <label for="validationCustom06">Correo</label>
             <input type="email" class="form-control" id="validationCustom06" required name="correo">
             <div class="invalid-feedback">

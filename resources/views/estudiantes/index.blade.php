@@ -70,16 +70,6 @@
   </div>
 </div>
 
-
-<button type="button" class="btn btn-success" onclick="Prueba()">
-                  Launch Success Toast
-                </button>
-
-                <button type="button" class="btn btn-default swalDefaultQuestion">
-                  Launch Question Toast
-                </button>
-
-
 <div class="modal fade" id="modal-eliminar">
     <div class="modal-dialog">
         <div class="modal-content">

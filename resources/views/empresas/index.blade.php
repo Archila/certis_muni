@@ -38,7 +38,7 @@
     
   </div>
   <div class="card-body">
-  <table id="datatable" class="table table-bordered table-hover">
+  <table id="datatable" class="table table-sm table-responsive table-bordered table-hover">
     <thead>
         <tr>
             <th>Nombre</th>

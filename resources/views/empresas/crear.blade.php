@@ -27,18 +27,25 @@
     @csrf
 
     <div class="form-row">
-      <div class="col-md-5 mb-3">
+      <div class="col-md-4 mb-3">
         <label for="validationCustom03">Nombre de la empresa</label>
         <input type="text" class="form-control" id="validationCustom03" required name="nombre" autofocus>
         <div class="invalid-feedback">
           Por favor ingrese nombre de la carrera
         </div>
       </div>    
-      <div class="col-md-7 mb-3">
+      <div class="col-md-4 mb-3">
         <label for="validationCustom04">Direccion</label>
-        <input type="text" class="form-control" id="validationCustom04" minlength="1" required name="direccion">
+        <input type="text" class="form-control" id="validationCustom04" placeholder="# Casa, Avenida, Zona." minlength="1" required name="direccion">
         <div class="invalid-feedback">
           Ingrese una dirección para la empresa
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="validationCustom04">Ubicación</label>
+        <input type="text" class="form-control" id="validationCustom04" placeholder="Municipio, Departamento" minlength="1" required name="ubicacion">
+        <div class="invalid-feedback">
+          Ingrese una ubicación para la empresa
         </div>
       </div>
     </div>

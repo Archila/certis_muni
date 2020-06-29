@@ -18,11 +18,20 @@ class CreateBitacoraFolioTable extends Migration
             $table->string('horas', 6)->default(0);
             $table->integer('semestre');
             $table->integer('year');
+            $table->integer('tipo');
             $table->unsignedBigInteger('usuario_id');
+            $table->unsignedBigInteger('empresa_id');
+            $table->unsignedBigInteger('encargado_id');
 
             $table->timestamps();
 
             $table->foreign('usuario_id')->references('id')->on('users')
+                                                        ->onDelete('cascade')->onUpdate('cascade');
+            
+            $table->foreign('empresa_id')->references('id')->on('empresa')
+                                                        ->onDelete('cascade')->onUpdate('cascade');
+            
+            $table->foreign('encargado_id')->references('id')->on('encargado')
                                                         ->onDelete('cascade')->onUpdate('cascade');
         });
 
