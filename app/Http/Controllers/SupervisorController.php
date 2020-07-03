@@ -131,7 +131,6 @@ class SupervisorController extends Controller
 
         $supervisor = new Supervisor();
         $supervisor->profesion = $request->profesion;
-        $supervisor->clave = $clave;
         $supervisor->colegiado = $request->colegiado;
         $supervisor->persona_id = $persona->id;
         $supervisor->save();
