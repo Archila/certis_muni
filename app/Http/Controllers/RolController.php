@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Rol;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Gate;
+
 class RolController extends Controller
 {
+    private $roles_gate = '{"roles":[ 1 ]}';
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -19,6 +23,8 @@ class RolController extends Controller
      */
     public function index(Request $request)
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+        
         $request->validate([
             'all' => 'nullable|boolean',
             'many' => 'nullable|integer',
@@ -60,6 +66,8 @@ class RolController extends Controller
      */
     public function crear()
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         return view('roles.crear');
     }
 
@@ -71,6 +79,8 @@ class RolController extends Controller
      */
     public function guardar(Request $request)
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         $request->validate([
             'nombre' => 'required|string',
             'descripcion' => 'nullable|string',
@@ -98,7 +108,7 @@ class RolController extends Controller
      */
     public function ver(Rol $rol)
     {
-        //
+        Gate::authorize('haveaccess', $this->roles_gate );
     }
 
     /**
@@ -109,6 +119,8 @@ class RolController extends Controller
      */
     public function editar($id)
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         $rol = Rol::findOrFail($id);
         return view('roles.editar', compact('rol'));
     }
@@ -122,6 +134,8 @@ class RolController extends Controller
      */
     public function actualizar(Request $request)
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         $request->validate([
             'nombre' => 'required|string',
             'descripcion' => 'nullable|string',
@@ -150,6 +164,8 @@ class RolController extends Controller
      */
     public function eliminar(Request $request)
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+        
         $rol = Rol::findOrFail($request->id);
         $condicion = $rol->delete();
 

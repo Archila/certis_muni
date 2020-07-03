@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Revision;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Gate;
+
 class RevisionController extends Controller
 {
+    private $roles_gate = '{"roles":[ 1, 3, 4, 5, 6, 7  ]}';
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -19,7 +23,8 @@ class RevisionController extends Controller
      */
     public function index()
     {
-        //
+        Gate::authorize('haveaccess', $this->roles_gate );
+
     }
 
     /**
@@ -29,7 +34,8 @@ class RevisionController extends Controller
      */
     public function create()
     {
-        //
+        Gate::authorize('haveaccess', $this->roles_gate );
+
     }
 
     /**
@@ -40,7 +46,8 @@ class RevisionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Gate::authorize('haveaccess', $this->roles_gate );
+
     }
 
     /**
@@ -51,7 +58,8 @@ class RevisionController extends Controller
      */
     public function show(Revision $revision)
     {
-        //
+        Gate::authorize('haveaccess', $this->roles_gate );
+
     }
 
     /**
@@ -62,7 +70,8 @@ class RevisionController extends Controller
      */
     public function edit(Revision $revision)
     {
-        //
+        Gate::authorize('haveaccess', $this->roles_gate );
+
     }
 
     /**
@@ -74,7 +83,8 @@ class RevisionController extends Controller
      */
     public function update(Request $request, Revision $revision)
     {
-        //
+        Gate::authorize('haveaccess', $this->roles_gate );
+
     }
 
     /**
@@ -85,6 +95,7 @@ class RevisionController extends Controller
      */
     public function destroy(Revision $revision)
     {
-        //
+        Gate::authorize('haveaccess', $this->roles_gate );
+
     }
 }

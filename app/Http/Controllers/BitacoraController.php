@@ -8,8 +8,12 @@ use App\Models\Bitacora;
 use App\Models\Folio;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Gate;
+
 class BitacoraController extends Controller
-{
+{   
+    private $roles_gate = '{"roles":[ 1, 2 ]}';
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -22,6 +26,8 @@ class BitacoraController extends Controller
      */
     public function index(Request $request)
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+        
         $request->validate([
             'all' => 'nullable|boolean',
             'many' => 'nullable|integer',
@@ -67,6 +73,8 @@ class BitacoraController extends Controller
      */
     public function crear()
     {   
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         $encargados = Encargado::select('encargado.*', 'persona.*', 'encargado.id as encargado_id');
         $encargados = $encargados->join('persona', 'persona_id', '=','persona.id')->get();
 
@@ -83,6 +91,7 @@ class BitacoraController extends Controller
      */
     public function guardar(Request $request)
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
        
         /*$bitacora = Bitacora::where('codigo', '=',$request->codigo)->first();
 
@@ -110,6 +119,8 @@ class BitacoraController extends Controller
      */
     public function ver($id)
     {
+        Gate::authorize('haveaccess', '{"roles":[ 1, 2, 3, 4, 5, 6, 7 ]}' );
+
         $bitacora = Bitacora::findOrFail($id);
 
         $folios = Folio::select('folio.*');
@@ -155,6 +166,8 @@ class BitacoraController extends Controller
 
     public function crear_folio($id)
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         $bitacora = Bitacora::findOrFail($id);        
 
         return view('bitacoras.crear_folio',['bitacora'=>$bitacora]);

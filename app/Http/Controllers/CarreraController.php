@@ -6,8 +6,12 @@ use App\Models\Carrera;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Gate;
+
 class CarreraController extends Controller
 {
+    private $roles_gate = '{"roles":[ 1 ]}';
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -28,6 +32,8 @@ class CarreraController extends Controller
     */
     public function index(Request $request)
     {
+      Gate::authorize('haveaccess', $this->roles_gate );
+
       $request->validate([
           'all' => 'nullable|boolean',
           'many' => 'nullable|integer',
@@ -74,6 +80,8 @@ class CarreraController extends Controller
     */
     public function crear()
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         return view('carreras.crear');
     }
 
@@ -88,6 +96,8 @@ class CarreraController extends Controller
     */
     public function guardar(Request $request)
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         $request->validate([
             'nombre' => 'required|string',
             'codigo' => 'required|string',
@@ -118,6 +128,8 @@ class CarreraController extends Controller
     */
     public function ver(Request $request)
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         //Comprobamos que la carrera exista
         $carrera = Carrera::findOrFail($request->id);
         //$estudiantes = Carrera::findOrFail($request->id)->estudiantes;
@@ -134,6 +146,8 @@ class CarreraController extends Controller
      */
     public function editar($id)
     {   
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         $carrera = Carrera::findOrFail($id);
         return view('carreras.editar', compact('carrera'));
     }
@@ -149,6 +163,8 @@ class CarreraController extends Controller
     */
     public function actualizar(Request $request)
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         $request->validate([
             'nombre' => 'required|string',
             'codigo' => 'required|string',
@@ -182,6 +198,8 @@ class CarreraController extends Controller
     */
     public function eliminar(Request $request)
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+        
         $carrera = Carrera::findOrFail($request->id);
         $condicion = $carrera->delete();
 

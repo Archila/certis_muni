@@ -8,8 +8,12 @@ use App\Models\TipoEmpresa;
 use App\Models\Encargado;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Gate;
+
 class EmpresaController extends Controller
 {
+    private $roles_gate = '{"roles":[ 1, 2, 3, 4, 5, 6, 7 ]}';
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -22,6 +26,8 @@ class EmpresaController extends Controller
      */
     public function index(Request $request)
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         $request->validate([
             'all' => 'nullable|boolean',
             'many' => 'nullable|integer',
@@ -85,6 +91,8 @@ class EmpresaController extends Controller
      */
     public function crear()
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         $tipos = TipoEmpresa::where('activo',1)->get();
         return view('empresas.crear',compact('tipos'));
     }
@@ -97,6 +105,8 @@ class EmpresaController extends Controller
      */
     public function guardar(Request $request)
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         $empresa = Empresa::where('nombre', '=',$request->nombre)->first();
 
         if ($empresa) {            
@@ -128,6 +138,8 @@ class EmpresaController extends Controller
      */
     public function ver($id)
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         $empresa = Empresa::select('empresa.*', 'tipo_empresa.nombre as tipo', 'empresa.id as empresa_id');
         $empresa ->join('tipo_empresa', 'tipo_empresa_id', '=', 'tipo_empresa.id');
         $empresa = $empresa->where('empresa.id',$id)->firstOrFail();
@@ -151,6 +163,8 @@ class EmpresaController extends Controller
      */
     public function editar($id)
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         $empresa = Empresa::select('empresa.*', 'tipo_empresa.nombre as tipo', 'empresa.id as empresa_id');
         $empresa ->join('tipo_empresa', 'tipo_empresa_id', '=', 'tipo_empresa.id');
         $empresa = $empresa->where('empresa.id',$id)->firstOrFail();
@@ -169,6 +183,8 @@ class EmpresaController extends Controller
      */
     public function actualizar(Request $request)
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         $empresa = Empresa::where('id','!=',$request->id)->where('nombre', '=',$request->nombre)->first();
 
         if ($empresa) {            
@@ -204,6 +220,8 @@ class EmpresaController extends Controller
      */
     public function eliminar(Request $request)
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         $empresa = Empresa::findOrFail($request->id);
         $condicion = $empresa->delete();
 
@@ -213,6 +231,8 @@ class EmpresaController extends Controller
 
     public function encargado($id)
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         $empresa = Empresa::select('empresa.*', 'tipo_empresa.nombre as tipo', 'empresa.id as empresa_id');
         $empresa ->join('tipo_empresa', 'tipo_empresa_id', '=', 'tipo_empresa.id');
         $empresa = $empresa->where('empresa.id',$id)->firstOrFail();

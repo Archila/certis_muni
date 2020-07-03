@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 
 class PDFController extends Controller
 {
+    private $roles_gate = '{"roles":[ 1, 2, 3, 4, 5, 6, 7 ]}';
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -19,6 +21,8 @@ class PDFController extends Controller
     
     public function index()
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         $id_bitacora = 1;
         $estudiante_id = 1;
 
@@ -43,6 +47,8 @@ class PDFController extends Controller
 
     public function caratula()
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         $id_bitacora = 1;
         $estudiante_id = 1;
 
@@ -67,6 +73,8 @@ class PDFController extends Controller
 
     public function oficio()
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         $id_bitacora = 1;
         $estudiante_id = 1;
 

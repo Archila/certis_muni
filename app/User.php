@@ -49,7 +49,7 @@ class User extends Authenticatable
             if($tabla == 'bitacora'){ return true;}
             if($tabla == 'estudiante'){ return false;}
             if($tabla == 'empresa'){ return true;}
-            if($tabla == 'encargado'){ return false;}
+            if($tabla == 'encargado'){ return true;}
             if($tabla == 'notificacion'){ return true;}
             if($tabla == 'carrera'){ return false;}
             if($tabla == 'supervisor'){ return false;}
@@ -60,7 +60,7 @@ class User extends Authenticatable
             if($tabla == 'bitacora'){ return false;}
             if($tabla == 'estudiante'){ return true;}
             if($tabla == 'empresa'){ return true;}
-            if($tabla == 'encargado'){ return false;}
+            if($tabla == 'encargado'){ return true;}
             if($tabla == 'notificacion'){ return true;}
             if($tabla == 'carrera'){ return false;}
             if($tabla == 'supervisor'){ return false;}

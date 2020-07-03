@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 
 class EncargadoController extends Controller
 {
+    private $roles_gate = '{"roles":[ 1, 2, 3, 4, 5, 6, 7 ]}';
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -22,6 +24,8 @@ class EncargadoController extends Controller
      */
     public function index(Request $request)
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         $request->validate([
             'all' => 'nullable|boolean',
             'many' => 'nullable|integer',
@@ -77,6 +81,8 @@ class EncargadoController extends Controller
      */
     public function crear()
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         return view('encargados.crear');
     }
 
@@ -88,6 +94,8 @@ class EncargadoController extends Controller
      */
     public function guardar(Request $request)
     {          
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         if((int)$request->solo_encargado){
             
             $persona = new Persona();
@@ -150,7 +158,7 @@ class EncargadoController extends Controller
      */
     public function ver(Encargado $encargado)
     {
-       
+       Gate::authorize('haveaccess', $this->roles_gate );
     }
 
     /**
@@ -161,7 +169,7 @@ class EncargadoController extends Controller
      */
     public function editar(Encargado $encargado)
     {
-        //
+        Gate::authorize('haveaccess', $this->roles_gate );
     }
 
     /**
@@ -173,7 +181,7 @@ class EncargadoController extends Controller
      */
     public function actualizar(Request $request)
     {
-        //
+        Gate::authorize('haveaccess', $this->roles_gate );
     }
 
     /**
@@ -184,6 +192,8 @@ class EncargadoController extends Controller
      */
     public function eliminar(Request $request)
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         $encargado = Encargado::findOrFail($request->id);
         $condicion = $encargado->delete();
 
