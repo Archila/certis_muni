@@ -4,17 +4,30 @@ namespace App\Http\Controllers;
 
 use App\Models\Supervisor;
 use App\Models\Persona;
+use App\Models\Carrera;
+use App\User;
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\Gate;
 
 class SupervisorController extends Controller
 {
+    private $roles_gate = '{"roles":[ 1 ]}';
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {
+    {   
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         $request->validate([
             'all' => 'nullable|boolean',
             'many' => 'nullable|integer',
@@ -72,9 +85,12 @@ class SupervisorController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function crear()
-    {
+    {   
+        Gate::authorize('haveaccess', $this->roles_gate );
+        
+        $carreras = Carrera::all();
         //$carreras = Carrera::all();
-        return view('supervisores.crear');
+        return view('supervisores.crear', compact('carreras'));
     }
 
     /**
@@ -85,12 +101,27 @@ class SupervisorController extends Controller
      */
     public function guardar(Request $request)
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         $supervisor = Supervisor::where('colegiado',$request->colegiado)->first();
 
         if ($supervisor) {            
-            return redirect()->route('estudiante.crear')->with('error', 'ERROR');             
+            return redirect()->route('supervisor.crear')->with('error', 'ERROR');             
         }        
-        
+
+        //Operaciones con string
+        $pos_n = strrpos(trim($request->nombre), " ");
+        if($pos_n === false) {$solonombre = $request->nombre;}
+        else{ $solonombre= substr($request->nombre, 0, $pos_n); }
+
+        $pos_a = strrpos(trim($request->apellido), ' ');
+        if($pos_a === false) { $soloapellido = $request->apellido;}
+        else{ $soloapellido= substr($request->apellido, 0, $pos_a); }        
+
+        $username = $solonombre . ' ' . $soloapellido;
+        $ultimos_digitos=substr((string)$request->colegiado, -3);
+        $clave = strtolower($solonombre).strtolower($soloapellido).$ultimos_digitos;
+
         $persona = new Persona();
         $persona->nombre = $request->nombre;
         $persona->apellido = $request->apellido;
@@ -100,9 +131,26 @@ class SupervisorController extends Controller
 
         $supervisor = new Supervisor();
         $supervisor->profesion = $request->profesion;
+        $supervisor->clave = $clave;
         $supervisor->colegiado = $request->colegiado;
         $supervisor->persona_id = $persona->id;
         $supervisor->save();
+
+        if($request->carrera_id == 1 ) {$rol = 3;} //Civil
+        elseif($request->carrera_id == 2) {$rol = 4;} // Mecanica
+        elseif($request->carrera_id == 3) {$rol = 5;} // Industrial
+        elseif($request->carrera_id == 4) {$rol = 6;} // Mecanica - Industrial
+        elseif($request->carrera_id == 5) {$rol = 7;} // Sistemas
+
+        //usuario con rol de supervisor
+        $usuario=new User();
+        $usuario->name=$username;
+        $usuario->email=$request->correo;
+        $usuario->password=bcrypt($clave);
+        $usuario->carne = $request->colegiado;
+        $usuario->persona_id = $persona->id;
+        $usuario->rol_id = $rol;
+        $usuario->save();
         
         return redirect()->route('supervisor.index')->with('creado', $supervisor->id);   
   
@@ -116,7 +164,7 @@ class SupervisorController extends Controller
      */
     public function show(Supervisor $supervisor)
     {
-        //
+        Gate::authorize('haveaccess', $this->roles_gate );
     }
 
     /**
@@ -127,6 +175,8 @@ class SupervisorController extends Controller
      */
     public function editar($id)
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         $supervisor = Supervisor::select('supervisor.*', 'persona.*', 'supervisor.id as supervisor_id');        
         $supervisor ->join('persona', 'persona_id', '=', 'persona.id');
         $supervisor = $supervisor->where('supervisor.id',$id)->firstOrFail();
@@ -143,6 +193,8 @@ class SupervisorController extends Controller
      */
     public function actualizar(Request $request)
     {   
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         $supervisor = Supervisor::where('id','!=',$request->id)->where('colegiado',$request->colegiado)->get();
 
         if (count($supervisor)>0) {            
@@ -174,6 +226,8 @@ class SupervisorController extends Controller
      */
     public function eliminar(Request $request)
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         $supervisor = Supervisor::findOrFail($request->id);
         $persona = Persona::findOrFail($supervisor->persona_id);
         $condicion = $persona->delete();

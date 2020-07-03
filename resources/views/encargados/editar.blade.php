@@ -1,4 +1,4 @@
-@extends('plantilla.plantilla',['sidebar'=>41])
+@extends('plantilla.plantilla',['sidebar'=>52])
 
 @section('titulo', 'Editar empresa')
 
@@ -27,14 +27,14 @@
     
     <div id="encargado-nuevo" style="display: block">
         <div class="form-row">
-            <div class="col-md-3 mb-3">
+            <div class="col-md-5 mb-3">
                 <label for="validationCustom08">Nombre</label>
                 <input type="text" class="form-control" id="validationCustom08" name="nombre" required> 
                 <div class="invalid-feedback">
                 Ingrese nombre de encargado válido.
                 </div>      
             </div>    
-            <div class="col-md-3 mb-3">
+            <div class="col-md-5 mb-3">
                 <label for="validationCustom08">Apellido</label>
                 <input type="text" class="form-control" id="validationCustom08" name="apellido" required> 
                 <div class="invalid-feedback">
@@ -47,18 +47,11 @@
                 <div class="invalid-feedback">
                 Ingrese telefono de encargado válido. Al menos 8 dígitos.
                 </div>
-            </div>
-            <div class="col-md-4 mb-3">
-                <label for="validationCustom10">Correo contacto</label>
-                <input type="email" class="form-control" id="validationCustom10" name="correo" required >
-                <div class="invalid-feedback">
-                Ingrese un correo electrónico válido.
-                </div>
-            </div>                
+            </div>            
         </div>
 
         <div class="form-row">
-            <div class="col-md-2 mb-3">
+            <div class="col-md-3 mb-3">
                 <label for="validationCustom08">Colegiado</label>
                 <input type="text" class="form-control" id="validationCustom08" name="colegiado">                   
             </div>    
@@ -68,14 +61,14 @@
                 <div class="invalid-feedback">
                 Ingrese profesión del encargado.
                 </div>      
-            </div>        
-            <div class="col-md-5 mb-3">
-                <label for="validationCustom08">Puesto</label>
-                <input type="text" class="form-control" id="validationCustom08" name="puesto" required> 
+            </div>       
+            <div class="col-md-4 mb-3">
+                <label for="validationCustom10">Correo encargado</label>
+                <input type="email" class="form-control" id="validationCustom10" name="correo" required >
                 <div class="invalid-feedback">
-                Ingrese profesión del encargado.
-                </div>      
-            </div>               
+                Ingrese un correo electrónico válido.
+                </div>
+            </div>       
         </div>
     </div>
 

@@ -5,17 +5,29 @@ namespace App\Http\Controllers;
 use App\Models\Estudiante;
 use App\Models\Persona;
 use App\Models\Carrera;
+use App\User;
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\Gate;
 
 class EstudianteController extends Controller
 {
+    private $roles_gate = '{"roles":[ 1, 3, 4, 5, 6, 7 ]}';
+    public function __construct()
+    {
+        $this->middleware('auth');
+        
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {
+    {   
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         $request->validate([
             'all' => 'nullable|boolean',
             'many' => 'nullable|integer',
@@ -43,8 +55,12 @@ class EstudianteController extends Controller
 
         $estudiantes ->join('persona', 'persona_id', '=', 'persona.id');
   
-        if ($request->has('nombre')) {
-          $estudiantes->orWhere('nombre', 'LIKE', '%' . $request->nombre . '%');
+        if ($request->has('search')) {
+          $estudiantes->orWhere('persona.nombre', 'LIKE', '%' . $request->search . '%');
+          $estudiantes->orWhere('persona.apellido', 'LIKE', '%' . $request->search . '%');
+          $estudiantes->orWhere('carne', 'LIKE', '%' . $request->search . '%');
+          $estudiantes->orWhere('registro', 'LIKE', '%' . $request->search . '%');
+          $estudiantes->orWhere('carrera.nombre', 'LIKE', '%' . $request->search . '%');
         }  
 
         if ($request->has('apellido')) {
@@ -81,6 +97,8 @@ class EstudianteController extends Controller
      */
     public function crear()
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         $carreras = Carrera::all();
         return view('estudiantes.crear',compact('carreras'));
     }
@@ -92,12 +110,33 @@ class EstudianteController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function guardar(Request $request)
-    {    
+    {  
+        Gate::authorize('haveaccess', $this->roles_gate );
+
+        /* 
+        $request->validate([
+            'carne' => 'required|unique:estudiante,carne',
+            'registro' => 'required|unique:estudiante,registro',
+        ]);*/
+
         $estudiante = Estudiante::where('carne', '=',$request->carne)->orWhere('registro', '=',$request->registro)->first();
 
         if ($estudiante) {            
             return redirect()->route('estudiante.crear')->with('error', 'ERROR');             
         }        
+
+        //Operaciones con string
+        $pos_n = strrpos(trim($request->nombre), " ");
+        if($pos_n === false) {$solonombre = $request->nombre;}
+        else{ $solonombre= substr($request->nombre, 0, $pos_n); }
+
+        $pos_a = strrpos(trim($request->apellido), ' ');
+        if($pos_a === false) { $soloapellido = $request->apellido;}
+        else{ $soloapellido= substr($request->apellido, 0, $pos_a); }        
+
+        $username = $solonombre . ' ' . $soloapellido;
+        $ultimos_digitos=substr($request->registro, -3);
+        $clave = strtolower($solonombre).strtolower($soloapellido).$ultimos_digitos;
         
         $persona = new Persona();
         $persona->nombre = $request->nombre;
@@ -121,6 +160,16 @@ class EstudianteController extends Controller
         $estudiante->carrera_id = $request->carrera_id;
         $estudiante->save();
         
+        //usuario con rol de estudiante
+        $usuario=new User();
+        $usuario->name=$username;
+        $usuario->email=$request->correo;
+        $usuario->password=bcrypt($clave);
+        $usuario->carne = $request->registro;
+        $usuario->persona_id = $persona->id;
+        $usuario->rol_id = 2;
+        $usuario->save();
+
         return redirect()->route('estudiante.index')->with('creado', $estudiante->id);   
     }
 
@@ -132,7 +181,7 @@ class EstudianteController extends Controller
      */
     public function ver(Estudiante $estudiante)
     {
-        //
+        Gate::authorize('haveaccess', $this->roles_gate );
     }
 
     /**
@@ -143,6 +192,8 @@ class EstudianteController extends Controller
      */
     public function editar($id)
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         $estudiante = Estudiante::select('estudiante.*', 'carrera.nombre as carrera', 'persona.*', 'estudiante.id as estudiante_id');
         $estudiante ->join('carrera', 'carrera_id', '=', 'carrera.id');
         $estudiante ->join('persona', 'persona_id', '=', 'persona.id');
@@ -160,8 +211,16 @@ class EstudianteController extends Controller
      * @param  \App\Models\Estudiante  $estudiante
      * @return \Illuminate\Http\Response
      */
-    public function actualizar(Request $request)
+    public function actualizar(Request $request, Estudiante $estudiante)
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+
+        /* 
+        $request->validate([
+            'carne' => 'required|unique:estudiante,carne,'.$estudiante->id,
+            'registro' => 'required|unique:estudiante,registro,'.$estudiante->id,
+        ]);*/
+
         $estudiante = Estudiante::where('registro',$request->registro)->where('estudiante.id','!=',$request->estudiante_id)->first();
         if ($estudiante) {            
             return redirect()->route('estudiante.editar', $request->id)->with('error','ERROR');             
@@ -204,6 +263,8 @@ class EstudianteController extends Controller
      */
     public function eliminar(Request $request)
     {
+        Gate::authorize('haveaccess', $this->roles_gate );
+
         $estudiante = Estudiante::findOrFail($request->id);
         $persona = Persona::findOrFail($estudiante->persona_id);
         $condicion = $persona->delete();

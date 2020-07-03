@@ -38,95 +38,122 @@
             <a href="/" class="nav-link {{$index ?? ''}}">
               <i class="nav-icon fas fa-home"></i>
               <p>
-                Inicio                
+              Inicio           
               </p>
             </a>
           </li>
 
-          @if($sidebar<=69 && $sidebar>=60) @php $bit='active'; $menu6='menu-open' @endphp  @endif
-          <li class="nav-item">            
-            <a href="{{route('bitacora.index')}}" class="nav-link {{$bit ?? ''}}">
-              <i class="nav-icon fas fa-clipboard"></i>
-              <p>
-                Bitacora
-              </p>
-            </a>            
-          </li>     
-
-
-          @if($sidebar<=39 && $sidebar>=30) @php $est='active'; $menu3='menu-open' @endphp  @endif
-          <li class="nav-item">            
-            <a href="{{route('estudiante.index')}}" class="nav-link {{$est ?? ''}}">
-              <i class="nav-icon fas fa-users"></i>
-              <p>
-                Estudiantes
-              </p>
-            </a>            
-          </li>     
-
-          @if($sidebar<=49 && $sidebar>=40) @php $emp='active'; $menu4='menu-open' @endphp  @endif
-          <li class="nav-item">            
-            <a href="{{route('empresa.index')}}" class="nav-link {{$emp ?? ''}}">
-              <i class="nav-icon fas fa-industry"></i>
-              <p>
-                Empresas
-              </p>
-            </a>            
-          </li>        
+          @if(Auth::user()->mostrarTabla('bitacora'))
+            @if($sidebar<=69 && $sidebar>=60) @php $bit='active'; $menu6='menu-open' @endphp  @endif
+            <li class="nav-item">            
+              <a href="{{route('bitacora.index')}}" class="nav-link {{$bit ?? ''}}">
+                <i class="nav-icon fas fa-clipboard"></i>
+                <p>
+                  Bitacora
+                </p>
+              </a>            
+            </li>     
+          @endIf
           
-          @if($sidebar<=59 && $sidebar>=50) @php $enc='active'; $menu5='menu-open' @endphp  @endif
-          <li class="nav-item">            
-            <a href="{{route('encargado.index')}}" class="nav-link {{$enc ?? ''}}">
-              <i class="nav-icon fas fa-user-tie"></i>
-              <p>
-                Encargados
-              </p>
-            </a>            
-          </li>     
+          @if(Auth::user()->mostrarTabla('estudiante'))
+            @if($sidebar<=39 && $sidebar>=30) @php $est='active'; $menu3='menu-open' @endphp  @endif
+            <li class="nav-item">            
+              <a href="{{route('estudiante.index')}}" class="nav-link {{$est ?? ''}}">
+                <i class="nav-icon fas fa-users"></i>
+                <p>
+                  Estudiantes
+                </p>
+              </a>            
+            </li>   
+          @endIf  
+
+          @if(Auth::user()->mostrarTabla('empresa'))
+            @if($sidebar<=49 && $sidebar>=40) @php $emp='active'; $menu4='menu-open' @endphp  @endif
+            <li class="nav-item">            
+              <a href="{{route('empresa.index')}}" class="nav-link {{$emp ?? ''}}">
+                <i class="nav-icon fas fa-industry"></i>
+                <p>
+                  Empresas
+                </p>
+              </a>            
+            </li>       
+          @endIf 
           
+          @if(Auth::user()->mostrarTabla('encargado'))
+            @if($sidebar<=59 && $sidebar>=50) @php $enc='active'; $menu5='menu-open' @endphp  @endif
+            <li class="nav-item">            
+              <a href="{{route('encargado.index')}}" class="nav-link {{$enc ?? ''}}">
+                <i class="nav-icon fas fa-user-tie"></i>
+                <p>
+                  Encargados
+                </p>
+              </a>            
+            </li>     
+          @endIf
+          
+          @if(Auth::user()->mostrarTabla('admin'))
           <li class="nav-header">Administración</li>
+          @endIf
 
-          <li class="nav-item">
-            <a href="pages/calendar.html" class="nav-link">
-              <i class="nav-icon fas fa-calendar-alt"></i>
-              <p>
-                Notificaciones
-                <span class="badge badge-info right">2</span>
-              </p>
-            </a>
-          </li>          
+          @if(Auth::user()->mostrarTabla('notificacion'))
+            <li class="nav-item">
+              <a href="pages/calendar.html" class="nav-link">
+                <i class="nav-icon fas fa-calendar-alt"></i>
+                <p>
+                  Notificaciones
+                  <span class="badge badge-info right">2</span>
+                </p>
+              </a>
+            </li>          
+          @endIf
 
-          @if($sidebar<=79 && $sidebar>=70) @php $car='active'; $menu7='menu-open' @endphp  @endif
-          <li class="nav-item">            
-            <a href="{{route('carrera.index')}}" class="nav-link {{$car ?? ''}}">
-              <i class="nav-icon fas fa-bars"></i>
-              <p>
-                Carreras
-              </p>
-            </a>            
-          </li>         
+          @if(Auth::user()->mostrarTabla('carrera'))
+            @if($sidebar<=79 && $sidebar>=70) @php $car='active'; $menu7='menu-open' @endphp  @endif
+            <li class="nav-item">            
+              <a href="{{route('carrera.index')}}" class="nav-link {{$car ?? ''}}">
+                <i class="nav-icon fas fa-bars"></i>
+                <p>
+                  Carreras
+                </p>
+              </a>            
+            </li>       
+          @endIf  
 
+          @if(Auth::user()->mostrarTabla('supervisor'))
+            @if($sidebar<=89 && $sidebar>=80) @php $sup='active'; $menu8='menu-open' @endphp  @endif
+            <li class="nav-item">            
+              <a href="{{route('supervisor.index')}}" class="nav-link {{$sup ?? ''}}">
+                <i class="nav-icon fas fa-user-graduate"></i>
+                <p>
+                  Supervisores
+                </p>
+              </a>            
+            </li>
+          @endIf
 
-          @if($sidebar<=89 && $sidebar>=80) @php $sup='active'; $menu8='menu-open' @endphp  @endif
-          <li class="nav-item">            
-            <a href="{{route('supervisor.index')}}" class="nav-link {{$sup ?? ''}}">
-              <i class="nav-icon fas fa-user-graduate"></i>
-              <p>
-                Supervisores
-              </p>
-            </a>            
-          </li>
+          @if(Auth::user()->mostrarTabla('rol'))
+            @if($sidebar<=99 && $sidebar>=90) @php $rol='active'; $menu9='menu-open' @endphp  @endif
+            <li class="nav-item">            
+              <a href="{{route('rol.index')}}" class="nav-link {{$rol ?? ''}}">
+                <i class="nav-icon fas fa-sitemap"></i>
+                <p>
+                  Roles
+                </p>
+              </a>            
+            </li>
+          @endIf
 
-
-          @if($sidebar<=99 && $sidebar>=90) @php $rol='active'; $menu9='menu-open' @endphp  @endif
-          <li class="nav-item">            
-            <a href="{{route('rol.index')}}" class="nav-link {{$rol ?? ''}}">
-              <i class="nav-icon fas fa-sitemap"></i>
-              <p>
-                Roles
-              </p>
-            </a>            
-          </li>
+          @if(Auth::user()->mostrarTabla('users'))
+            @if($sidebar<=29 && $sidebar>=20) @php $usuario='active'; $menu2='menu-open' @endphp  @endif
+            <li class="nav-item">            
+              <a href="{{route('rol.index')}}" class="nav-link {{$usuario ?? ''}}">
+                <i class="nav-icon fas fa-user"></i>
+                <p>
+                  Usuarios
+                </p>
+              </a>            
+            </li>
+          @endIf
           
         </ul>
       </nav>

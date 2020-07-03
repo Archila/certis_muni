@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use App\User;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,6 +26,20 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+        Gate::define('haveaccess', function (User $user, $array)
+        {   
+            $json=json_decode($array,true);
+            //$test = $roles_array;
+            //dd($user->rol->nombre);  
+            if($user->rol->id==1){ return true;}
+            foreach ($json['roles'] as $rol)   
+            {
+                if($rol == $user->rol->id){
+                    return true;
+                } 
+            }                      
+            return false;
+        });
         //
     }
 }

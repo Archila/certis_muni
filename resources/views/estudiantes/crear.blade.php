@@ -25,21 +25,21 @@
     <div class="form-row">
       <div class="col-md-5 col-sm-12 mb-3">
         <label for="validationCustom01">Nombres</label>
-        <input type="text" class="form-control" id="validationCustom01" required name="nombre" autofocus>
+        <input type="text" class="form-control" id="validationCustom01" required name="nombre" autofocus value="{{old('nombre')}}">
         <div class="invalid-feedback">
           Por favor ingrese nombre del estudiante
         </div>
       </div>      
       <div class="col-md-5 col-sm-12 mb-3">
         <label for="validationCustom02">Apellidos</label>
-        <input type="text" class="form-control" id="validationCustom02" required name="apellido">
+        <input type="text" class="form-control" id="validationCustom02" required name="apellido" value="{{old('apellido')}}">
         <div class="invalid-feedback">
           Por favor ingrese apellido del estudiante 
         </div>
       </div>      
       <div class="col-md-2 col-sm-12 mb-3">
         <label for="validationCustom03">Carne</label>
-        <input type="text" class="form-control" id="validationCustom03" minlength="13" placeholder="2600000000001" required name="carne">
+        <input type="text" class="form-control" id="validationCustom03" minlength="13" placeholder="2600000000001" required name="carne" value="{{old('carne')}}">
         <div class="invalid-feedback">
         Valor incorrecto. El carne es el valor del DPI
         </div>
@@ -50,14 +50,14 @@
         <div class="row">            
             <div class="col-md-6 col-sm-12 mb-3">
                 <label for="validationCustom04">Registro</label>
-                <input type="text" class="form-control" id="validationCustom04" minlength="9" placeholder="201700001" required name="registro">
+                <input type="text" class="form-control" id="validationCustom04" minlength="9" placeholder="201700001" required name="registro" value="{{old('registro')}}">
                 <div class="invalid-feedback">
                 Por favor ingresar numero de registro correcto
                 </div>
             </div>      
             <div class="col-md-6 col-sm-12 mb-3">
                 <label for="validationCustom05">Teléfono</label>
-                <input type="text" class="form-control" id="validationCustom05" minlength="8" required name="telefono" >
+                <input type="text" class="form-control" id="validationCustom05" minlength="8" required name="telefono" value="{{old('telefono')}}" >
                 <div class="invalid-feedback">
                 Por favor ingresar número de teléfono
                 </div>
@@ -66,14 +66,14 @@
       </div>    
         <div class="col-md-5 col-sm-12 mb-3">
             <label for="validationCustom06">Dirección</label>
-            <input type="text" class="form-control" id="validationCustom06" required name="direccion">
+            <input type="text" class="form-control" id="validationCustom06" required name="direccion" value="{{old('direccion')}}">
             <div class="invalid-feedback">
             Por favor ingresar su dirección
             </div>
         </div>    
         <div class="col-md-3 col-sm-12 mb-3">
             <label for="validationCustom06">Correo</label>
-            <input type="email" class="form-control" id="validationCustom06" required name="correo">
+            <input type="email" class="form-control" id="validationCustom06" required name="correo" value="{{old('correo')}}">
             <div class="invalid-feedback">
             Por favor ingresar email
             </div>
@@ -96,7 +96,7 @@
             <div class="row">
                 <div class="col-md-2 col-sm-12 mb-3">
                     <label for="validationCustom08">Promedio</label>
-                    <input type="text" class="form-control" id="validationCustom08" required name="promedio">
+                    <input type="text" class="form-control" id="validationCustom08" required name="promedio" value="{{old('promedio')}}">
                     <div class="invalid-feedback">
                     Por favor ingresar un valor numérico
                     </div>
@@ -122,7 +122,7 @@
                     @php $hoy = date('yy-m-d');
                     @endphp
                     <label for="validationCustom09">Fecha prácticas intermedias</label>
-                    <input type="date" max="{{$hoy}}" class="form-control" id="validationCustom09" required name="practicas">
+                    <input type="date" max="{{$hoy}}" class="form-control" id="validationCustom09" required name="practicas" value="{{old('practicas')}}">
                     <div class="invalid-feedback">
                     Por favor seleccione una fecha válida
                     </div>
@@ -137,6 +137,7 @@
   </form>
   </div>
 </div>
+
 @endsection
 
 @section('page_script')

@@ -15,7 +15,7 @@ class CreateSupervisorTable extends Migration
     {
         Schema::create('supervisor', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('profesion', 60)->nullable();;
+            $table->string('profesion', 60)->nullable();
             $table->integer('colegiado');
             $table->unsignedBigInteger('persona_id');
 

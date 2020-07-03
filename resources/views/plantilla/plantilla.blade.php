@@ -50,6 +50,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">Reportes</a>
       </li>
+      <li class="nav-item d-none d-sm-inline-block">        
+            
+      </li>
     </ul>
 
     <!-- Right navbar links -->
@@ -81,9 +84,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
         </div>
       </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#">
+          <i class="fas fa-power-off"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">       
+          <a class="dropdown-item" href="{{ route('logout') }}"
+            onclick="event.preventDefault();
+                          document.getElementById('logout-form').submit();">
+            {{ __('Cerrar sesión') }}
+          </a>
+        </div>
+      </li>      
       <li class="nav-item">
         <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button"><i
-            class="fas fa-th-large"></i></a>
+            class="fas fa-info"></i></a>
       </li>
     </ul>
   </nav>
@@ -106,7 +121,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <img src="{{ URL::asset('dist/img/user.png') }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Nombre Apellido</a>
+          <a href="#" class="d-block">{{ Auth::user()->name }}</a>          
         </div>
       </div>      
       @include('plantilla.sidebar_simple',['sidebar'=>$sidebar])
@@ -131,8 +146,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
     </div>
     <!-- /.content-header -->
     
+    
     <!-- Main content -->
     <div class="content">
+    @include('plantilla.error')
       <div class="container-fluid">        
         @yield('contenido')
       
@@ -146,11 +163,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
     <div class="p-3">
-      <h5>Nada por aca</h5>
-      <p>Barra lateral en progreso</p>
+      <h5>Información</h5>
+            
+      <hr>
+      <h5>Contacto</h5>
     </div>
   </aside>
   <!-- /.control-sidebar -->
+
+  <!-- FORM Para cerrar sesion -->
+  <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+      @csrf
+  </form>
 
   <!-- Main Footer -->
   <footer class="main-footer">

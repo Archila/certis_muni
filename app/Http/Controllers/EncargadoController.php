@@ -10,6 +10,11 @@ use Illuminate\Http\Request;
 
 class EncargadoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -95,7 +100,6 @@ class EncargadoController extends Controller
             $encargado = new Encargado();
             $encargado->colegiado = $request->colegiado;
             $encargado->profesion = $request->profesion;
-            $encargado->puesto = $request->puesto;
             $encargado->persona_id = $persona->id;
             $encargado->save();
 
@@ -113,7 +117,6 @@ class EncargadoController extends Controller
                 $encargado = new Encargado();
                 $encargado->colegiado = $request->colegiado;
                 $encargado->profesion = $request->profesion;
-                $encargado->puesto = $request->puesto;
                 $encargado->persona_id = $persona->id;
                 $encargado->save();
     
@@ -125,6 +128,7 @@ class EncargadoController extends Controller
     
             $area = new Area();
             $area->nombre = $request->area;
+            $area->puesto = $request->puesto;
             $area->descripcion = $request->descripcion;
             $area->empresa_id = $request->empresa_id;
             $area->save();

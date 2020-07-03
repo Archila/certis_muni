@@ -1,6 +1,11 @@
 <?php
 
+use App\User;
+use App\Models\Rol;
+
 use Illuminate\Support\Facades\Route;
+
+use Illuminate\Support\Facades\Gate;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,11 +20,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->middleware('auth');
 
 Route::get('/home', function () {
-    return view('home');
-});
+    return view('welcome');
+})->name('home');
 
 Auth::routes();
 
@@ -126,5 +131,14 @@ Route::delete('revision', 'RevisionController@eliminar')->name('revision.elimina
 
 //PDF
 Route::get('pdf', 'PDFController@index')->name('revision.index');
-Route::get('pdf/caratula', 'PDFController@index')->name('revision.caratula');
-Route::get('pdf/oficio', 'PDFController@index')->name('revision.oficio');
+Route::get('pdf/caratula', 'PDFController@caratula')->name('revision.caratula');
+Route::get('pdf/oficio', 'PDFController@oficio')->name('revision.oficio');
+
+Route::get('/test', function () {
+    
+    $user = User::findOrFail(3);
+    Gate::authorize('haveaccess', '{"roles":[ 1, 4 ]}' );
+    $rol = Rol::findOrFail(2);
+    return $rol->usuarios;
+    
+});

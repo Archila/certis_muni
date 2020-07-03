@@ -23,20 +23,32 @@
   <form class="needs-validation" method="POST" action="{{route('supervisor.guardar')}}" novalidate >    
     @csrf
     <div class="form-row">
-      <div class="col-md-6 col-sm-12 mb-3">
+      <div class="col-md-4 col-sm-12 mb-3">
         <label for="validationCustom01">Nombres</label>
         <input type="text" class="form-control" id="validationCustom01" required name="nombre" autofocus>
         <div class="invalid-feedback">
           Por favor ingrese nombre del supervisor
         </div>
       </div>      
-      <div class="col-md-6 col-sm-12 mb-3">
+      <div class="col-md-4 col-sm-12 mb-3">
         <label for="validationCustom02">Apellidos</label>
         <input type="text" class="form-control" id="validationCustom02" required name="apellido">
         <div class="invalid-feedback">
           Por favor ingrese apellido del supervisor 
         </div>
-      </div>      
+      </div>     
+      <div class="col-md-4 col-sm-12 mb-3">
+        <label for="validationCustom07">Carrera</label>
+        <select id="validationCustom07" class="form-control" required name="carrera_id">
+            <option disabled>Seleccione una carrera</option>
+            @foreach ($carreras as $c)
+            <option value="{{$c->id}}">{{$c->nombre}}</option>
+            @endforeach
+        </select>
+        <div class="invalid-feedback">
+        Por favor seleccione una carrera
+        </div>
+      </div>    
     </div>
     <div class="form-row">
         <div class="col-md-2 col-sm-12 mb-3">
@@ -54,8 +66,8 @@
             </div>
         </div>      
         <div class="col-md-2 col-sm-12 mb-3">
-            <label for="validationCustom03">No. Colegiado</label>
-            <input type="number" min=1 class="form-control" id="validationCustom03" minlength="6"  required name="colegiado">
+            <label for="validationCustom03">No. Registro personal</label>
+            <input type="number" min=1 class="form-control" id="validationCustom03" minlength="6" required name="colegiado">
             <div class="invalid-feedback">
             Ingrese un valor numérido de al menos 6 dígitos.
             </div>

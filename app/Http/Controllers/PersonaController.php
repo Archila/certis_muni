@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class PersonaController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     /**
      * Función que devuelve las personas en el sistema
      * 
