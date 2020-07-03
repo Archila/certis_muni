@@ -106,7 +106,7 @@
 
     <div class="float-sm-right">
       <button class="btn btn-primary" type="submit">Crear</button>
-      <a class="btn btn-secondary" href="{{route('empresa.index')}}" role="cancelar">Regresar</a>
+      <a class="btn btn-secondary" href="{{url()->previous()}}" role="cancelar">Regresar</a>
     </div>    
   </form>
   </div>

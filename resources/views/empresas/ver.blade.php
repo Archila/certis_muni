@@ -163,7 +163,7 @@
 
     <div class="float-sm-right">
     <a class="btn btn-warning" href="{{route('empresa.editar', $empresa->empresa_id)}}" >Editar</a>
-        <a class="btn btn-secondary" href="{{route('empresa.index')}}" role="cancelar">Regresar</a>
+        <a class="btn btn-secondary" href="{{url()->previous()}}" role="cancelar">Regresar</a>
     </div>       
   
   </div>

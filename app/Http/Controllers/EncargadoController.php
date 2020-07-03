@@ -8,6 +8,8 @@ use App\Models\Persona;
 use App\Models\AreaEncargado;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Gate;
+
 class EncargadoController extends Controller
 {
     private $roles_gate = '{"roles":[ 1, 2, 3, 4, 5, 6, 7 ]}';
