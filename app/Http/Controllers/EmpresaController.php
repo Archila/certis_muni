@@ -247,7 +247,7 @@ class EmpresaController extends Controller
         Gate::authorize('haveaccess', $this->roles_gate );
 
         if(Auth::user()->rol->id == 2){            
-            $empresa_est = Empresa::where('usuario_id', )->first();
+            $empresa_est = Empresa::where('usuario_id')->first();
             if(Auth::user()->id != $empresa->usuario_id){abort(403);}
         }
 

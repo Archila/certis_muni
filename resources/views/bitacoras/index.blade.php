@@ -28,14 +28,16 @@
         <div class="col-md-9 col-sm-12">
             <h3>Mis bitácoras</h3> 
         </div>
+        @if($btn_nuevo)
         <div class="col-md-3 col-sm-12">
             <a class="btn btn-block btn-primary btn-sm" href="{{route('bitacora.crear')}}">Nueva bitácora</a>
         </div>
+        @endIf
     </div>
     
   </div>
   <div class="card-body">
-  <table id="datatable" class="table table-responsive table-bordered table-hover">
+  <table id="datatable" class="table table-bordered table-hover">
     <thead>
         <tr>
             <th>Semestre</th>
@@ -56,7 +58,7 @@
             <td>{{$b->nombre}}{{' '}}{{$b->apellido}} ({{$b->puesto}})</td>
             <td>
                 <div class="btn-group">
-                    <a href="{{route('bitacora.ver', $b->id)}}" type="button" class="btn btn-success btn-xs"><i class="fas fa-edit"></i></a>
+                    <a href="{{route('bitacora.ver', $b->bitacora_id)}}" type="button" class="btn btn-success btn-xs"><i class="fas fa-edit"></i></a>
                     <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" 
                     data-target="#modal-eliminar" data-id="{{$b->id}}">
                         <i class="fas fa-trash"></i>

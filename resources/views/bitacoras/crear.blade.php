@@ -24,7 +24,7 @@
     @csrf
     <div class="form-row">
 
-      <div class="col-md-7 mb-3">
+      <div class="col-md-9 mb-3">
         <div class="row">
           <div class="col-md-6 mb-3">
             <label for="validationCustom03">Semestre</label>
@@ -66,45 +66,167 @@
             </div>
           </div>           
         </div>
-      </div>    
-      
-      <div class="col-md-5 mb-3">
-        <label for="validationCustom05">Empresa</label>
-        <div class="input-group input-group">
-          <select id="validationCustom07" class="form-control" required name="empresa_id">
-              <option disabled>Seleccione una empresa</option>
-              @foreach ($empresas as $em)
-              <option value="{{$em->id}}">{{$em->alias}} </option>
-              @endforeach
-          </select>
-          <span class="input-group-append">
-            <a href="{{route('empresa.crear')}}"><button type="button" class="btn btn-success"><i class="fas fa-plus"></i></button></a> 
-          </span>
+      </div>  
+    </div>
+
+    @if(Auth::user()->rol->id==2 )
+        @if($empresa && $encargado)
+        <div class="form-row">
+          <div class="col-12">
+            <div class="callout callout-info">
+              <dl>
+                <dt>Empresa: </dt>
+                <dd>{{$empresa->nombre}}</dd>
+                <dt>Encargado</dt>
+                <dd>{{$encargado->nombre}}  &nbsp; {{$encargado->apellido}}</dd>
+                <dd>{{$encargado->puesto}}</dd>
+              </dl>
+            </div>          
+          </div>          
+          <input type="hidden" name="empresa_id" value="{{$empresa->id}}">          
         </div>
-        <div class="invalid-feedback">
-        Por favor seleccione un año
+        @elseif($empresa)
+        <div class="form-row">
+          <div class="col-12">
+            <div class="callout callout-info">
+              <dl>
+                <dt>Empresa: </dt>
+                <dd>{{$empresa->nombre}}</dd>                
+              </dl>
+            </div>          
+          </div>               
+        </div>
+        <div class="form-row">
+          <div class="col-md-6 mb-3">
+            <label for="validationCustom05">Encargado</label>
+            <div class="input-group input-group">
+              <select id="validationCustom07" class="form-control" required name="encargado_id">
+                  <option disabled>Seleccione un encargado</option>
+                  @foreach ($encargados as $en)
+                  <option value="{{$en->encargado_id}}">{{$en->nombre}} {{' '}} {{$en->apellido}} ({{$en->profesion}})</option>
+                  @endforeach
+              </select>
+              <span class="input-group-append">
+                <a href="{{route('encargado.crear')}}"><button type="button" class="btn btn-success "><i class="fas fa-plus"></i></button></a> 
+              </span>
+            </div>
+            <div class="invalid-feedback">
+            Por favor seleccione un encargado o cree uno.
+            </div>
+          </div>
+        </div>
+        @elseif($encargado)
+        <div class="form-row">
+          <div class="col-12">
+            <div class="callout callout-info">
+              <dl>
+                <dt>Encargado</dt>
+                <dd>{{$encargado->nombre}}  &nbsp; {{$encargado->apellido}}</dd>
+                <dd>{{$encargado->puesto}}</dd>        
+              </dl>
+            </div>          
+          </div>               
+        </div>
+        <div class="form-row">
+          <div class="col-md-6 mb-3">
+            <label for="validationCustom05">Empresa</label>
+            <div class="input-group input-group">
+              <select id="validationCustom07" class="form-control" required name="empresa_id">
+                  <option disabled>Seleccione una empresa</option>
+                  @foreach ($empresas as $em)
+                  <option value="{{$em->id}}">{{$em->alias}} </option>
+                  @endforeach
+              </select>
+              <span class="input-group-append">
+                <a href="{{route('empresa.crear')}}"><button type="button" class="btn btn-success"><i class="fas fa-plus"></i></button></a> 
+              </span>
+            </div>
+            <div class="invalid-feedback">
+            Por favor seleccione una empresa o cree una.
+            </div>
+          </div>
+        </div>
+        @else
+        <div class="form-row">
+          <div class="col-md-6 mb-3">
+            <label for="validationCustom05">Empresa</label>
+            <div class="input-group input-group">
+              <select id="validationCustom07" class="form-control" required name="empresa_id">
+                  <option disabled>Seleccione una empresa</option>
+                  @foreach ($empresas as $em)
+                  <option value="{{$em->id}}">{{$em->alias}} </option>
+                  @endforeach
+              </select>
+              <span class="input-group-append">
+                <a href="{{route('empresa.crear')}}"><button type="button" class="btn btn-success"><i class="fas fa-plus"></i></button></a> 
+              </span>
+            </div>
+            <div class="invalid-feedback">
+            Por favor seleccione un año
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="validationCustom05">Encargado</label>
+            <div class="input-group input-group">
+              <select id="validationCustom07" class="form-control" required name="encargado_id">
+                  <option disabled>Seleccione un encargado</option>
+                  @foreach ($encargados as $en)
+                  <option value="{{$en->encargado_id}}">{{$en->nombre}} {{' '}} {{$en->apellido}} ({{$en->profesion}})</option>
+                  @endforeach
+              </select>
+              <span class="input-group-append">
+                <a href="{{route('encargado.crear')}}"><button type="button" class="btn btn-success "><i class="fas fa-plus"></i></button></a> 
+              </span>
+            </div>
+            <div class="invalid-feedback">
+            Por favor seleccione un año
+            </div>
+          </div>
+        </div>
+        @endIf
+      @else  
+      <div class="form-row">
+        <div class="col-md-6 mb-3">
+          <label for="validationCustom05">Empresa</label>
+          <div class="input-group input-group">
+            <select id="validationCustom07" class="form-control" required name="empresa_id">
+                <option disabled>Seleccione una empresa</option>
+                @foreach ($empresas as $em)
+                <option value="{{$em->id}}">{{$em->alias}} </option>
+                @endforeach
+            </select>
+            <span class="input-group-append">
+              <a href="{{route('empresa.crear')}}"><button type="button" class="btn btn-success"><i class="fas fa-plus"></i></button></a> 
+            </span>
+          </div>
+          <div class="invalid-feedback">
+          Por favor seleccione un año
+          </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="validationCustom05">Encargado</label>
+          <div class="input-group input-group">
+            <select id="validationCustom07" class="form-control" required name="encargado_id">
+                <option disabled>Seleccione un encargado</option>
+                @foreach ($encargados as $en)
+                <option value="{{$en->encargado_id}}">{{$en->nombre}} {{' '}} {{$en->apellido}} ({{$en->profesion}})</option>
+                @endforeach
+            </select>
+            <span class="input-group-append">
+              <a href="{{route('encargado.crear')}}"><button type="button" class="btn btn-success "><i class="fas fa-plus"></i></button></a> 
+            </span>
+          </div>
+          <div class="invalid-feedback">
+          Por favor seleccione un año
+          </div>
         </div>
       </div>
 
-      <div class="col-md-6 mb-3">
-        <label for="validationCustom05">Encargado</label>
-        <div class="input-group input-group">
-          <select id="validationCustom07" class="form-control" required name="encargado_id">
-              <option disabled>Seleccione un encargado</option>
-              @foreach ($encargados as $en)
-              <option value="{{$en->encargado_id}}">{{$en->nombre}} {{' '}} {{$en->apellido}} ({{$en->puesto}})</option>
-              @endforeach
-          </select>
-          <span class="input-group-append">
-            <a href="{{route('encargado.crear')}}"><button type="button" class="btn btn-success "><i class="fas fa-plus"></i></button></a> 
-          </span>
-        </div>
-        <div class="invalid-feedback">
-        Por favor seleccione un año
-        </div>
-      </div>
-      
-    </div>
+      @endIf
+
+
     <div class="float-sm-right">
       <button class="btn btn-primary" type="submit">Crear</button>
       <a class="btn btn-secondary" href="{{url()->previous()}}" role="cancelar">Regresar</a>

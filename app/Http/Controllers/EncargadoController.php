@@ -77,7 +77,7 @@ class EncargadoController extends Controller
 
         $btn_nuevo = true;
         if(Auth::user()->rol->id == 2){          
-            $encargados->Where('usuario_id', Auth::user()->id);
+            $encargados = $encargados->Where('usuario_id', Auth::user()->id);
 
             $encargado_est = Encargado::where('usuario_id', Auth::user()->id)->first();
             if($encargado_est){$btn_nuevo=false;}
