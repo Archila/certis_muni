@@ -8,6 +8,8 @@ use App\Models\Carrera;
 use App\User;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\Gate;
 
 class EstudianteController extends Controller
@@ -78,6 +80,24 @@ class EstudianteController extends Controller
         if ($request->has('carrera_id')) {
             $estudiantes->orWhere('carrera_id', $request->carrera_id);
         }  
+
+        if(Auth::user()->rol->id != 1){
+            if(Auth::user()->rol->id == 3){
+                $estudiantes->orWhere('carrera_id', 1); //CIVIL
+            }
+            elseif(Auth::user()->rol->id == 4){
+                $estudiantes->orWhere('carrera_id', 2); //Mecanica
+            }
+            elseif(Auth::user()->rol->id == 5){
+                $estudiantes->orWhere('carrera_id', 3); //Industrial
+            }
+            elseif(Auth::user()->rol->id == 6){
+                $estudiantes->orWhere('carrera_id', 4); //Mecanica Industrial
+            }
+            elseif(Auth::user()->rol->id == 7){
+                $estudiantes->orWhere('carrera_id', 5); //Sistemas
+            }
+        }
          
         if ($request->has('many')) {
           $estudiantes = $estudiantes->orderBy($sort_by, $direction)->paginate($many);          

@@ -28,9 +28,11 @@
         <div class="col-md-9 col-sm-12">
             <h3>Listado de encargados</h3> 
         </div>
+        @if($btn_nuevo)
         <div class="col-md-3 col-sm-12">
             <a class="btn btn-block btn-primary btn-sm" href="{{route('encargado.crear')}}">Nuevo encargado</a>
         </div>
+        @endIf
     </div>
     
   </div>

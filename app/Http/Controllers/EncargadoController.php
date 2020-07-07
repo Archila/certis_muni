@@ -6,7 +6,10 @@ use App\Models\Encargado;
 use App\Models\Area;
 use App\Models\Persona;
 use App\Models\AreaEncargado;
+use App\Models\Empresa;
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\Gate;
 
@@ -47,7 +50,7 @@ class EncargadoController extends Controller
         $direction = 'desc';
         if($request->has('direction')) $direction = $request->direction;
   
-        $encargados = Encargado::select('encargado.*', 'encargado.id as encargado_id', 'persona.*', 'empresa.nombre as empresa');
+        $encargados = Encargado::select('encargado.*', 'encargado.id as encargado_id', 'persona.*', 'empresa.nombre as empresa', 'area.puesto as puesto');
         $encargados ->join('persona', 'persona_id', '=', 'persona.id');
         $encargados ->leftJoin('area_encargado', 'encargado.id', '=', 'area_encargado.encargado_id');
         $encargados ->leftJoin('area', 'area_encargado.area_id', '=', 'area.id');
@@ -71,9 +74,17 @@ class EncargadoController extends Controller
         else {
           $encargados = $encargados->orderBy($sort_by, $direction)->get();
         }
+
+        $btn_nuevo = true;
+        if(Auth::user()->rol->id == 2){          
+            $encargados->Where('usuario_id', Auth::user()->id);
+
+            $encargado_est = Encargado::where('usuario_id', Auth::user()->id)->first();
+            if($encargado_est){$btn_nuevo=false;}
+        }
   
         //return response()->json($carreras);
-        return view('encargados.index',compact('encargados'));
+        return view('encargados.index',compact(['encargados','btn_nuevo']));
     }
 
     /**
@@ -84,8 +95,14 @@ class EncargadoController extends Controller
     public function crear()
     {
         Gate::authorize('haveaccess', $this->roles_gate );
+        $empresa = Empresa::where('usuario_id', Auth::user()->id)->first();
 
-        return view('encargados.crear');
+        if(Auth::user()->rol->id == 2){
+            $encargado_est = Encargado::where('usuario_id', Auth::user()->id)->first();
+            if($encargado_est){  abort(403);  }
+        }
+
+        return view('encargados.crear', compact(['empresa']));
     }
 
     /**
@@ -98,7 +115,7 @@ class EncargadoController extends Controller
     {          
         Gate::authorize('haveaccess', $this->roles_gate );
 
-        if((int)$request->solo_encargado){
+        if((int)$request->solo_encargado){ //Ruta: encargado.crear
             
             $persona = new Persona();
             $persona->nombre = $request->nombre;
@@ -111,11 +128,25 @@ class EncargadoController extends Controller
             $encargado->colegiado = $request->colegiado;
             $encargado->profesion = $request->profesion;
             $encargado->persona_id = $persona->id;
+            $encargado->usuario_id = Auth::user()->id;
             $encargado->save();
+
+            if($request->area){//SI el encargado es para una empresa que un estudiante ya ha ingresado
+                $area = new Area();
+                $area->nombre = $request->area;
+                $area->puesto = $request->puesto;
+                $area->empresa_id = $request->empresa_id;
+                $area->save();
+        
+                $area_encargado =  new AreaEncargado();
+                $area_encargado->area_id = $area->id;
+                $area_encargado->encargado_id=$encargado->id;
+                $area_encargado->save();
+            }
 
             return redirect()->route('encargado.index')->with('creado', $encargado->id);   
         }
-        else{
+        else{ // Ruta empresa.encargado
             if($request->nuevo){
                 $persona = new Persona();
                 $persona->nombre = $request->nombre;
@@ -128,6 +159,7 @@ class EncargadoController extends Controller
                 $encargado->colegiado = $request->colegiado;
                 $encargado->profesion = $request->profesion;
                 $encargado->persona_id = $persona->id;
+                $encargado->usuario_id = Auth::user()->id;
                 $encargado->save();
     
                 $encargado_id = $encargado->id;
@@ -139,7 +171,6 @@ class EncargadoController extends Controller
             $area = new Area();
             $area->nombre = $request->area;
             $area->puesto = $request->puesto;
-            $area->descripcion = $request->descripcion;
             $area->empresa_id = $request->empresa_id;
             $area->save();
     

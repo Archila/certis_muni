@@ -37,6 +37,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function persona(){
+        return $this->belongsTo('App\Models\Persona');
+    }
+
     public function rol(){
         return $this->belongsTo('App\Models\Rol');
     }

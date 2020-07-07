@@ -164,7 +164,7 @@
 <script>
 function cbxEncargado(){
     var forms = document.getElementsByClassName('needs-validation');
-    //forms[0].classList.remove('was-validated');
+    forms[0].classList.remove('was-validated');
     // Get the checkbox
     var checkBox = document.getElementById("cbx_encargado");    
 

@@ -25,7 +25,6 @@
   <div class="card-body">
   <form class="needs-validation" method="POST" action="{{route('empresa.guardar')}}" novalidate>    
     @csrf
-
     <div class="form-row">
       <div class="col-md-4 mb-3">
         <label for="validationCustom03">Nombre de la empresa</label>
@@ -104,6 +103,107 @@
       </div>
     </div>
 
+    @if(Auth::user()->rol->id==2 )
+    @if($encargado)
+    <input type="hidden" name="encargado_id" value="{{$encargado->encargado_id}}">
+    <hr>
+    <h5>Encargado de prácticas </h5>
+    <div class="form-row">
+      <div class="col-12">
+        <div class="callout callout-info">
+          <h5>{{$encargado->nombre}}{{' '}} {{$encargado->apellido}}</h5>
+          <p>{{$encargado->profesion}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-md-6 mb-3">
+          <label for="validationCustom08">Area</label>
+          <input type="text" class="form-control" id="validationCustom08" name="area" required placeholder="Ej. Recursos Humanos">   
+          <div class="invalid-feedback">
+          Ingrese área a la que pertenece el encargado.
+          </div>                 
+      </div>    
+      <div class="col-md-6 mb-3">
+          <label for="validationCustom10">Puesto</label>
+          <input type="text" class="form-control" id="validationCustom10" name="puesto" required placeholder="Ej. Gerente de RRHH" >
+          <div class="invalid-feedback">
+          Por favor ingrese información.
+          </div>
+      </div>    
+    </div>
+    @else
+    <hr>
+    <div class="custom-control custom-checkbox">
+      <input class="custom-control-input" type="checkbox" id="cbx_encargado" value="true" checked onclick="cbxEncargado()" name="cbx_encargado">
+      <label for="cbx_encargado" class="custom-control-label"><h5>Agregar encargado de prácticas </h5></label>
+    </div>    
+    <div id="div-encargado" style="display: block">
+      <div class="form-row">
+        <div class="col-md-4 mb-3">
+            <label for="validationCustom08">Nombre</label>
+            <input type="text" class="form-control encargado" id="validationCustom08" name="nombre_encargado"  > 
+            <div class="invalid-feedback">
+            Ingrese nombre de encargado válido.
+            </div>      
+        </div>    
+        <div class="col-md-4 mb-3">
+            <label for="validationCustom08">Apellido</label>
+            <input type="text" class="form-control encargado" id="validationCustom08" name="apellido"  > 
+            <div class="invalid-feedback">
+            Ingrese nombre de encargado válido.
+            </div>      
+        </div>   
+        <div class="col-md-4 mb-3">
+            <label for="validationCustom10">Correo encargado</label>
+            <input type="email" class="form-control encargado" id="validationCustom10" name="correo_encargado" >
+            <div class="invalid-feedback">
+            Ingrese un correo electrónico válido.
+            </div>
+        </div>                
+      </div>
+
+      <div class="form-row">
+        <div class="col-md-3 mb-3">
+            <label for="validationCustom08">Colegiado</label>
+            <input type="text" class="form-control" id="validationCustom08" name="colegiado">                   
+        </div>    
+        <div class="col-md-6 mb-3">
+            <label for="validationCustom08">Profesión</label>
+            <input type="text" class="form-control encargado" id="validationCustom08" name="profesion" > 
+            <div class="invalid-feedback">
+            Ingrese profesión del encargado.
+            </div>      
+        </div>      
+        <div class="col-md-3 mb-3">
+            <label for="validationCustom09">Teléfono encargado</label>
+            <input type="text" class="form-control encargado" id="validationCustom09" name="telefono_encargado" >
+            <div class="invalid-feedback">
+            Ingrese telefono de encargado válido. Al menos 8 dígitos.
+            </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col-md-6 mb-3">
+            <label for="validationCustom08">Area</label>
+            <input type="text" class="form-control encargado" id="validationCustom08" name="area" placeholder="Ej. Recursos Humanos" >   
+            <div class="invalid-feedback">
+            Ingrese área a la que pertenece el encargado.
+            </div>                 
+        </div>    
+        <div class="col-md-6 mb-3">
+            <label for="validationCustom10">Puesto</label>
+            <input type="text" class="form-control encargado" id="validationCustom10" name="puesto" placeholder="Ej. Gerente de RRHH" >
+            <div class="invalid-feedback">
+            Por favor ingrese información.
+            </div>
+        </div>    
+      </div>
+    </div>    
+    @endIf
+    @endIf
+
     <div class="float-sm-right">
       <button class="btn btn-primary" type="submit">Crear</button>
       <a class="btn btn-secondary" href="{{url()->previous()}}" role="cancelar">Regresar</a>
@@ -123,16 +223,39 @@
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
     var forms = document.getElementsByClassName('needs-validation');
     // Loop over them and prevent submission
+    var checkBox = document.getElementById("cbx_encargado"); 
+
     var validation = Array.prototype.filter.call(forms, function(form) {
-      form.addEventListener('submit', function(event) {
+      form.addEventListener('submit', function(event) {        
         if (form.checkValidity() === false) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
+            event.preventDefault();
+            event.stopPropagation();
+        }            
         form.classList.add('was-validated');
       }, false);
     });
   }, false);
 })();
+</script>
+
+<script>
+function cbxEncargado(){
+    var forms = document.getElementsByClassName('needs-validation');
+    forms[0].classList.remove('was-validated');
+    // Get the checkbox
+    var checkBox = document.getElementById("cbx_encargado");    
+
+    // If the checkbox is checked, display the output
+    if (checkBox.checked == true){
+        $('#div-encargado').show(800);        
+        $('.encargado').attr('required',true);
+    } else {
+        $("#div-encargado").hide(800);
+        $('.encargado').removeAttr('required');
+    }
+}
+
+cbxEncargado();
+
 </script>
 @endsection

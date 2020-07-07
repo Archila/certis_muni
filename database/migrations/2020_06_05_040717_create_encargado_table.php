@@ -18,10 +18,14 @@ class CreateEncargadoTable extends Migration
             $table->string('profesion', 60);
             $table->string('colegiado', 20)->nullable();
             $table->unsignedBigInteger('persona_id');
+            $table->unsignedBigInteger('usuario_id');
 
             $table->timestamps();
 
             $table->foreign('persona_id')->references('id')->on('persona')
+                                                        ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('usuario_id')->references('id')->on('users')
                                                         ->onDelete('cascade')->onUpdate('cascade');
         });
     }

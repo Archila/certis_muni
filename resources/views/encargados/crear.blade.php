@@ -17,7 +17,7 @@
 @section('contenido')
 <div class="card">
   <div class="card-header">
-    <h3>Crear un nuevo encargado sin empresa</h3> 
+    <h3>Crear un nuevo encargado @if(Auth::user()->rol->id !=2 ) sin empresa @endIf</h3> 
   </div>
   <div class="card-body">
   <form class="needs-validation" method="POST" action="{{route('encargado.guardar')}}" novalidate>   
@@ -62,13 +62,37 @@
                 </div>      
             </div> 
             <div class="col-md-4 mb-3">
-                <label for="validationCustom10">Correo encargo</label>
+                <label for="validationCustom10">Correo</label>
                 <input type="email" class="form-control" id="validationCustom10" name="correo" required >
                 <div class="invalid-feedback">
                 Ingrese un correo electrónico válido.
                 </div>
             </div>    
         </div>
+
+        @if(Auth::user()->rol->id==2 )
+        @if($empresa)
+        <hr>
+        <div class="form-row">
+          <h5>Encargado de prácticas en: <b>{{$empresa->nombre}}</b></h5>
+          <input type="hidden" name="empresa_id" value="{{$empresa->id}}">
+          <div class="col-md-6 mb-3">
+              <label for="validationCustom08">Area</label>
+              <input type="text" class="form-control" id="validationCustom08" name="area" required placeholder="Ej. Recursos Humanos">   
+              <div class="invalid-feedback">
+              Ingrese área a la que pertenece el encargado.
+              </div>                 
+          </div>    
+          <div class="col-md-6 mb-3">
+              <label for="validationCustom10">Puesto</label>
+              <input type="text" class="form-control" id="validationCustom10" name="puesto" required placeholder="Ej. Gerente de RRHH" >
+              <div class="invalid-feedback">
+              Por favor ingrese información.
+              </div>
+          </div>    
+        </div>
+        @endIf
+        @endIf
     </div>
 
     <div class="float-sm-right">

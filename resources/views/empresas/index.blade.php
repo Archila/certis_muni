@@ -19,6 +19,9 @@
     @if(session('editado')>0)
     <script> alerta_edit('Empresa editada exitosamente.')</script>
     @endif
+    @if(session('duplicado')>0)
+    <script> alerta_info('Ya existe empresa creada para este usuario.')</script>
+    @endif
 @endsection
 
 @section('contenido')
@@ -28,12 +31,16 @@
         <div class="col-md-8 col-sm-12">
             <h3>Listado de empresas</h3> 
         </div>
+        @if($btn_nuevo)
         <div class="col-md-2 col-sm-12">
             <a class="btn btn-block btn-primary btn-sm" href="{{route('empresa.crear')}}">Nueva empresa</a>
         </div>
+        @endIf
+        @if(Auth::user()->rol->id==1 || Auth::user()->rol->id >= 3 )
         <div class="col-md-2 col-sm-12">
             <a class="btn btn-block btn-info btn-sm" href="{{route('tipo_empresa.index')}}">Tipos</a>
         </div>
+        @endIf
     </div>
     
   </div>
@@ -46,9 +53,13 @@
             <th>Teléfono</th>
             <th>Correo</th>
             <th>Tipo</th>
+            @if(Auth::user()->rol->id==1 || Auth::user()->rol->id >= 3 )
             <th>Público</th>
             <th>Validado</th>
             <th>Calificación</th>
+            @else
+            <th>Dirección</th>
+            @endIf
             <th></th>
         </tr>
     </thead>
@@ -60,39 +71,45 @@
             <td>{{$e->telefono}}</td>    
             <td>{{$e->correo}}</td>    
             <td>{{$e->tipo}}</td>
-            <td>
-            @if($e->publico==1)
-            <span class="badge bg-success">SI</span>
+            @if(Auth::user()->rol->id==1 || Auth::user()->rol->id >= 3 )
+                <td>
+                @if($e->publico==1)
+                <span class="badge bg-success">SI</span>
+                @else
+                <span class="badge bg-danger">NO</span>
+                @endif
+                </td>    
+                <td>
+                @if($e->valido==1)
+                <span class="badge bg-success">SI</span>
+                @else
+                <span class="badge bg-danger">NO</span>
+                @endif
+                </td>    
+                <td>            
+                @if($e->calificacion=="Bien")
+                <span class="badge bg-success">BIEN</span>
+                @elseif ($e->calificacion=="Regular")
+                <span class="badge bg-warning">REGULAR</span>
+                @elseif($e->calificacion=="Mala")
+                <span class="badge bg-danger">MALA</span>
+                @else
+                <span class="badge bg-secondary">Sin registro</span>
+                @endif              
+                </td> 
             @else
-            <span class="badge bg-danger">NO</span>
-            @endif
-            </td>    
-            <td>
-            @if($e->valido==1)
-            <span class="badge bg-success">SI</span>
-            @else
-            <span class="badge bg-danger">NO</span>
-            @endif
-            </td>    
-            <td>            
-            @if($e->calificacion=="Bien")
-            <span class="badge bg-success">BIEN</span>
-            @elseif ($e->calificacion=="Regular")
-            <span class="badge bg-warning">REGULAR</span>
-            @elseif($e->calificacion=="Mala")
-            <span class="badge bg-danger">MALA</span>
-            @else
-            <span class="badge bg-secondary">Sin registro</span>
-            @endif              
-            </td>    
+            <td>{{$e->direccion}} {{' '}} {{$e->ubicacion}}</td>
+            @endIf               
             <td>
                 <div class="btn-group">
                     <a href="{{route('empresa.ver', $e->empresa_id)}}" type="button" class="btn btn-info btn-xs"><i class="fas fa-eye"></i></a>
+                    @if(Auth::user()->rol->id==1 || Auth::user()->rol->id >= 3 || Auth::user()->id==$e->usuario_id )
                     <a href="{{route('empresa.editar', $e->empresa_id)}}" type="button" class="btn btn-success btn-xs"><i class="fas fa-edit"></i></a>
                     <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" 
                     data-target="#modal-eliminar" data-id="{{$e->empresa_id}}">
                         <i class="fas fa-trash"></i>
                     </button>
+                    @endIf
                 </div>
             </td>    
         </tr>

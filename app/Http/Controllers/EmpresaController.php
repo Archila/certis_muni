@@ -6,7 +6,11 @@ use App\Models\Empresa;
 use App\Models\Area;
 use App\Models\TipoEmpresa;
 use App\Models\Encargado;
+use App\Models\Persona;
+use App\Models\AreaEncargado;
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\Gate;
 
@@ -72,6 +76,15 @@ class EmpresaController extends Controller
         if ($request->has('carrera_id')) {
             $empresas->orWhere('carrera_id', $request->carrera_id);
         }  
+
+        $btn_nuevo = true;
+        if(Auth::user()->rol->id == 2){            
+            $empresas->Where('publico', 1);
+            $empresas->orWhere('usuario_id', Auth::user()->id);
+
+            $empresa_est = Empresa::where('usuario_id', Auth::user()->id)->first();
+            if($empresa_est){$btn_nuevo=false;}
+        }
          
         if ($request->has('many')) {
           $empresas = $empresas->orderBy($sort_by, $direction)->paginate($many);          
@@ -79,9 +92,11 @@ class EmpresaController extends Controller
         else {
           $empresas = $empresas->orderBy($sort_by, $direction)->get();
         }
+
+        
   
         //return response()->json($carreras);
-        return view('empresas.index',compact('empresas'));
+        return view('empresas.index',compact(['empresas', 'btn_nuevo']));
     }
 
     /**
@@ -92,9 +107,17 @@ class EmpresaController extends Controller
     public function crear()
     {
         Gate::authorize('haveaccess', $this->roles_gate );
-
+        $encargado = Encargado::select('encargado.*', 'encargado.id as encargado_id', 'persona.*');
+        $encargado->join('persona', 'persona_id', '=', 'persona.id');
+        $encargado = $encargado->where('usuario_id', Auth::user()->id)->first();
         $tipos = TipoEmpresa::where('activo',1)->get();
-        return view('empresas.crear',compact('tipos'));
+
+        if(Auth::user()->rol->id == 2){
+            $empresa_est = Empresa::where('usuario_id', Auth::user()->id)->first();
+            if($empresa_est){  abort(403);  }
+        }
+
+        return view('empresas.crear',compact(['tipos', 'encargado']));
     }
 
     /**
@@ -107,11 +130,16 @@ class EmpresaController extends Controller
     {
         Gate::authorize('haveaccess', $this->roles_gate );
 
-        $empresa = Empresa::where('nombre', '=',$request->nombre)->first();
+        $empresa = Empresa::where('nombre', '=',$request->nombre)->first();        
 
         if ($empresa) {            
             return redirect()->route('empresa.crear')->with('error', 'ERROR');             
         }                
+
+        if(Auth::user()->rol->id == 2){
+            $empresa_est = Empresa::where('usuario_id', Auth::user()->id)->first();
+            if($empresa_est){ return redirect()->route('empresa.index')->with('duplicado', 1);    }
+        }
               
         $empresa = new Empresa();
         $empresa->nombre = $request->nombre;
@@ -124,8 +152,48 @@ class EmpresaController extends Controller
         $empresa->tel_contacto = $request->tel_contacto;
         $empresa->correo_contacto = $request->correo_contacto;
         $empresa->tipo_empresa_id = $request->tipo_empresa_id;        
-        $empresa->usuario_id = 1;
+        $empresa->usuario_id = Auth::user()->id;
         $empresa->save();
+
+        if($request->cbx_encargado){
+            $persona = new Persona();
+            $persona->nombre = $request->nombre_encargado;
+            $persona->apellido = $request->apellido;
+            $persona->telefono = $request->telefono_encargado;
+            $persona->correo = $request->correo;
+            $persona->save();
+
+            $encargado = new Encargado();
+            $encargado->colegiado = $request->colegiado;
+            $encargado->profesion = $request->profesion;
+            $encargado->persona_id = $persona->id;
+            $encargado->usuario_id = Auth::user()->id;
+            $encargado->save();
+
+            $area = new Area();
+            $area->nombre = $request->area;
+            $area->puesto = $request->puesto;
+            $area->empresa_id = $empresa->id;
+            $area->save();
+    
+            $area_encargado =  new AreaEncargado();
+            $area_encargado->area_id = $area->id;
+            $area_encargado->encargado_id=$encargado->id;
+            $area_encargado->save();
+        }
+
+        if($request->encargado_id){
+            $area = new Area();
+            $area->nombre = $request->area;
+            $area->puesto = $request->puesto;
+            $area->empresa_id = $empresa->id;
+            $area->save();
+    
+            $area_encargado =  new AreaEncargado();
+            $area_encargado->area_id = $area->id;
+            $area_encargado->encargado_id=$request->encargado_id;
+            $area_encargado->save();
+        }
         
         return redirect()->route('empresa.index')->with('creado', $empresa->id);   
     }
@@ -152,7 +220,7 @@ class EmpresaController extends Controller
         $areas = $areas->where('empresa.id',$id)->get();
 
         //return dd($areas);
-        return view('empresas.ver', ['empresa'=>$empresa, 'areas'=>$areas]);
+        return view('empresas.ver', ['empresa'=>$empresa]);
     }   
 
     /**
@@ -163,15 +231,27 @@ class EmpresaController extends Controller
      */
     public function editar($id)
     {
-        Gate::authorize('haveaccess', $this->roles_gate );
+        $areas = Area::select('area.nombre as area', 'encargado.*', 'area.id as area_id', 'encargado.id as encargado_id', 'persona.*');
+        $areas ->join('area_encargado', 'area.id', '=', 'area_encargado.area_id');
+        $areas ->join('encargado', 'area_encargado.encargado_id', '=', 'encargado.id');
+        $areas ->join('empresa', 'area.empresa_id', '=', 'empresa.id');
+        $areas ->join('persona', 'encargado.persona_id', '=', 'persona.id');
+        $areas = $areas->where('empresa.id',$id)->get();
 
         $empresa = Empresa::select('empresa.*', 'tipo_empresa.nombre as tipo', 'empresa.id as empresa_id');
         $empresa ->join('tipo_empresa', 'tipo_empresa_id', '=', 'tipo_empresa.id');
         $empresa = $empresa->where('empresa.id',$id)->firstOrFail();
 
         $tipos= TipoEmpresa::where('activo',1)->get();
+                
+        Gate::authorize('haveaccess', $this->roles_gate );
 
-        return view('empresas.editar', ['empresa'=>$empresa, 'tipos'=>$tipos]);
+        if(Auth::user()->rol->id == 2){            
+            $empresa_est = Empresa::where('usuario_id', )->first();
+            if(Auth::user()->id != $empresa->usuario_id){abort(403);}
+        }
+
+        return view('empresas.editar', ['empresa'=>$empresa, 'tipos'=>$tipos, 'areas'=>$areas ]);
     }
 
     /**
