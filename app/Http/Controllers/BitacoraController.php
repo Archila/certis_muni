@@ -211,4 +211,26 @@ class BitacoraController extends Controller
 
         return view('bitacoras.crear_folio',['bitacora'=>$bitacora]);
     }
+
+    public function pdf($id)
+    {
+        Gate::authorize('haveaccess', '{"roles":[ 1, 2, 3, 4, 5, 6, 7 ]}' );
+
+        $bitacora = Bitacora::findOrFail($id);
+
+        if(Auth::user()->rol->id == 2){        
+            if(Auth::user()->id != $bitacora->usuario_id){abort(403);}
+        }
+
+        $empresa = Empresa::where('usuario_id', Auth::user()->id)->first();
+
+        $encargado= Encargado::select('encargado.*', 'persona.*', 'encargado.id as encargado_id', 'area.puesto as puesto');
+        $encargado = $encargado->join('persona', 'persona_id', '=', 'persona.id');
+        $encargado = $encargado->leftJoin('area_encargado', 'encargado.id', '=', 'area_encargado.encargado_id');
+        $encargado = $encargado->leftJoin('area', 'area_encargado.area_id', '=', 'area.id')->get();
+        $encargado = $encargado->where('usuario_id', Auth::user()->id)->first();
+
+        return view('bitacoras.pdf', ['empresa'=>$empresa, 'encargado'=>$encargado, 'bitacora'=>$bitacora]);
+
+    }
 }

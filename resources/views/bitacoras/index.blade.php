@@ -58,6 +58,7 @@
             <td>{{$b->nombre}}{{' '}}{{$b->apellido}} ({{$b->puesto}})</td>
             <td>
                 <div class="btn-group">
+                    <a href="{{route('bitacora.pdf', $b->bitacora_id)}}" type="button" class="btn btn-info btn-xs"><i class="fas fa-file-pdf"></i></a>
                     <a href="{{route('bitacora.ver', $b->bitacora_id)}}" type="button" class="btn btn-success btn-xs"><i class="fas fa-edit"></i></a>
                     <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" 
                     data-target="#modal-eliminar" data-id="{{$b->id}}">

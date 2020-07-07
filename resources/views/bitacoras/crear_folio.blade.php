@@ -71,10 +71,18 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body pad">
-              <div class="mb-3">
+              <div class="">
                 <textarea class="textarea" placeholder="Ingrese las actividades realizadas en su práctica"
                           style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"
                           name="descripcion" required>@if(session('descripcion')) @php echo session('descripcion'); @endphp @endif </textarea>
+              </div>              
+            </div>
+            <div class="card-body pad">
+            <h4>Observaciones</h4>
+              <div class="mb-3">
+                <textarea class="textarea" placeholder="Observaciones"
+                          style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"
+                          name="observaciones">@if(session('descripcion')) @php echo session('observaciones'); @endphp @endif </textarea>
               </div>              
             </div>
           </div>

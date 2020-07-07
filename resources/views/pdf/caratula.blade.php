@@ -170,8 +170,7 @@
 
             <div class="content__left">Correo electrónico</div>
             <div class="content__right">&nbsp;</div>
-            <div class="content__middle"><span class="">&nbsp;{{$encargado->correo}}</span></div>
-            
+            <div class="content__middle"><span class="">&nbsp;{{$encargado->correo}}</span></div>            
         </div>
    
     </body>

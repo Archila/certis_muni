@@ -120,9 +120,9 @@
         <div class="destinatario">
             <p class="linea-destinatario">Ing. Carlos Sandoval</p>
             <p class="linea-destinatario">Gerente de Relaciones Laborales</p>
-            <p class="linea-destinatario">Cervecería Centroamericana</p>
-            <p class="linea-destinatario">3a Av. Norte final, Finca el Zapote zona 2</p>
-            <p class="linea-destinatario">Guatemala</p>
+            <p class="linea-destinatario">{{$empresa->nombre}}</p>
+            <p class="linea-destinatario">{{$empresa->direccion}}</p>
+            <p class="linea-destinatario">{{$empresa->ubicacion}}</p>
         </div>   
 
         <div class="cuerpo">
