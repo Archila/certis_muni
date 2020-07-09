@@ -128,7 +128,7 @@
           </div>               
         </div>
         <div class="form-row">
-          <div class="col-md-6 mb-3">
+          <div class="col-md-4 mb-3">
             <label for="validationCustom05">Empresa</label>
             <div class="input-group input-group">
               <select id="validationCustom07" class="form-control" required name="empresa_id">
@@ -145,6 +145,20 @@
             Por favor seleccione una empresa o cree una.
             </div>
           </div>
+          <div class="col-md-4 mb-3">
+            <label for="validationCustom08">Área</label>
+            <input type="text" class="form-control encargado" id="validationCustom08" name="area" required > 
+            <div class="invalid-feedback">
+            Ingrese el area en la que labora el encargado dentor de la empresa.
+            </div>      
+          </div>   
+          <div class="col-md-4 mb-3">
+            <label for="validationCustom08">Puesto</label>
+            <input type="text" class="form-control encargado" id="validationCustom08" name="puesto" required > 
+            <div class="invalid-feedback">
+            Ingrese el puesto del encargado en la empresa.
+            </div>      
+          </div>   
         </div>
         @else
         <div class="form-row">

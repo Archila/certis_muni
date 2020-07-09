@@ -138,7 +138,7 @@ class EmpresaController extends Controller
 
         if(Auth::user()->rol->id == 2){
             $empresa_est = Empresa::where('usuario_id', Auth::user()->id)->first();
-            if($empresa_est){ return redirect()->route('empresa.index')->with('duplicado', 1);    }
+            if($empresa_est){ return redirect()->route('empresa.index')->with('duplicado', 1);}
         }
               
         $empresa = new Empresa();
@@ -181,7 +181,6 @@ class EmpresaController extends Controller
             $area_encargado->encargado_id=$encargado->id;
             $area_encargado->save();
         }
-
         if($request->encargado_id){
             $area = new Area();
             $area->nombre = $request->area;

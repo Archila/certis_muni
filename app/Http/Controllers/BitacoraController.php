@@ -6,6 +6,8 @@ use App\Models\Empresa;
 use App\Models\Encargado;
 use App\Models\Bitacora;
 use App\Models\Folio;
+use App\Models\Area;
+use App\Models\AreaEncargado;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -130,9 +132,22 @@ class BitacoraController extends Controller
         else { $encargado = Encargado::where('usuario_id',Auth::user()->id)->first();
             $encargado_id = $encargado->id;}
 
-        if($request->empresa_id){$empresa_id = $request->empresa_id;}
+        if($request->empresa_id){ $empresa_id = $request->empresa_id;}
         else { $empresa = Empresa::where('usuario_id',Auth::user()->id)->first();
-            $empresa_id = $empresa->id;}        
+            $empresa_id = $empresa->id;}    
+        
+        if($request->puesto){
+            $area = new Area();
+            $area->nombre = $request->area;
+            $area->puesto = $request->puesto;
+            $area->empresa_id = $empresa_id;
+            $area->save();
+    
+            $area_encargado =  new AreaEncargado();
+            $area_encargado->area_id = $area->id;
+            $area_encargado->encargado_id=$encargado_id;
+            $area_encargado->save();
+        }
 
         $bitacora = new Bitacora();
         $bitacora->semestre = $request->semestre;
@@ -200,7 +215,7 @@ class BitacoraController extends Controller
      */
     public function eliminar(Bitacora $bitacora)
     {
-        //
+        
     }
 
     public function crear_folio($id)

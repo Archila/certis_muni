@@ -118,8 +118,8 @@
         </div>      
 
         <div class="destinatario">
-            <p class="linea-destinatario">Ing. Carlos Sandoval</p>
-            <p class="linea-destinatario">Gerente de Relaciones Laborales</p>
+            <p class="linea-destinatario">{{$destinatario}}</p>
+            <p class="linea-destinatario">{{$puesto}}</p>
             <p class="linea-destinatario">{{$empresa->nombre}}</p>
             <p class="linea-destinatario">{{$empresa->direccion}}</p>
             <p class="linea-destinatario">{{$empresa->ubicacion}}</p>

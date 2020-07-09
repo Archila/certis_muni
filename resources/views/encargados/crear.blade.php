@@ -1,6 +1,6 @@
 @extends('plantilla.plantilla',['sidebar'=>51])
 
-@section('titulo', 'Editar empresa')
+@section('titulo', 'Nuevo encargado')
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="/">Inicio</a></li>
@@ -22,8 +22,7 @@
   <div class="card-body">
   <form class="needs-validation" method="POST" action="{{route('encargado.guardar')}}" novalidate>   
     @csrf
-    <input type="hidden" name="solo_encargado" value=1>
-        
+    <input type="hidden" name="solo_encargado" value=1>        
     <div id="encargado-nuevo" style="display: block">
         <div class="form-row">
             <div class="col-md-5 mb-3">
@@ -46,7 +45,8 @@
                 <div class="invalid-feedback">
                 Ingrese telefono de encargado válido. Al menos 8 dígitos.
                 </div>
-            </div>                        
+            </div>         
+            <small class="mt-n3 mb-2">&nbsp; &nbsp; *Se recomienda agregar el título de tratamiento al nombre del encargado. Ejemplo: Ing. Lic. Sr. Sra.</small>               
         </div>
 
         <div class="form-row">
