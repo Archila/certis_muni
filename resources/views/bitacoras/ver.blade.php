@@ -4,14 +4,17 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-    <li class="breadcrumb-item"><a href="{{route('bitacora.index')}}">Bitácora</a></li>
-    <li class="breadcrumb-item active">Editar bitácora</li>
+    <li class="breadcrumb-item"><a href="{{route('bitacora.individual')}}">Bitácora</a></li>
+    <li class="breadcrumb-item active"></li>Semestre {{$bitacora->semestre}} ({{$bitacora->year}})
 @endsection
 
 @section('alerta')
-  @if (session('error')=='ERROR')
-  <script> alerta_error('Ya existe una carrera con ese código.')</script>
+  @if (session('oficio')>0)
+  <script> alerta_info('Oficio generado exitosamente.')</script>
   @endif  
+  @if (session('valido')>0)
+  <script> alerta_info('La bitácora ya está validada.')</script>
+  @endif
 @endsection
 
 @section('contenido')
@@ -23,13 +26,39 @@
         </h4>
         </div>
         <div class="card-body">
-        <div class="row">
-            <div class="col-md-9 col-sm-12">
+        @if($bitacora->oficio && Auth()->user()->rol->id !=2)
+        <div class="callout callout-info">
+          <h5 class="my-n2">Oficio: {{$bitacora->no_oficio}}</h5>
+        </div>       
+        @endif
+        @if($bitacora->valida && Auth()->user()->rol->id !=2)
+        <div class="callout callout-success">
+          <h5 class="my-n2">No. de bitácora: {{$bitacora->codigo}}</h5>
+        </div>       
+        @endif
+        <div class="row shadow-sm bg-white rounded">
+          <p class="col-sm-12 mb-n1 mt-1"><b>Estudiante: </b>{{$estudiante->nombre}} {{$estudiante->apellido}}</p>
+          <p class="col-sm-4"><b>Registro:  </b> {{$estudiante->registro}}</p>
+          <p class="col-sm-4"><b>Carne:  </b> {{$estudiante->carne}}</p>
+          <hr>
+          <p class="col-sm-6 my-n1"><b>Empresa: </b>{{$empresa->nombre}}</p>
+          <p class="col-sm-6 my-n1"><b>Dirección: </b>{{$empresa->direccion}}</p>
+          <p class="col-sm-6 "><b>Ubicación: </b>{{$empresa->ubicacion}}</p>
+          <p class="col-sm-6 "></p>
+          <hr>
+          <p class="col-sm-6 mt-n1"><b>Encargado: </b>{{$encargado->nombre}} {{$encargado->apellido}}</p>
+          <p class="col-sm-6 mt-n1"><b>Puesto: </b>{{$encargado->puesto}}</p>
+        </div>
+        @if($bitacora->valida)
+        <div class="row mt-2">
+            <div class="col-md-9 col-sm-12 ">
                 <h4>Horas acumuladas: {{$bitacora->horas}}</h4>
             </div>
+            @if(Auth()->user()->rol->id ==2)
             <div class="col-md-3 col-sm-12">
                 <a class="btn btn-block btn-success btn-sm" href="{{route('bitacora.crear_folio', $bitacora->id)}}">Agregar folio</a>
             </div>
+            @endif
         </div>
         <h4>Folios</h4>    
           <div class="col-12">
@@ -89,10 +118,10 @@
                         </div> 
                         <div class="row">
                             <h4>Descripción</h4>
-                            <div class="post">                        
-                            <p> {{$f->descripcion}} </p>                       
-                            </div>
                         </div>     
+                        <div class="post">                        
+                          <p> {{$f->descripcion}} </p>                       
+                        </div>
                     </div>
                     @php $activo=''; @endphp
                     @endforeach  
@@ -101,7 +130,44 @@
               <!-- /.card -->
             </div>  
           </div>  
-        
+        @endif
+        @if(!$bitacora->valida && Auth()->user()->rol->id ==2)
+        <div class="callout callout-danger">
+          <h4><i class="fas fa-exclamation"></i> Tu bitácora está en proceso de aprobación.</h4>
+
+          <p>Por favor espera o contacta con tu supervisor de prácticas finales.</p>
+        </div>
+        @endif
+
+        @if(Auth()->user()->rol->id !=2)
+          @if(!$bitacora->oficio && !$bitacora->valida)
+          <div class='row'>
+            <form class='col-md-2 offset-md-10 mt-3' method="post" action="{{route('bitacora.oficio', $bitacora->id)}}" >          
+            @csrf
+                <input type="hidden" name="id" id="input" class="form-control">
+                <button type="submit" class="btn btn-info">Generar oficio</button>
+            </form>       
+          </div>          
+          @elseif($bitacora->oficio && !$bitacora->valida)
+          <div class="row">
+            <form class='col-md-2 offset-md-8 mt-3' method="post" action="{{route('bitacora.validar', $bitacora->id)}}" >          
+            @csrf
+                <input type="hidden" name="id" id="input" class="form-control">
+                <button type="submit" class="btn btn-success btn-block">Validar</button>
+                
+            </form>      
+            <div class="col-md-2 mt-3">
+              <a class="btn btn-block btn-info" href="{{route('pdf.oficio', $bitacora->id)}}">Ver oficio</a>
+            </div> 
+          </div>          
+          @else   
+          <div class='row'>            
+            <div class="col-md-2 offset-md-10 mt-3">
+              <a class="btn btn-block btn-info btn-block" href="{{route('pdf.oficio', $bitacora->id)}}">Ver oficio</a>
+            </div> 
+          </div>       
+          @endif
+        @endif
     </div>
 @endsection
 

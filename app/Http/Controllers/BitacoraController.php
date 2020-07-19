@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Empresa;
 use App\Models\Encargado;
+use App\Models\Carrera;
 use App\Models\Bitacora;
 use App\Models\Folio;
 use App\Models\Area;
 use App\Models\AreaEncargado;
+use App\Models\Estudiante;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -30,7 +32,7 @@ class BitacoraController extends Controller
      */
     public function index(Request $request)
     {
-        Gate::authorize('haveaccess', $this->roles_gate );
+        Gate::authorize('haveaccess', '{"roles":[ 1, 3, 4, 5, 6, 7 ]}' );
         
         $request->validate([
             'all' => 'nullable|boolean',
@@ -50,10 +52,13 @@ class BitacoraController extends Controller
         $direction = 'desc';
         if($request->has('direction')) $direction = $request->direction;
   
-        $bitacoras = Bitacora::select('bitacora.*', 'persona.*', 'empresa.nombre as empresa', 'encargado.*', 'bitacora.id as bitacora_id');  
+        $bitacoras = Bitacora::select('bitacora.*', 'persona.*', 'empresa.nombre as empresa', 'encargado.profesion as profesion', 
+        'encargado.colegiado as colegiado', 'bitacora.id as bitacora_id', 'area.puesto as puesto');  
         $bitacoras->join('encargado', 'encargado_id', '=', 'encargado.id');
         $bitacoras->join('empresa', 'empresa_id', '=', 'empresa.id');
         $bitacoras->join('persona', 'encargado.persona_id', '=', 'persona.id');
+        $bitacoras->join('area_encargado', 'area_encargado.encargado_id', '=', 'encargado.id');
+        $bitacoras->join('area', 'area.id', '=', 'area_encargado.area_id');
          
         if ($request->has('year')) {
           $bitacoras->orWhere('year', '=', $request->codigo);
@@ -66,6 +71,8 @@ class BitacoraController extends Controller
           $bitacoras = $bitacoras->orderBy($sort_by, $direction)->get();
         }
 
+        $bitacora=[];
+
         $btn_nuevo = true;
         if(Auth::user()->rol->id == 2){   
             $bitacoras= $bitacoras->Where('usuario_id', Auth::user()->id);
@@ -74,8 +81,66 @@ class BitacoraController extends Controller
             if($bitacora_est){$btn_nuevo=false;}
         }
 
+        $estudiantes = Estudiante::select('estudiante.*', 'carrera.nombre as carrera', 'persona.*', 'estudiante.id as estudiante_id',
+        'users.id as usuario_id');
+        $estudiantes ->join('carrera', 'carrera_id', '=', 'carrera.id');
+        $estudiantes ->join('persona', 'persona_id', '=', 'persona.id');
+        $estudiantes ->join('users', 'persona.id', '=', 'users.persona_id');
 
-        return view('bitacoras.index',compact(['bitacoras','btn_nuevo']));
+        if(Auth::user()->rol->id != 1){
+            if(Auth::user()->rol->id == 3){
+                $estudiantes->where('carrera.id', 1); //CIVIL
+            }
+            elseif(Auth::user()->rol->id == 4){
+                $estudiantes->where('carrera.id', 2); //Mecanica
+            }
+            elseif(Auth::user()->rol->id == 5){
+                $estudiantes->where('carrera.id', 3); //Industrial
+            }
+            elseif(Auth::user()->rol->id == 6){
+                $estudiantes->where('carrera.id', 4); //Mecanica Industrial
+            }
+            elseif(Auth::user()->rol->id == 7){
+                $estudiantes->where('carrera.id', 5); //Sistemas
+            }
+        }
+        $estudiantes = $estudiantes->orderBy('estudiante.created_at', $direction)->get();
+
+        return view('bitacoras.index',compact(['bitacoras','btn_nuevo', 'estudiantes']));
+    }
+
+    public function individual(Request $request)
+    {
+        Gate::authorize('haveaccess', '{"roles":[ 2 ]}' );
+        
+        $bitacora = Bitacora::where('usuario_id',Auth::user()->id)->first();        
+
+        if($bitacora){
+            if(Auth::user()->rol->id == 2){        
+                if(Auth::user()->id != $bitacora->usuario_id){abort(403);}
+            }
+
+            $empresa = Empresa::where('id', $bitacora->empresa_id)->first();
+
+            $encargado= Encargado::select('encargado.*', 'persona.*', 'encargado.id as encargado_id', 'area.puesto as puesto');
+            $encargado = $encargado->join('persona', 'persona_id', '=', 'persona.id');
+            $encargado = $encargado->leftJoin('area_encargado', 'encargado.id', '=', 'area_encargado.encargado_id');
+            $encargado = $encargado->leftJoin('area', 'area_encargado.area_id', '=', 'area.id')->get();
+            $encargado = $encargado->where('usuario_id', $bitacora->usuario_id)->first();
+
+            $estudiante = Estudiante::select('estudiante.*', 'persona.*', 'carrera.nombre as carrera');
+            $estudiante = $estudiante->join('persona', 'persona_id', '=', 'persona.id');
+            $estudiante = $estudiante->join('carrera', 'carrera_id', '=', 'carrera.id');
+            $estudiante = $estudiante->join('users', 'persona.id', '=', 'users.persona_id');
+            $estudiante = $estudiante->where('users.id',$bitacora->usuario_id)->first();
+
+            $folios = Folio::where('bitacora_id', $bitacora->id)->orderBy('numero', 'asc')->get();
+
+            return view('bitacoras.individual', ['nuevo'=>false,'empresa'=>$empresa, 'encargado'=>$encargado, 'bitacora'=>$bitacora, 'estudiante'=>$estudiante, 'folios'=>$folios]);
+        }
+        else{
+            return view('bitacoras.individual', ['nuevo'=>true]);
+        }
     }
 
     /**
@@ -158,7 +223,13 @@ class BitacoraController extends Controller
         $bitacora->usuario_id = Auth::user()->id;
         $bitacora->save();
 
-        return redirect()->route('bitacora.index')->with('creado', $bitacora->id);     
+        if(Auth::user()->rol->id == 2){
+            return redirect()->route('bitacora.individual')->with('creado', $bitacora->id);  
+        }
+        else{
+            return redirect()->route('bitacora.index')->with('creado', $bitacora->id);  
+        }
+           
     }
 
     /**
@@ -181,7 +252,21 @@ class BitacoraController extends Controller
         $folios = $folios->where('bitacora_id',$bitacora->id);
         $folios = $folios->orderBy('numero')->get();
 
-        return view('bitacoras.ver',['bitacora'=>$bitacora, 'folios'=>$folios]);
+        $empresa = Empresa::where('id', $bitacora->empresa_id)->first();
+
+        $encargado= Encargado::select('encargado.*', 'persona.*', 'encargado.id as encargado_id', 'area.puesto as puesto');
+        $encargado = $encargado->join('persona', 'persona_id', '=', 'persona.id');
+        $encargado = $encargado->leftJoin('area_encargado', 'encargado.id', '=', 'area_encargado.encargado_id');
+        $encargado = $encargado->leftJoin('area', 'area_encargado.area_id', '=', 'area.id');
+        $encargado = $encargado->where('encargado.id',  $bitacora->encargado_id)->first();
+
+        $estudiante = Estudiante:: select('estudiante.*', 'estudiante.id as estudiante_id', 'persona.*');
+        $estudiante = $estudiante->join('persona', 'persona_id', '=', 'persona.id');
+        $estudiante = $estudiante->join('users', 'persona.id', '=', 'users.persona_id');
+        $estudiante = $estudiante->where('users.id', $bitacora->usuario_id)->firstOrFail();
+
+
+        return view('bitacoras.ver',['bitacora'=>$bitacora, 'folios'=>$folios, 'empresa'=>$empresa, 'encargado'=>$encargado, 'estudiante'=>$estudiante]);
     }
 
     /**
@@ -222,7 +307,13 @@ class BitacoraController extends Controller
     {
         Gate::authorize('haveaccess', $this->roles_gate );
 
-        $bitacora = Bitacora::findOrFail($id);        
+        $bitacora = Bitacora::findOrFail($id); 
+        if(!$bitacora->valida){        
+            abort(403);
+        }
+        elseif(Auth::user()->id != $bitacora->usuario_id){        
+            abort(403);
+        }        
 
         return view('bitacoras.crear_folio',['bitacora'=>$bitacora]);
     }
@@ -243,9 +334,114 @@ class BitacoraController extends Controller
         $encargado = $encargado->join('persona', 'persona_id', '=', 'persona.id');
         $encargado = $encargado->leftJoin('area_encargado', 'encargado.id', '=', 'area_encargado.encargado_id');
         $encargado = $encargado->leftJoin('area', 'area_encargado.area_id', '=', 'area.id')->get();
-        $encargado = $encargado->where('usuario_id', Auth::user()->id)->first();
+        $encargado = $encargado->where('usuario_id', $bitacora->usuario_id)->first();
 
-        return view('bitacoras.pdf', ['empresa'=>$empresa, 'encargado'=>$encargado, 'bitacora'=>$bitacora]);
+        $estudiante = Estudiante::select('estudiante.*', 'persona.*', 'carrera.nombre as carrera');
+        $estudiante = $estudiante->join('persona', 'persona_id', '=', 'persona.id');
+        $estudiante = $estudiante->join('carrera', 'carrera_id', '=', 'carrera.id');
+        $estudiante = $estudiante->join('users', 'persona.id', '=', 'users.persona_id');
+        $estudiante = $estudiante->where('users.id',$bitacora->usuario_id)->first();
 
+        return view('bitacoras.pdf', ['empresa'=>$empresa, 'encargado'=>$encargado, 'bitacora'=>$bitacora, 'estudiante'=>$estudiante]);
+
+    }
+
+    public function oficio($id)
+    {
+        Gate::authorize('haveaccess', '{"roles":[ 1, 3, 4, 5, 6, 7 ]}' );
+
+        $bitacora = Bitacora::findOrFail($id);
+
+        if(Auth::user()->rol->id == 2){        
+            if(Auth::user()->id != $bitacora->usuario_id){abort(403);}
+        }
+
+        $estudiante = Estudiante::select('estudiante.*', 'persona.*', 'carrera.nombre as carrera', 'carrera.id as carrera_id');
+        $estudiante = $estudiante->join('persona', 'persona_id', '=', 'persona.id');
+        $estudiante = $estudiante->join('carrera', 'carrera_id', '=', 'carrera.id');
+        $estudiante = $estudiante->join('users', 'persona.id', '=', 'users.persona_id');
+        $estudiante = $estudiante->where('users.id',$bitacora->usuario_id)->first();
+        
+        if(Auth::user()->rol->id == 3 && $estudiante->carrera_id != 1){ abort(403);} // CIVIL
+        elseif(Auth::user()->rol->id == 4 && $estudiante->carrera_id != 2   ){ abort(403);} // MECANICA
+        elseif(Auth::user()->rol->id == 5 && $estudiante->carrera_id != 3){ abort(403);} // INDUSTRIAL
+        elseif(Auth::user()->rol->id == 6 && $estudiante->carrera_id != 4){ abort(403);} // MECANICA INDUSTRIAL
+        elseif(Auth::user()->rol->id == 7 && $estudiante->carrera_id != 5){ abort(403);} // SISTEMAS
+        
+        $oficio = 'EPS-';
+
+        if($estudiante->carrera_id == 1){$oficio .= 'IC No. ';}
+        elseif($estudiante->carrera_id == 2){$oficio .= 'IM No. ';}
+        elseif($estudiante->carrera_id == 3){$oficio .= 'II No. ';}
+        elseif($estudiante->carrera_id == 4){$oficio .= 'IMI No. ';}
+        elseif($estudiante->carrera_id == 5 ){$oficio .= 'IS No. ';}
+
+        $oficios_existentes = Bitacora::select('bitacora.*', 'carrera.id as carrera_id');
+        $oficios_existentes = $oficios_existentes->join('users', 'bitacora.usuario_id', '=', 'users.id');
+        $oficios_existentes = $oficios_existentes->join('persona', 'users.persona_id', '=', 'persona.id');
+        $oficios_existentes = $oficios_existentes->join('estudiante', 'persona.id', '=', 'estudiante.persona_id');
+        $oficios_existentes = $oficios_existentes->join('carrera', 'estudiante.carrera_id', '=', 'carrera.id');
+        $oficios_existentes =  $oficios_existentes->where('carrera.id', $estudiante->carrera_id);
+        $oficios_existentes =  $oficios_existentes->where('bitacora.oficio', 1)->count();
+
+        if($oficios_existentes<9){$oficio .= '00'; $oficio .= (string)($oficios_existentes+1);}
+        else {$oficio .= '0'; $oficio .= (string)($oficios_existentes+1);}
+
+        $year = date('yy');
+
+        $oficio .= '-'.(string)$year ;
+
+        $bitacora->oficio = true;
+        $bitacora->no_oficio = $oficio;
+        $bitacora->save();
+
+        return redirect()->route('bitacora.ver', $id)->with('oficio', true);    
+    }
+
+    public function validar($id)
+    {
+        Gate::authorize('haveaccess', '{"roles":[ 1, 3, 4, 5, 6, 7 ]}' );
+        $fecha = date('yy-m-d');
+        $bitacora = Bitacora::findOrFail($id);
+
+        $estudiante = Estudiante::select('estudiante.*', 'persona.*', 'carrera.nombre as carrera', 'carrera.id as carrera_id');
+        $estudiante = $estudiante->join('persona', 'persona_id', '=', 'persona.id');
+        $estudiante = $estudiante->join('carrera', 'carrera_id', '=', 'carrera.id');
+        $estudiante = $estudiante->join('users', 'persona.id', '=', 'users.persona_id');
+        $estudiante = $estudiante->where('users.id',$bitacora->usuario_id)->first();
+        
+        if(Auth::user()->rol->id == 3 && $estudiante->carrera_id != 1){ abort(403);} // CIVIL
+        elseif(Auth::user()->rol->id == 4 && $estudiante->carrera_id != 2   ){ abort(403);} // MECANICA
+        elseif(Auth::user()->rol->id == 5 && $estudiante->carrera_id != 3){ abort(403);} // INDUSTRIAL
+        elseif(Auth::user()->rol->id == 6 && $estudiante->carrera_id != 4){ abort(403);} // MECANICA INDUSTRIAL
+        elseif(Auth::user()->rol->id == 7 && $estudiante->carrera_id != 5){ abort(403);} // SISTEMAS
+
+        $codigo="";
+        if($estudiante->carrera_id == 1){$codigo .= 'BPFIC';}
+        elseif($estudiante->carrera_id == 2){$codigo .= 'BPFIM';}
+        elseif($estudiante->carrera_id == 3){$codigo .= 'BPFII';}
+        elseif($estudiante->carrera_id == 4){$codigo .= 'BPFIMI';}
+        elseif($estudiante->carrera_id == 5 ){$codigo .= 'BPFIS';}
+
+        $bitacoras_validas = Bitacora::select('bitacora.*', 'carrera.id as carrera_id');
+        $bitacoras_validas = $bitacoras_validas->join('users', 'bitacora.usuario_id', '=', 'users.id');
+        $bitacoras_validas = $bitacoras_validas->join('persona', 'users.persona_id', '=', 'persona.id');
+        $bitacoras_validas = $bitacoras_validas->join('estudiante', 'persona.id', '=', 'estudiante.persona_id');
+        $bitacoras_validas = $bitacoras_validas->join('carrera', 'estudiante.carrera_id', '=', 'carrera.id');
+        $bitacoras_validas =  $bitacoras_validas->where('carrera.id', $estudiante->carrera_id);
+        $bitacoras_validas =  $bitacoras_validas->where('bitacora.valida', 1)->count();
+
+        $mes = date('m');
+        $year= date('yy');
+        if($bitacoras_validas<9){$codigo.='0'; $codigo.=(string)($bitacoras_validas+1);}
+        else{$codigo.=(string)($bitacoras_validas+1);}
+        $codigo .= (string)$mes; $codigo.=(string)$year;
+        $bitacora = Bitacora::findOrFail($id);
+        $bitacora->valida = true;
+        $bitacora->f_aprovacion = $fecha;  
+        $bitacora->codigo = $codigo;      
+        $bitacora->save();        
+        
+        return redirect()->route('bitacora.ver', $id)->with('valido', true);    
     }
 }

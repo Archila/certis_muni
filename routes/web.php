@@ -103,6 +103,7 @@ Route::delete('area', 'AreaController@eliminar')->name('area.eliminar');
 
 //Bitacora
 Route::get('bitacora', 'BitacoraController@index')->name('bitacora.index');
+Route::get('bitacora_ind', 'BitacoraController@individual')->name('bitacora.individual');
 Route::get('bitacora/crear', 'BitacoraController@crear')->name('bitacora.crear');
 Route::get('bitacora/{id}/editar', 'BitacoraController@editar')->name('bitacora.editar');
 Route::get('bitacora/{id}/ver', 'BitacoraController@ver')->name('bitacora.ver');
@@ -111,6 +112,8 @@ Route::put('bitacora/{id}', 'BitacoraController@actualizar')->name('bitacora.act
 Route::delete('bitacora', 'BitacoraController@eliminar')->name('bitacora.eliminar');
 Route::get('bitacora/{id}/folio/crear', 'BitacoraController@crear_folio')->name('bitacora.crear_folio');
 Route::get('bitacora/{id}/pdf', 'BitacoraController@pdf')->name('bitacora.pdf');
+Route::post('bitacora/oficio/{id}', 'BitacoraController@oficio')->name('bitacora.oficio');
+Route::post('bitacora/validar/{id}', 'BitacoraController@validar')->name('bitacora.validar');
 
 //Folio
 Route::get('folio', 'FolioController@index')->name('folio.index');
@@ -132,8 +135,9 @@ Route::delete('revision', 'RevisionController@eliminar')->name('revision.elimina
 
 //PDF
 Route::get('pdf', 'PDFController@index')->name('pdf.index');
-Route::get('pdf/bitacora/{id}', 'PDFController@bitacora')->name('pdf.bitacora');
+Route::get('pdf/caratula/{id}', 'PDFController@caratula')->name('pdf.caratula');
 Route::get('pdf/oficio/{id}', 'PDFController@oficio')->name('pdf.oficio');
+Route::get('pdf/folios/{id}', 'PDFController@folios')->name('pdf.folios');
 
 Route::get('/test', function () {
     

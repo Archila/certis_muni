@@ -61,7 +61,7 @@ class User extends Authenticatable
         }
 
         if($this->rol->id >= 3){
-            if($tabla == 'bitacora'){ return false;}
+            if($tabla == 'bitacora'){ return true;}
             if($tabla == 'estudiante'){ return true;}
             if($tabla == 'empresa'){ return true;}
             if($tabla == 'encargado'){ return true;}

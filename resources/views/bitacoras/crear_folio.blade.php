@@ -4,7 +4,7 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-    <li class="breadcrumb-item"><a href="{{route('bitacora.index')}}">Bitácora</a></li>
+    <li class="breadcrumb-item"><a href="{{route('bitacora.individual')}}">Bitácora</a></li>
     <li class="breadcrumb-item"><a href="{{route('bitacora.ver', $bitacora->id)}}">Semestre {{$bitacora->semestre}} ({{$bitacora->year}})</a></li>
     <li class="breadcrumb-item active">Agregar folio</li>
 @endsection

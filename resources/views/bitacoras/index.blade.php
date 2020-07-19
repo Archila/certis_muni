@@ -26,50 +26,73 @@
   <div class="card-header">
     <div class="row">
         <div class="col-md-9 col-sm-12">
-            <h3>Mis bitácoras</h3> 
+            <h3>Bitácora    </h3> 
         </div>
-        @if($btn_nuevo)
-        <div class="col-md-3 col-sm-12">
-            <a class="btn btn-block btn-primary btn-sm" href="{{route('bitacora.crear')}}">Nueva bitácora</a>
-        </div>
+        @if($btn_nuevo)        
         @endIf
     </div>
     
   </div>
   <div class="card-body">
+  @if(Auth::user()->rol->id!=2)
   <table id="datatable" class="table table-bordered table-hover">
     <thead>
         <tr>
-            <th>Semestre</th>
-            <th>Año</th>
+            <th>Estudiante</th>
+            <th>Registro</th>
             <th>Horas</th>
             <th>Empresa</th>
             <th>Encargado</th>
+            <th>Estado</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-    @foreach ($bitacoras as $b)
+    @foreach ($estudiantes as $e)       
+        @foreach ($bitacoras as $b)
+        @if($e->usuario_id== $b->usuario_id)         
         <tr>
-            <td>{{$b->semestre}}</td>
-            <td>{{$b->year}}</td>
+            <td>{{$e->nombre}} {{$e->apellido}}</td>    
+            <td>{{$e->registro}}</td>
             <td>{{$b->horas}}</td>    
             <td>{{$b->empresa}}</td>
             <td>{{$b->nombre}}{{' '}}{{$b->apellido}} ({{$b->puesto}})</td>
             <td>
+                @if($b->oficio || $b->valida)
+                    @if($b->valida)
+                    <span class="badge badge-success">Activa</span>
+                    @else
+                    <a href="{{route('pdf.oficio', $b->bitacora_id)}}" type="button" class="btn btn-info btn-xs">En oficio</a>                 
+                    @endif
+                @else
+                <a href="{{route('pdf.oficio', $b->bitacora_id)}}" type="button" class="btn btn-secondary btn-xs">No revisada</a>            
+                @endif
+            </td>
+            <td>
                 <div class="btn-group">
-                    <a href="{{route('bitacora.pdf', $b->bitacora_id)}}" type="button" class="btn btn-info btn-xs"><i class="fas fa-file-pdf"></i></a>
-                    <a href="{{route('bitacora.ver', $b->bitacora_id)}}" type="button" class="btn btn-success btn-xs"><i class="fas fa-edit"></i></a>
+                @if($b->oficio || $b->valida)
+                    @if($b->oficio)
+                    <a href="{{route('pdf.oficio', $b->bitacora_id)}}" type="button" class="btn btn-info btn-xs"><i class="fas fa-file-pdf"></i></a>
+                    @endif
+                @else
+                
+                @endif
+                    
+                    <a href="{{route('bitacora.ver', $b->bitacora_id)}}" type="button" class="btn btn-success btn-xs"><i class="fas fa-eye"></i></a>
                     <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" 
                     data-target="#modal-eliminar" data-id="{{$b->id}}">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
-            </td>    
+            </td>              
         </tr>
+        @endif  
+        @endforeach 
     @endforeach
     </tbody>    
 </table>
+
+@endif
   </div>
 </div>
 

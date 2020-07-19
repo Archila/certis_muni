@@ -7,6 +7,7 @@ use App\Models\Rol;
 use App\Models\Persona;
 use App\Models\TipoEmpresa;
 use App\Models\Estudiante;
+use App\Models\Supervisor;
 
 use App\User;
 
@@ -55,6 +56,10 @@ class DefaultSeeder extends Seeder
         Estudiante::create(['id' => 3, 'semestre'=>2, 'year'=>'2020', 'registro'=>'201330003', 'carne'=>'26003000101001', 'promedio'=>'75.5', 'creditos'=>220, 'direccion'=>'Zona 2 11-5 Xela', 'practicas'=>'2020-05-05', 'persona_id'=>6, 'carrera_id'=>4 ]);
         Estudiante::create(['id' => 4, 'semestre'=>2, 'year'=>'2020', 'registro'=>'201330004', 'carne'=>'26003000101001', 'promedio'=>'75.5', 'creditos'=>220, 'direccion'=>'Zona 3 15-2 Huehue', 'practicas'=>'2020-05-05', 'persona_id'=>7, 'carrera_id'=>1 ]);
         Estudiante::create(['id' => 5, 'semestre'=>2, 'year'=>'2020', 'registro'=>'201330005', 'carne'=>'26003000101001', 'promedio'=>'75.5', 'creditos'=>220, 'direccion'=>'Zona 7 21-7 Xela', 'practicas'=>'2020-05-05', 'persona_id'=>8, 'carrera_id'=>1 ]);
+
+        //Supervisor
+        Supervisor::create(['id' => 1, 'profesion'=>'Ingeniero Civil', 'colegiado'=>'202015255', 'persona_id'=>2, ]);
+        Supervisor::create(['id' => 2, 'profesion'=>'Ingeniero Mecanico Industrial', 'colegiado'=>'20205424', 'persona_id'=>3, ]);
 
         //Usuario
         $user = new User();
