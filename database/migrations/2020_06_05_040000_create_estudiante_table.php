@@ -32,7 +32,7 @@ class CreateEstudianteTable extends Migration
             $table->string('promedio', 6);
             $table->integer('creditos');
             $table->date('practicas');
-            $table->string('direccion', 100);
+            $table->string('direccion', 150);
             $table->boolean('activo')->default(0);
             $table->boolean('valido')->default(0);
             $table->unsignedBigInteger('persona_id');

@@ -26,11 +26,32 @@
     <input type="hidden" value="{{$bitacora->id}}" name="bitacora_id">
     <div class="form-row">
       <div class="col-md-2 mb-3">
+        @empty($folios)
         <label for="validationCustom03">Número</label>
         <input type="number" min="1" class="form-control" id="validationCustom03" required name="numero" autofocus>
         <div class="invalid-feedback">
           Por favor ingrese número de folio
+        </div>      
+        @else
+        <label for="validationCustom03">Número</label>
+        <select id="validationCustom07" class="form-control" required name="numero">
+            <option disabled>Seleccione un número</option>
+            @for ($i = 1; $i < 21 ; $i++)
+              @php $mostrar = true; @endphp
+              @foreach($folios as $f)              
+                @if($f->numero == $i)
+                @php $mostrar=false; @endphp
+                @endif
+              @endforeach  
+              @if($mostrar)
+              <option value="{{ $i }}">{{ $i }}</option>
+              @endif            
+            @endfor
+        </select>
+        <div class="invalid-feedback">
+          Por favor seleccione un número de folio
         </div>        
+        @endempty
       </div>      
       <div class="col-md-3 mb-3">
         <label for="validationCustom05">Fecha inicial</label>

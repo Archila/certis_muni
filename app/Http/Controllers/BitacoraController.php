@@ -8,6 +8,7 @@ use App\Models\Carrera;
 use App\Models\Bitacora;
 use App\Models\Folio;
 use App\Models\Area;
+use App\Models\Revision;
 use App\Models\AreaEncargado;
 use App\Models\Estudiante;
 use Illuminate\Http\Request;
@@ -260,9 +261,10 @@ class BitacoraController extends Controller
         $encargado = $encargado->leftJoin('area', 'area_encargado.area_id', '=', 'area.id');
         $encargado = $encargado->where('encargado.id',  $bitacora->encargado_id)->first();
 
-        $estudiante = Estudiante:: select('estudiante.*', 'estudiante.id as estudiante_id', 'persona.*');
+        $estudiante = Estudiante:: select('estudiante.*', 'estudiante.id as estudiante_id', 'persona.*', 'carrera.nombre as carrera');
         $estudiante = $estudiante->join('persona', 'persona_id', '=', 'persona.id');
         $estudiante = $estudiante->join('users', 'persona.id', '=', 'users.persona_id');
+        $estudiante = $estudiante->join('carrera', 'estudiante.carrera_id', '=', 'carrera.id');
         $estudiante = $estudiante->where('users.id', $bitacora->usuario_id)->firstOrFail();
 
 
@@ -313,9 +315,14 @@ class BitacoraController extends Controller
         }
         elseif(Auth::user()->id != $bitacora->usuario_id){        
             abort(403);
-        }        
+        }    
 
-        return view('bitacoras.crear_folio',['bitacora'=>$bitacora]);
+        $folios = Folio::select('folio.*');
+        $folios = $folios->where('bitacora_id',$bitacora->id);
+        $folios = $folios->orderBy('numero')->get();
+
+
+        return view('bitacoras.crear_folio',['bitacora'=>$bitacora, 'folios'=>$folios]);
     }
 
     public function pdf($id)
@@ -443,5 +450,59 @@ class BitacoraController extends Controller
         $bitacora->save();        
         
         return redirect()->route('bitacora.ver', $id)->with('valido', true);    
+    }
+
+    public function revisar($id)
+    {
+        Gate::authorize('haveaccess', '{"roles":[ 1, 3, 4, 5, 6, 7 ]}' );
+        $bitacora = Bitacora::findOrFail($id);
+
+        $folios = Folio::select('folio.*');
+        $folios = $folios->where('bitacora_id',$bitacora->id);
+        $folios = $folios->orderBy('numero')->get();
+
+        $revisiones =Revision::where('bitacora_id', $bitacora->id);
+        $revisiones = $revisiones->orderBy('fecha')->get();
+
+        $estudiante = Estudiante::select('estudiante.*', 'persona.*', 'carrera.nombre as carrera');
+        $estudiante = $estudiante->join('persona', 'persona_id', '=', 'persona.id');
+        $estudiante = $estudiante->join('carrera', 'carrera_id', '=', 'carrera.id');
+        $estudiante = $estudiante->join('users', 'persona.id', '=', 'users.persona_id');
+        $estudiante = $estudiante->where('users.id',$bitacora->usuario_id)->first();
+               
+        return view('bitacoras.revisar', ['revisiones'=>$revisiones, 'folios'=>$folios, 'bitacora'=>$bitacora, 'estudiante'=>$estudiante]);
+    }
+
+    public function revision(Request $request, $id)
+    {
+        Gate::authorize('haveaccess', '{"roles":[ 1, 3, 4, 5, 6, 7 ]}' );
+
+        $bitacora = Bitacora::findOrFail($id);
+
+        $folios = Folio::select('folio.*');
+        $folios = $folios->where('bitacora_id',$bitacora->id);
+        $folios = $folios->where('revisado', 0);
+        $folios = $folios->whereBetween('numero', [$request->folio_inicial, $request->folio_final]);
+        $folios = $folios->orderBy('numero')->get();
+
+        $horas =0;
+        foreach($folios as $folio){
+            $folio->revisado = 1;
+            $horas += $folio->horas;
+            $folio->save();
+        }
+
+        $revision = new Revision();
+        $revision->numero = (Revision::where('bitacora_id', $bitacora->id)->count())+1;
+        $revision->folio_inicial = $request->folio_inicial;
+        $revision->folio_final = $request->folio_final;
+        $revision->horas = $horas;
+        $revision->observaciones = $request->observaciones;
+        $revision->fecha = date('yy-m-d');
+        $revision->ponderacion = $request->ponderacion;
+        $revision->bitacora_id = $bitacora->id;
+        $revision->save();
+
+        return redirect()->route('bitacora.revisar', $id)->with('revision', true); 
     }
 }

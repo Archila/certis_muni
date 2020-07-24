@@ -4,8 +4,13 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+    @if(Auth()->user()->rol->id==2)
     <li class="breadcrumb-item"><a href="{{route('bitacora.individual')}}">Bitácora</a></li>
-    <li class="breadcrumb-item active"></li>Semestre {{$bitacora->semestre}} ({{$bitacora->year}})
+    <li class="breadcrumb-item active">Semestre {{$bitacora->semestre}} ({{$bitacora->year}})</li>    
+    @else
+    <li class="breadcrumb-item"><a href="{{route('bitacora.index')}}">Bitácora</a></li>
+    <li class="breadcrumb-item active">{{$estudiante->nombre}} {{$estudiante->apellido}} ({{$estudiante->registro}})</li>
+    @endif
 @endsection
 
 @section('alerta')
@@ -37,9 +42,14 @@
         </div>       
         @endif
         <div class="row shadow-sm bg-white rounded">
-          <p class="col-sm-12 mb-n1 mt-1"><b>Estudiante: </b>{{$estudiante->nombre}} {{$estudiante->apellido}}</p>
-          <p class="col-sm-4"><b>Registro:  </b> {{$estudiante->registro}}</p>
-          <p class="col-sm-4"><b>Carne:  </b> {{$estudiante->carne}}</p>
+          <p class="col-sm-6 mb-n1 mt-1"><b>Estudiante: </b>{{$estudiante->nombre}} {{$estudiante->apellido}}</p>
+          <p class="col-sm-3 mb-n1 mt-1"><b>Registro:  </b> {{$estudiante->registro}}</p>
+          <p class="col-sm-3 mb-n1 mt-1"><b>Carne:  </b> {{$estudiante->carne}}</p>
+          <p class="col-sm-4 "><b>Carrera:  </b> {{$estudiante->carrera}}</p>
+          <p class="col-sm-2 "><b>Promedio:  </b> {{$estudiante->promedio}}</p>
+          <p class="col-sm-2 "><b>Créditos:  </b> {{$estudiante->creditos}}</p>
+          <p class="col-sm-2 "><b>Año:  </b> {{$estudiante->year}}</p>
+          <p class="col-sm-2 "><b>Semestre:  </b> {{$estudiante->semestre}}</p>
           <hr>
           <p class="col-sm-6 my-n1"><b>Empresa: </b>{{$empresa->nombre}}</p>
           <p class="col-sm-6 my-n1"><b>Dirección: </b>{{$empresa->direccion}}</p>
@@ -60,7 +70,6 @@
             </div>
             @endif
         </div>
-        <h4>Folios</h4>    
           <div class="col-12">
             <div class="card card-primary card-tabs">
               <div class="card-header p-0 pt-1">
@@ -162,10 +171,16 @@
           </div>          
           @else   
           <div class='row'>            
-            <div class="col-md-2 offset-md-10 mt-3">
+            <div class="col-md-2 offset-md-6 mt-3">
               <a class="btn btn-block btn-info btn-block" href="{{route('pdf.oficio', $bitacora->id)}}">Ver oficio</a>
             </div> 
-          </div>       
+            <div class="col-md-2 mt-3">
+              <a class="btn btn-block btn-warning btn-block" href="{{route('pdf.caratula', $bitacora->id)}}">Ver Caratula</a>
+            </div> 
+            <div class="col-md-2 mt-3">
+              <a class="btn btn-block bg-orange btn-block" href="{{route('bitacora.revisar', $bitacora->id)}}">Revisar folios</a>
+            </div> 
+          </div>     
           @endif
         @endif
     </div>

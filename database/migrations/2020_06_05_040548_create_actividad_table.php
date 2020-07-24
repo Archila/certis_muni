@@ -15,7 +15,7 @@ class CreateActividadTable extends Migration
     {
         Schema::create('actividad', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nombre', 60);
+            $table->string('nombre', 120);
             $table->string('descripcion', 150)->nullable();
             $table->unsignedBigInteger('empresa_id');
 

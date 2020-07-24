@@ -114,6 +114,8 @@ Route::get('bitacora/{id}/folio/crear', 'BitacoraController@crear_folio')->name(
 Route::get('bitacora/{id}/pdf', 'BitacoraController@pdf')->name('bitacora.pdf');
 Route::post('bitacora/oficio/{id}', 'BitacoraController@oficio')->name('bitacora.oficio');
 Route::post('bitacora/validar/{id}', 'BitacoraController@validar')->name('bitacora.validar');
+Route::get('bitacora/{id}/revisar', 'BitacoraController@revisar')->name('bitacora.revisar');
+Route::post('bitacora/{id}/revision', 'BitacoraController@revision')->name('bitacora.revision');
 
 //Folio
 Route::get('folio', 'FolioController@index')->name('folio.index');
@@ -138,6 +140,9 @@ Route::get('pdf', 'PDFController@index')->name('pdf.index');
 Route::get('pdf/caratula/{id}', 'PDFController@caratula')->name('pdf.caratula');
 Route::get('pdf/oficio/{id}', 'PDFController@oficio')->name('pdf.oficio');
 Route::get('pdf/folios/{id}', 'PDFController@folios')->name('pdf.folios');
+
+//API
+Route::get('api/folios_revisar', 'ApiController@folios_revisar')->name('api.folios_revisar');
 
 Route::get('/test', function () {
     

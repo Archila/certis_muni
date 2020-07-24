@@ -23,15 +23,15 @@ class CreateEmpresaTable extends Migration
 
         Schema::create('empresa', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nombre', 60);
+            $table->string('nombre', 120);
             $table->string('ubicacion', 100);
             $table->string('direccion', 100);
             $table->string('alias', 60)->nullable();
-            $table->string('correo', 30);
+            $table->string('correo', 60);
             $table->string('telefono', 10);
-            $table->string('contacto', 60)->nullable();
+            $table->string('contacto', 80)->nullable();
             $table->string('tel_contacto', 10)->nullable();
-            $table->string('correo_contacto', 30)->nullable();
+            $table->string('correo_contacto', 60)->nullable();
             $table->string('ubicacion_x', 15)->nullable();
             $table->string('ubiacion_y', 15)->nullable();
             $table->string('calificacion', 15)->nullable();

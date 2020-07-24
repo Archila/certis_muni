@@ -68,7 +68,7 @@
             </p>
 
             @endif              
-            <div class="text-center mt-5 mb-3">
+            <div class="text-center mb-3">
                 <a href="{{route('bitacora.ver', $bitacora->id)}}" class="btn btn-sm btn-primary">Detalle folios</a>
                 @if($bitacora->valida)
                 <a href="{{route('bitacora.crear_folio', $bitacora->id)}}" class="btn btn-sm btn-success">Agregar folio</a>
@@ -128,7 +128,7 @@
                                 @endforeach
                                 <tr>
                                     <td colspan="1"></td>
-                                    <th colspan="2">Horas validadas: {{$cont}}</th>
+                                    <th colspan="2">Horas revisadas: {{$cont}}</th>
                                 </tr>
                             @endif
                             </tbody>
