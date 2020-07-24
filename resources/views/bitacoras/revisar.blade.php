@@ -131,6 +131,17 @@
                     <h4><i class="fas fa-exclamation"></i> No hay folios agregados en esta bitácora</h4>
                     </div>
                     @else
+                        @php $todos_revisados = true; @endphp
+                        @foreach($folios as $f)
+                            @if(!$f->revisado)
+                            @php $todos_revisados = false; @endphp
+                            @endif
+                        @endforeach
+                    @if($todos_revisados)
+                    <div class="callout callout-warning">
+                    <h4><i class="fas fa-exclamation"></i> Todos los folios ya han sido revisados.</h4>
+                    </div>
+                    @else                   
                     <form class="needs-validation" method="POST" action="{{route('bitacora.revision', $bitacora->id)}}" novalidate>
                     @csrf
                         <div class="form-row ">
@@ -198,6 +209,7 @@
                             </tbody>
                         </table>
                     </form>
+                    @endif
                     @endempty     
                   </div>                  
                 </div>
