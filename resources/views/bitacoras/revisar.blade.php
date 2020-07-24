@@ -27,10 +27,10 @@
 <div class="card card-primary card-outline">
     <input type="hidden" value="{{$bitacora->id}}" id="bitacora_id">
         <div class="card-header">
-        @if($bitacora->semestre==1) @php $semestre='Primer semestre'; @endphp @else @php $semestre='Segundo semestre'; @endphp @endif
-        <h4 class="">
-            Revisar folios - {{$semestre}} - {{$bitacora->year}}
-        </h4>
+            @if($bitacora->semestre==1) @php $semestre='Primer semestre'; @endphp @else @php $semestre='Segundo semestre'; @endphp @endif
+            <h4 class="">
+                Revisar folios - {{$semestre}} - {{$bitacora->year}}
+            </h4>
         </div>
         <div class="card-body">
         @if($bitacora->oficio && Auth()->user()->rol->id !=2)
@@ -222,6 +222,7 @@
         </div>
         <!-- /.row -->        
     </div>
+</div>
 @endsection
 
 @section('page_script')
