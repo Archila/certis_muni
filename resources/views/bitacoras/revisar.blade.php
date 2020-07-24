@@ -139,7 +139,7 @@
                         @endforeach
                     @if($todos_revisados)
                     <div class="callout callout-warning">
-                    <h4><i class="fas fa-exclamation"></i> Todos los folios ya han sido revisados.</h4>
+                    <h4><i class="fas fa-exclamation"></i> No hay folios para revisar.</h4>
                     </div>
                     @else                   
                     <form class="needs-validation" method="POST" action="{{route('bitacora.revision', $bitacora->id)}}" novalidate>
