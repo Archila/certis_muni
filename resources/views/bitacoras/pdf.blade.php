@@ -88,7 +88,7 @@
               <dt class="col-sm-2">Tipo:</dt>
               <dd class="col-sm-4">@if($bitacora->tipo==1) Docencia @endif @if($bitacora->tipo==2) Investigación @endif @if($bitacora->tipo==3) Aplicada @endif</dd>
               <dt class="col-sm-3">Fecha extensión:</dt>
-              <dd class="col-sm-3">{{$bitacora->f_aprovacion}}</dd>
+              <dd class="col-sm-3">{{$bitacora->f_aprobacion}}</dd>
               <dt class="col-sm-2">Estudiante:</dt>
               <dd class="col-sm-10">{{$estudiante->nombre}}&nbsp;{{$estudiante->apellido}}. Carne:&nbsp;<b>{{$estudiante->carne}}</b>. Registro: 
               <b>{{$estudiante->registro}}</b>. De la carrera de {{$estudiante->carrera}}.

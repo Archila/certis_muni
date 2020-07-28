@@ -133,6 +133,7 @@
       </div>    
     </div>
     @else
+    <!--
     <hr>
     <div class="custom-control custom-checkbox">
       <input class="custom-control-input" type="checkbox" id="cbx_encargado" value="true" checked onclick="cbxEncargado()" name="cbx_encargado">
@@ -200,7 +201,8 @@
             </div>
         </div>    
       </div>
-    </div>    
+    </div>  
+    -->  
     @endIf
     @endIf
 

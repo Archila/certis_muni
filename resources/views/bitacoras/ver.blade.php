@@ -131,6 +131,12 @@
                         <div class="post">                        
                           <p> {{$f->descripcion}} </p>                       
                         </div>
+                        <div class="row mt-n1">
+                            <h4>Observaciones</h4>
+                        </div>     
+                        <div class="post">                        
+                          <p> {{$f->observaciones}} </p>                       
+                        </div>                        
                     </div>
                     @php $activo=''; @endphp
                     @endforeach  

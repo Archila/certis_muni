@@ -40,9 +40,9 @@
             <h5 class="mt-2 text-muted">Estado de la bitácora</h5>
             @if($bitacora->oficio || $bitacora->valida)
                 @if($bitacora->valida)
-                <h5><span class="badge badge-success">Bitácora aprovada.</span></h5>
+                <h5><span class="badge badge-success">Bitácora aprobada.</span></h5>
                 <p>
-                    Su bitácora ya ha sido aprovada totalmente, ya puede generar los folios e imprimir para llenarlos 
+                    Su bitácora ya ha sido aprobada totalmente, ya puede generar los folios e imprimir para llenarlos 
                     manualmente.
                 </p>
                 <ul class="list-unstyled">
@@ -51,10 +51,10 @@
                     </li>
                     <li>
                     <a href="{{route('pdf.folios', $bitacora->id)}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i> folios.pdf</a>
-                    </li>
+                    </li>                    
                 </ul>
                 @else 
-                <h5><span class="badge badge-info">Oficio generado, esperando por aprovación.</span></h5>
+                <h5><span class="badge badge-info">Oficio generado, esperando por aprobación.</span></h5>
                 <p>
                     Se ha generado el oficio para su bitácora, aún no puede generar los fólios hasta recibir la carta correspondiente
                     a la contraparte institucional.
@@ -62,15 +62,15 @@
                 @endif
             
             @else
-            <h5><span class="badge badge-secondary">Su bitácora aún no ha sido aprovada.</span></h5>
+            <h5><span class="badge badge-secondary">Su bitácora aún no ha sido aprobada.</span></h5>
             <p>
-                Por favor espere a que su bitácora sea aprovada o contácte con su supervisor de prácticas finales.
+                Por favor espere a que su bitácora sea aprobada o contácte con su supervisor de prácticas finales.
             </p>
 
             @endif              
-            <div class="text-center mb-3">
-                <a href="{{route('bitacora.ver', $bitacora->id)}}" class="btn btn-sm btn-primary">Detalle folios</a>
+            <div class="text-center mb-3">                
                 @if($bitacora->valida)
+                <a href="{{route('bitacora.ver', $bitacora->id)}}" class="btn btn-sm btn-primary">Detalle folios</a>
                 <a href="{{route('bitacora.crear_folio', $bitacora->id)}}" class="btn btn-sm btn-success">Agregar folio</a>
                 @endif
             </div>

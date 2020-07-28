@@ -19,7 +19,7 @@ class CreateBitacoraFolioTable extends Migration
             $table->integer('semestre');
             $table->integer('year');
             $table->integer('tipo');
-            $table->date('f_aprovacion')->nullable();
+            $table->date('f_aprobacion')->nullable();
             $table->boolean('oficio')->default(0);
             $table->boolean('valida')->default(0);
             $table->string('codigo')->nullable();

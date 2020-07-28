@@ -159,14 +159,16 @@ class BitacoraController extends Controller
         if(Auth::user()->rol->id == 2){   
             $bitacora_est = Bitacora::where('usuario_id',Auth::user()->id)->first();
             if($bitacora_est){abort(403);}
-            $empresas = Empresa::where('publico',1)->get();
-            $encargados = $encargados->where('usuario_id',Auth::user()->id)->get();
+            $empresas = Empresa::where('publico',1)->get();            
+            $encargados = $encargados->where('usuario_id',Auth::user()->id)->get();            
         }
         else{
             $empresas = Empresa::all();
             $encargados = $encargados->get();
-        }
+        }      
         
+        if(!$encargados->count()){ $encargados=null;}
+        if(!$empresas->count()){ $empresas=null;}
 
         $empresa = Empresa::where('usuario_id', Auth::user()->id)->first();
 
@@ -175,6 +177,8 @@ class BitacoraController extends Controller
         $encargado = $encargado->leftJoin('area_encargado', 'encargado.id', '=', 'area_encargado.encargado_id');
         $encargado = $encargado->leftJoin('area', 'area_encargado.area_id', '=', 'area.id')->get();
         $encargado = $encargado->where('usuario_id', Auth::user()->id)->first();
+
+        //return dd($empresas);
 
         return view('bitacoras.crear', ['encargados'=>$encargados, 'empresas'=>$empresas, 'empresa'=>$empresa, 'encargado'=>$encargado]);
     }
@@ -445,7 +449,7 @@ class BitacoraController extends Controller
         $codigo .= (string)$mes; $codigo.=(string)$year;
         $bitacora = Bitacora::findOrFail($id);
         $bitacora->valida = true;
-        $bitacora->f_aprovacion = $fecha;  
+        $bitacora->f_aprobacion = $fecha;  
         $bitacora->codigo = $codigo;      
         $bitacora->save();        
         

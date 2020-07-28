@@ -71,14 +71,16 @@
                     @else
                     <div id="accordion">
                         <!-- we are adding the .class so bootstrap.js collapse plugin detects it -->
+                        @php $horas_revisadas = 0; @endphp
                         @foreach($revisiones as $r)
                         <div class="card card-primary">
                             <div class="card-header">
                             <h4 class="card-title">
                                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse-{{$r->id}}">
-                                {{date('d-M-Y', strtotime($r->fecha))}} - Ponderación: {{$r->ponderacion}}
+                                {{date('d-M-Y', strtotime($r->fecha))}} - Ponderación: {{$r->ponderacion}} - Horas revisadas: {{$r->horas}}
                                 </a>
                             </h4>
+                            @php $horas_revisadas += $r->horas; @endphp
                             </div>
                             <div id="collapse-{{$r->id}}" class="panel-collapse collapse in">
                                 <div class="card-body">
@@ -121,6 +123,10 @@
                             </div>
                         </div>
                         @endforeach
+                        <div class="row">
+                            <p class="col-sm-6 mb-n1"><b>Horas revisadas: </b>{{$horas_revisadas}}</p>
+                            <p class="col-sm-6 mb-n1"><b>Horas sin revisar: </b>{{$bitacora->horas-$horas_revisadas}}</p>
+                        </div>
                     </div>
                     @endempty                    
                   </div>
