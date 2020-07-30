@@ -30,7 +30,7 @@ class EmpresaController extends Controller
      */
     public function index(Request $request)
     {
-        Gate::authorize('haveaccess', $this->roles_gate );
+        Gate::authorize('haveaccess', '{"roles":[ 1, 3, 4, 5, 6, 7 ]}' );
 
         $request->validate([
             'all' => 'nullable|boolean',
@@ -172,7 +172,7 @@ class EmpresaController extends Controller
 
             $area = new Area();
             $area->nombre = $request->area;
-            $area->puesto = $request->puesto;
+            $area->descripcion = $request->descripcion;
             $area->empresa_id = $empresa->id;
             $area->save();
     
@@ -184,17 +184,22 @@ class EmpresaController extends Controller
         if($request->encargado_id){
             $area = new Area();
             $area->nombre = $request->area;
-            $area->puesto = $request->puesto;
+            $area->descripcion = $request->descripcion;
             $area->empresa_id = $empresa->id;
             $area->save();
     
             $area_encargado =  new AreaEncargado();
+            $area_encargado->puesto = $request->puesto;
             $area_encargado->area_id = $area->id;
             $area_encargado->encargado_id=$request->encargado_id;
             $area_encargado->save();
         }
-        
-        return redirect()->route('empresa.index')->with('creado', $empresa->id);   
+        if(Auth::user()->rol->id == 2){
+            return redirect()->route('bitacora.crear');   
+        }
+        else{
+            return redirect()->route('empresa.index')->with('creado', $empresa->id);   
+        }
     }
 
     /**
@@ -212,10 +217,10 @@ class EmpresaController extends Controller
         $empresa = $empresa->where('empresa.id',$id)->firstOrFail();
 
         $areas = Area::select('area.nombre as area', 'encargado.*', 'area.id as area_id', 'encargado.id as encargado_id', 'persona.*');
-        $areas ->join('area_encargado', 'area.id', '=', 'area_encargado.area_id');
-        $areas ->join('encargado', 'area_encargado.encargado_id', '=', 'encargado.id');
-        $areas ->join('empresa', 'area.empresa_id', '=', 'empresa.id');
-        $areas ->join('persona', 'encargado.persona_id', '=', 'persona.id');
+        $areas ->leftJoin('area_encargado', 'area.id', '=', 'area_encargado.area_id');
+        $areas ->leftJoin('encargado', 'area_encargado.encargado_id', '=', 'encargado.id');
+        $areas ->leftJoin('empresa', 'area.empresa_id', '=', 'empresa.id');
+        $areas ->leftJoin('persona', 'encargado.persona_id', '=', 'persona.id');
         $areas = $areas->where('empresa.id',$id)->get();
 
         //return dd($areas);
@@ -231,10 +236,10 @@ class EmpresaController extends Controller
     public function editar($id)
     {
         $areas = Area::select('area.nombre as area', 'encargado.*', 'area.id as area_id', 'encargado.id as encargado_id', 'persona.*');
-        $areas ->join('area_encargado', 'area.id', '=', 'area_encargado.area_id');
-        $areas ->join('encargado', 'area_encargado.encargado_id', '=', 'encargado.id');
-        $areas ->join('empresa', 'area.empresa_id', '=', 'empresa.id');
-        $areas ->join('persona', 'encargado.persona_id', '=', 'persona.id');
+        $areas ->leftJoin('area_encargado', 'area.id', '=', 'area_encargado.area_id');
+        $areas ->leftJoin('encargado', 'area_encargado.encargado_id', '=', 'encargado.id');
+        $areas ->leftJoin('empresa', 'area.empresa_id', '=', 'empresa.id');
+        $areas ->leftJoin('persona', 'encargado.persona_id', '=', 'persona.id');
         $areas = $areas->where('empresa.id',$id)->get();
 
         $empresa = Empresa::select('empresa.*', 'tipo_empresa.nombre as tipo', 'empresa.id as empresa_id');

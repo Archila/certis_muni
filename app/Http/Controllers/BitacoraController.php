@@ -54,7 +54,7 @@ class BitacoraController extends Controller
         if($request->has('direction')) $direction = $request->direction;
   
         $bitacoras = Bitacora::select('bitacora.*', 'persona.*', 'empresa.nombre as empresa', 'encargado.profesion as profesion', 
-        'encargado.colegiado as colegiado', 'bitacora.id as bitacora_id', 'area.puesto as puesto');  
+        'encargado.colegiado as colegiado', 'bitacora.id as bitacora_id', 'area_encargado.puesto as puesto');  
         $bitacoras->join('encargado', 'encargado_id', '=', 'encargado.id');
         $bitacoras->join('empresa', 'empresa_id', '=', 'empresa.id');
         $bitacoras->join('persona', 'encargado.persona_id', '=', 'persona.id');
@@ -123,11 +123,11 @@ class BitacoraController extends Controller
 
             $empresa = Empresa::where('id', $bitacora->empresa_id)->first();
 
-            $encargado= Encargado::select('encargado.*', 'persona.*', 'encargado.id as encargado_id', 'area.puesto as puesto');
+            $encargado= Encargado::select('encargado.*', 'persona.*', 'encargado.id as encargado_id', 'area_encargado.puesto as puesto');
             $encargado = $encargado->join('persona', 'persona_id', '=', 'persona.id');
             $encargado = $encargado->leftJoin('area_encargado', 'encargado.id', '=', 'area_encargado.encargado_id');
-            $encargado = $encargado->leftJoin('area', 'area_encargado.area_id', '=', 'area.id')->get();
-            $encargado = $encargado->where('usuario_id', $bitacora->usuario_id)->first();
+            $encargado = $encargado->leftJoin('area', 'area_encargado.area_id', '=', 'area.id');
+            $encargado = $encargado->where('encargado.id', $bitacora->encargado_id)->first();
 
             $estudiante = Estudiante::select('estudiante.*', 'persona.*', 'carrera.nombre as carrera');
             $estudiante = $estudiante->join('persona', 'persona_id', '=', 'persona.id');
@@ -136,6 +136,9 @@ class BitacoraController extends Controller
             $estudiante = $estudiante->where('users.id',$bitacora->usuario_id)->first();
 
             $folios = Folio::where('bitacora_id', $bitacora->id)->orderBy('numero', 'asc')->get();
+
+            //$encargado = Encargado::findOrFail($bitacora->encargado_id);
+            //return dd($encargado);
 
             return view('bitacoras.individual', ['nuevo'=>false,'empresa'=>$empresa, 'encargado'=>$encargado, 'bitacora'=>$bitacora, 'estudiante'=>$estudiante, 'folios'=>$folios]);
         }
@@ -160,27 +163,29 @@ class BitacoraController extends Controller
             $bitacora_est = Bitacora::where('usuario_id',Auth::user()->id)->first();
             if($bitacora_est){abort(403);}
             $empresas = Empresa::where('publico',1)->get();            
-            $encargados = $encargados->where('usuario_id',Auth::user()->id)->get();            
+            $encargados = $encargados->get();            
         }
         else{
             $empresas = Empresa::all();
             $encargados = $encargados->get();
-        }      
+        }              
         
-        if(!$encargados->count()){ $encargados=null;}
-        if(!$empresas->count()){ $empresas=null;}
-
+        $areas=null;        
+        if(!$empresas->count()){ }
+        else{
+            $areas = Area::select('area.nombre as area', 'area.descripcion as descripcion');        
+            $areas = $areas->join('empresa', 'area.empresa_id', '=', 'empresa.id');
+            $areas = $areas->where('empresa.id',$empresas[0]->id)->get();
+        }
         $empresa = Empresa::where('usuario_id', Auth::user()->id)->first();
 
-        $encargado= Encargado::select('encargado.*', 'persona.*', 'encargado.id as encargado_id', 'area.puesto as puesto');
+        $encargado= Encargado::select('encargado.*', 'persona.*', 'encargado.id as encargado_id', 'area_encargado.puesto as puesto');
         $encargado = $encargado->join('persona', 'persona_id', '=', 'persona.id');
         $encargado = $encargado->leftJoin('area_encargado', 'encargado.id', '=', 'area_encargado.encargado_id');
         $encargado = $encargado->leftJoin('area', 'area_encargado.area_id', '=', 'area.id')->get();
         $encargado = $encargado->where('usuario_id', Auth::user()->id)->first();
 
-        //return dd($empresas);
-
-        return view('bitacoras.crear', ['encargados'=>$encargados, 'empresas'=>$empresas, 'empresa'=>$empresa, 'encargado'=>$encargado]);
+        return view('bitacoras.crear', ['encargados'=>$encargados, 'empresas'=>$empresas, 'empresa'=>$empresa, 'encargado'=>$encargado, 'areas'=>$areas]);
     }
 
     /**
@@ -198,23 +203,14 @@ class BitacoraController extends Controller
         if ($carrera) {            
             return redirect()->route('carrera.crear')->with('error', 'ERROR');             
         }*/
-        if($request->encargado_id){$encargado_id = $request->encargado_id;}
-        else { $encargado = Encargado::where('usuario_id',Auth::user()->id)->first();
-            $encargado_id = $encargado->id;}
-
-        if($request->empresa_id){ $empresa_id = $request->empresa_id;}
-        else { $empresa = Empresa::where('usuario_id',Auth::user()->id)->first();
-            $empresa_id = $empresa->id;}    
-        
-        if($request->puesto){
-            $area = new Area();
-            $area->nombre = $request->area;
-            $area->puesto = $request->puesto;
-            $area->empresa_id = $empresa_id;
-            $area->save();
-    
+        if($request->existente){
+            $encargado_id = $request->encargado_area_id;            
+        }
+        else{
+            $encargado_id = $request->encargado_id;
             $area_encargado =  new AreaEncargado();
-            $area_encargado->area_id = $area->id;
+            $area_encargado->puesto = $request->puesto;
+            $area_encargado->area_id = $request->area_id;
             $area_encargado->encargado_id=$encargado_id;
             $area_encargado->save();
         }
@@ -223,7 +219,7 @@ class BitacoraController extends Controller
         $bitacora->semestre = $request->semestre;
         $bitacora->year = $request->year;
         $bitacora->tipo = $request->tipo;
-        $bitacora->empresa_id = $empresa_id;
+        $bitacora->empresa_id = $request->empresa_id;
         $bitacora->encargado_id = $encargado_id;
         $bitacora->usuario_id = Auth::user()->id;
         $bitacora->save();
@@ -259,7 +255,7 @@ class BitacoraController extends Controller
 
         $empresa = Empresa::where('id', $bitacora->empresa_id)->first();
 
-        $encargado= Encargado::select('encargado.*', 'persona.*', 'encargado.id as encargado_id', 'area.puesto as puesto');
+        $encargado= Encargado::select('encargado.*', 'persona.*', 'encargado.id as encargado_id', 'area_encargado.puesto as puesto');
         $encargado = $encargado->join('persona', 'persona_id', '=', 'persona.id');
         $encargado = $encargado->leftJoin('area_encargado', 'encargado.id', '=', 'area_encargado.encargado_id');
         $encargado = $encargado->leftJoin('area', 'area_encargado.area_id', '=', 'area.id');
@@ -341,7 +337,7 @@ class BitacoraController extends Controller
 
         $empresa = Empresa::where('usuario_id', Auth::user()->id)->first();
 
-        $encargado= Encargado::select('encargado.*', 'persona.*', 'encargado.id as encargado_id', 'area.puesto as puesto');
+        $encargado= Encargado::select('encargado.*', 'persona.*', 'encargado.id as encargado_id', 'area_encargado.puesto as puesto');
         $encargado = $encargado->join('persona', 'persona_id', '=', 'persona.id');
         $encargado = $encargado->leftJoin('area_encargado', 'encargado.id', '=', 'area_encargado.encargado_id');
         $encargado = $encargado->leftJoin('area', 'area_encargado.area_id', '=', 'area.id')->get();

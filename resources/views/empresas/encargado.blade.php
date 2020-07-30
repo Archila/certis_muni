@@ -28,8 +28,8 @@
 
         <div class="form-group">
             <div class="custom-control custom-switch">
-                <input type="checkbox" checked class="custom-control-input" id="cbx_encargado" onclick="cbxEncargado()" name="nuevo" >
-                <label class="custom-control-label" for="cbx_encargado">Nuevo encargado</label>
+                <input type="checkbox" class="custom-control-input" id="cbx_encargado" onclick="cbxEncargado()" name="completo" >
+                <label class="custom-control-label" for="cbx_encargado">Agregar encargado</label>
             </div>
         </div>          
     </div>
@@ -89,6 +89,7 @@
     </div>
 
     <div id="encargado-existente" style="display: none">
+        <!--
         <div class="form-row">
             <div class="col-md-8 mb-3">
                 <label for="select_tipo">Encargados en el sistema</label>                   
@@ -103,6 +104,7 @@
                 </div>
             </div>
         </div>        
+        -->
     </div>    
 
     <div class="form-row">

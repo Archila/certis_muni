@@ -50,7 +50,7 @@ class EncargadoController extends Controller
         $direction = 'desc';
         if($request->has('direction')) $direction = $request->direction;
   
-        $encargados = Encargado::select('encargado.*', 'encargado.id as encargado_id', 'persona.*', 'empresa.nombre as empresa', 'area.puesto as puesto');
+        $encargados = Encargado::select('encargado.*', 'encargado.id as encargado_id', 'persona.*', 'empresa.nombre as empresa', 'area_encargado.puesto as puesto');
         $encargados ->join('persona', 'persona_id', '=', 'persona.id');
         $encargados ->leftJoin('area_encargado', 'encargado.id', '=', 'area_encargado.encargado_id');
         $encargados ->leftJoin('area', 'area_encargado.area_id', '=', 'area.id');
@@ -134,12 +134,13 @@ class EncargadoController extends Controller
             if($request->area){//SI el encargado es para una empresa que un estudiante ya ha ingresado
                 $area = new Area();
                 $area->nombre = $request->area;
-                $area->puesto = $request->puesto;
+                $area->descripcion = $request->descripcion;
                 $area->empresa_id = $request->empresa_id;
                 $area->save();
         
                 $area_encargado =  new AreaEncargado();
                 $area_encargado->area_id = $area->id;
+                $area_encargado->puesto = $request->puesto;
                 $area_encargado->encargado_id=$encargado->id;
                 $area_encargado->save();
             }
@@ -147,7 +148,7 @@ class EncargadoController extends Controller
             return redirect()->route('encargado.index')->with('creado', $encargado->id);   
         }
         else{ // Ruta empresa.encargado
-            if($request->nuevo){
+            if($request->completo){
                 $persona = new Persona();
                 $persona->nombre = $request->nombre;
                 $persona->apellido = $request->apellido;
@@ -163,23 +164,27 @@ class EncargadoController extends Controller
                 $encargado->save();
     
                 $encargado_id = $encargado->id;
+
+                $area = new Area();
+                $area->nombre = $request->area;
+                $area->descripcion = $request->descripcion;
+                $area->empresa_id = $request->empresa_id;
+                $area->save();
+
+                $area_encargado =  new AreaEncargado();
+                $area_encargado->puesto = $request->puesto;
+                $area_encargado->area_id = $area->id;
+                $area_encargado->encargado_id=$encargado_id;
+                $area_encargado->save();
             }
-            else{
-                $encargado_id=$request->encargado_id;
+            else {
+                $area = new Area();
+                $area->nombre = $request->area;
+                $area->descripcion = $request->descripcion;
+                $area->empresa_id = $request->empresa_id;
+                $area->save();
             }
-    
-            $area = new Area();
-            $area->nombre = $request->area;
-            $area->puesto = $request->puesto;
-            $area->empresa_id = $request->empresa_id;
-            $area->save();
-    
-            $area_encargado =  new AreaEncargado();
-            $area_encargado->area_id = $area->id;
-            $area_encargado->encargado_id=$encargado_id;
-            $area_encargado->save();
-    
-            return redirect()->route('empresa.ver', $request->empresa_id);  
+            return redirect()->route('empresa.editar', $request->empresa_id);  
         }
     }
 

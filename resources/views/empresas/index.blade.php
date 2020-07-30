@@ -45,7 +45,10 @@
     
   </div>
   <div class="card-body">
-  <table id="datatable" class="table table-sm table-responsive table-bordered table-hover">
+  
+  </div>
+  <div class="table-responsive">
+  <table id="datatable" class="table table-sm table-bordered table-hover">
     <thead>
         <tr>
             <th>Nombre</th>
@@ -60,7 +63,7 @@
             @else
             <th>Dirección</th>
             @endIf
-            <th></th>
+            <th>Opciones</th>
         </tr>
     </thead>
     <tbody>
@@ -116,7 +119,7 @@
     @endforeach
     </tbody>    
 </table>
-  </div>
+</div>
 </div>
 
 <div class="modal fade" id="modal-eliminar">
