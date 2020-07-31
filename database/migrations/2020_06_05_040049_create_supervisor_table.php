@@ -24,6 +24,13 @@ class CreateSupervisorTable extends Migration
             $table->foreign('persona_id')->references('id')->on('persona')
                                                         ->onDelete('cascade')->onUpdate('cascade');
         });
+
+        Schema::table('estudiante', function (Blueprint $table) {
+            $table->unsignedBigInteger('usuario_supervisor');
+    
+            $table->foreign('usuario_supervisor')->references('id')->on('users')
+                                                        ->onDelete('cascade')->onUpdate('cascade');
+          });
     }
 
     /**
@@ -33,6 +40,10 @@ class CreateSupervisorTable extends Migration
      */
     public function down()
     {
+        Schema::table('estudiante', function (Blueprint $table) {
+            $table->dropColumn('usuario_supervisor');
+        });
+
         Schema::dropIfExists('supervisor');
     }
 }

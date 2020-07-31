@@ -89,23 +89,11 @@ class BitacoraController extends Controller
         $estudiantes ->join('users', 'persona.id', '=', 'users.persona_id');
 
         if(Auth::user()->rol->id != 1){
-            if(Auth::user()->rol->id == 3){
-                $estudiantes->where('carrera.id', 1); //CIVIL
-            }
-            elseif(Auth::user()->rol->id == 4){
-                $estudiantes->where('carrera.id', 2); //Mecanica
-            }
-            elseif(Auth::user()->rol->id == 5){
-                $estudiantes->where('carrera.id', 3); //Industrial
-            }
-            elseif(Auth::user()->rol->id == 6){
-                $estudiantes->where('carrera.id', 4); //Mecanica Industrial
-            }
-            elseif(Auth::user()->rol->id == 7){
-                $estudiantes->where('carrera.id', 5); //Sistemas
-            }
+            $estudiantes = $estudiantes->where('usuario_supervisor',Auth::user()->id);
         }
         $estudiantes = $estudiantes->orderBy('estudiante.created_at', $direction)->get();
+
+        //return dd(Auth::user());
 
         return view('bitacoras.index',compact(['bitacoras','btn_nuevo', 'estudiantes']));
     }
@@ -266,7 +254,10 @@ class BitacoraController extends Controller
         $estudiante = $estudiante->join('users', 'persona.id', '=', 'users.persona_id');
         $estudiante = $estudiante->join('carrera', 'estudiante.carrera_id', '=', 'carrera.id');
         $estudiante = $estudiante->where('users.id', $bitacora->usuario_id)->firstOrFail();
-
+       
+        if(Auth::user()->rol->id != 1 && Auth::user()->rol->id != 2){        
+            if(Auth::user()->id != $estudiante->usuario_supervisor){abort(403);}
+        }
 
         return view('bitacoras.ver',['bitacora'=>$bitacora, 'folios'=>$folios, 'empresa'=>$empresa, 'encargado'=>$encargado, 'estudiante'=>$estudiante]);
     }
@@ -358,22 +349,17 @@ class BitacoraController extends Controller
         Gate::authorize('haveaccess', '{"roles":[ 1, 3, 4, 5, 6, 7 ]}' );
 
         $bitacora = Bitacora::findOrFail($id);
-
-        if(Auth::user()->rol->id == 2){        
-            if(Auth::user()->id != $bitacora->usuario_id){abort(403);}
-        }
-
+        $fecha = date('yy-m-d');
+        
         $estudiante = Estudiante::select('estudiante.*', 'persona.*', 'carrera.nombre as carrera', 'carrera.id as carrera_id');
         $estudiante = $estudiante->join('persona', 'persona_id', '=', 'persona.id');
         $estudiante = $estudiante->join('carrera', 'carrera_id', '=', 'carrera.id');
         $estudiante = $estudiante->join('users', 'persona.id', '=', 'users.persona_id');
         $estudiante = $estudiante->where('users.id',$bitacora->usuario_id)->first();
         
-        if(Auth::user()->rol->id == 3 && $estudiante->carrera_id != 1){ abort(403);} // CIVIL
-        elseif(Auth::user()->rol->id == 4 && $estudiante->carrera_id != 2   ){ abort(403);} // MECANICA
-        elseif(Auth::user()->rol->id == 5 && $estudiante->carrera_id != 3){ abort(403);} // INDUSTRIAL
-        elseif(Auth::user()->rol->id == 6 && $estudiante->carrera_id != 4){ abort(403);} // MECANICA INDUSTRIAL
-        elseif(Auth::user()->rol->id == 7 && $estudiante->carrera_id != 5){ abort(403);} // SISTEMAS
+        if(Auth::user()->rol->id != 1){        
+            if(Auth::user()->id != $estudiante->usuario_supervisor){abort(403);}
+        }
         
         $oficio = 'EPS-';
 
@@ -400,6 +386,7 @@ class BitacoraController extends Controller
 
         $bitacora->oficio = true;
         $bitacora->no_oficio = $oficio;
+        $bitacora->f_oficio = $fecha;  
         $bitacora->save();
 
         return redirect()->route('bitacora.ver', $id)->with('oficio', true);    
@@ -417,11 +404,9 @@ class BitacoraController extends Controller
         $estudiante = $estudiante->join('users', 'persona.id', '=', 'users.persona_id');
         $estudiante = $estudiante->where('users.id',$bitacora->usuario_id)->first();
         
-        if(Auth::user()->rol->id == 3 && $estudiante->carrera_id != 1){ abort(403);} // CIVIL
-        elseif(Auth::user()->rol->id == 4 && $estudiante->carrera_id != 2   ){ abort(403);} // MECANICA
-        elseif(Auth::user()->rol->id == 5 && $estudiante->carrera_id != 3){ abort(403);} // INDUSTRIAL
-        elseif(Auth::user()->rol->id == 6 && $estudiante->carrera_id != 4){ abort(403);} // MECANICA INDUSTRIAL
-        elseif(Auth::user()->rol->id == 7 && $estudiante->carrera_id != 5){ abort(403);} // SISTEMAS
+        if(Auth::user()->rol->id != 1){        
+            if(Auth::user()->id != $estudiante->usuario_supervisor){abort(403);}
+        }
 
         $codigo="";
         if($estudiante->carrera_id == 1){$codigo .= 'BPFIC';}

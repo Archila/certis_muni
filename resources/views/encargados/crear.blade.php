@@ -25,14 +25,14 @@
     <input type="hidden" name="solo_encargado" value=1>        
     <div id="encargado-nuevo" style="display: block">
         <div class="form-row">
-            <div class="col-md-5 mb-3">
+            <div class="col-md-4 mb-3">
                 <label for="validationCustom08">Nombre</label>
                 <input type="text" class="form-control" id="validationCustom08" name="nombre" required> 
                 <div class="invalid-feedback">
                 Ingrese nombre de encargado válido.
                 </div>      
             </div>    
-            <div class="col-md-5 mb-3">
+            <div class="col-md-4 mb-3">
                 <label for="validationCustom08">Apellido</label>
                 <input type="text" class="form-control" id="validationCustom08" name="apellido" required> 
                 <div class="invalid-feedback">
@@ -45,16 +45,34 @@
                 <div class="invalid-feedback">
                 Ingrese telefono de encargado válido. Al menos 8 dígitos.
                 </div>
-            </div>         
+            </div>     
+            <div class="col-md-2 mb-3">
+                <label for="validationCustom08">Colegiado</label>
+                <input type="text" class="form-control" id="validationCustom08" name="colegiado">                   
+            </div>        
             <small class="mt-n3 mb-2">&nbsp; &nbsp; *Se recomienda agregar el título de tratamiento al nombre del encargado. Ejemplo: Ing. Lic. Sr. Sra.</small>               
         </div>
 
-        <div class="form-row">
-            <div class="col-md-3 mb-3">
-                <label for="validationCustom08">Colegiado</label>
-                <input type="text" class="form-control" id="validationCustom08" name="colegiado">                   
-            </div>    
-            <div class="col-md-5 mb-3">
+        <div class="form-row">  
+            <div class="col-md-4 mb-3">
+                <label for="validationCustom08">Dedicatoria (para cartas)</label>
+                <!--
+                <select class="form-control select2" style="width: 100%;" required name="encabezado">
+                    <option selected="selected">Alabama</option>
+                    <option>Alaska</option>
+                    <option>California</option>
+                    <option>Delaware</option>
+                    <option>Tennessee</option>
+                    <option>Texas</option>
+                    <option>Washington</option>
+                  </select>
+                  -->
+                <input type="text" class="form-control" id="validationCustom08" name="encabezado" placeholder="Ej. Estimado ingeniero. Respetable señora" required>
+                <div class="invalid-feedback">
+                Ingrese el encabezado para cartas.
+                </div>      
+            </div>           
+            <div class="col-md-4 mb-3">
                 <label for="validationCustom08">Profesión</label>
                 <input type="text" class="form-control" id="validationCustom08" name="profesion" required> 
                 <div class="invalid-feedback">
@@ -111,6 +129,13 @@
     $("input[data-bootstrap-switch]").each(function(){
       $(this).bootstrapSwitch('state', $(this).prop('checked'));
     });
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
+    //Initialize Select2 Elements
+    $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    })
   })
 </script>
 <script>

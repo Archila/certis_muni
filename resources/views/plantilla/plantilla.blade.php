@@ -19,12 +19,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="{{ URL::asset('plugins/toastr/toastr.min.css') }}">
   <!-- iCheck for checkboxes and radio inputs -->
   <link rel="stylesheet" href="{{URL::asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="{{ URL::asset('plugins/select2/css/select2.min.css')}}">
+  <link rel="stylesheet" href="{{ URL::asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
   <!-- pace-progress -->
   <link rel="stylesheet" href="{{URL::asset('plugins/pace-progress/themes/black/pace-theme-flat-top.css') }}">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="{{ URL::asset('dist/css/adminlte.min.css') }}">
   <!-- summernote -->
   <link rel="stylesheet" href="{{URL::asset('plugins/summernote/summernote-bs4.css')}}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{{ URL::asset('dist/css/adminlte.min.css') }}">  
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
@@ -197,6 +200,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="{{ URL::asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <!-- SweetAlert2 -->
 <script src="{{ URL::asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+<!-- Summernote -->
+<script src="{{URL::asset('plugins/summernote/summernote-bs4.min.js')}}"></script>
+<!-- Select2 -->
+<script src="{{URL::asset('plugins/select2/js/select2.full.min.js')}}"></script>
 <!-- DataTables -->
 <script src="{{ URL::asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
 <script src="{{ URL::asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
@@ -206,8 +213,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="{{ URL::asset('plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ URL::asset('dist/js/adminlte.min.js') }}"></script>
-<!-- Summernote -->
-<script src="{{URL::asset('plugins/summernote/summernote-bs4.min.js')}}"></script>
+
 
 <script type="text/javascript">
   const Toast = Swal.mixin({

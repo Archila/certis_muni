@@ -112,7 +112,7 @@
 
             <div class="encabezado_derecha">
                 <br><br> <br><br>                  
-                <p class="linea-encabezado">Of. EPS-IM No. 001-2020</p>
+                <p class="linea-encabezado">Of. {{$bitacora->no_oficio}}</p>
                 <p class="linea-encabezado">Quetzaltenango, 20 de enero de 2020</p>
             </div>        
         </div>      

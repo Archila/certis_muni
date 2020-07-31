@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Persona;
 use App\Models\Encargado;
 use App\Models\Estudiante;
+use App\Models\Supervisor;
 use App\Models\Empresa;
 use App\Models\Bitacora;
 
@@ -87,7 +88,7 @@ class PDFController extends Controller
             if(Auth::user()->id != $bitacora->usuario_id){abort(403);}
         }
         
-        $estudiante = Estudiante::select('estudiante.*', 'persona.*', 'carrera.nombre as carrera');
+        $estudiante = Estudiante::select('estudiante.*', 'persona.*', 'carrera.nombre as carrera', 'carrera.id as carrera_id');
         $estudiante = $estudiante->join('persona', 'persona_id', '=', 'persona.id');
         $estudiante = $estudiante->join('carrera', 'carrera_id', '=', 'carrera.id');
         $estudiante = $estudiante->join('users', 'persona.id', '=', 'users.persona_id');
@@ -100,7 +101,7 @@ class PDFController extends Controller
             $puesto = $request->puesto;
         }
         else{
-            $encargado = Encargado::select('encargado.*', 'persona.*', 'area.puesto as puesto');
+            $encargado = Encargado::select('encargado.*', 'persona.*', 'area_encargado.puesto as puesto');
             $encargado = $encargado->join('persona', 'persona_id', '=', 'persona.id');
             $encargado = $encargado->leftJoin('area_encargado', 'encargado.id', '=', 'area_encargado.encargado_id');
             $encargado = $encargado->leftJoin('area', 'area_encargado.area_id', '=', 'area.id');
@@ -108,9 +109,15 @@ class PDFController extends Controller
             $destinatario = $encargado->nombre . ' ' . $encargado->apellido;
             $puesto = $encargado->puesto;
         }
+
+        //Rol en funcion de la carrera del estudiante.
+        $supervisor = Supervisor::select('supervisor.*', 'persona.*');
+        $supervisor = $supervisor->join('persona', 'persona_id', '=', 'persona.id');
+        $supervisor = $supervisor->join('users', 'persona.id', '=', 'users.persona_id');
+        $supervisor = $supervisor->where('users.id', '=', $estudiante->usuario_supervisor)->first();
         
         //$pdf = \PDF::loadView('pdf/prueba',['estudiante'->$estudiante, 'empresa'=>$empresa, 'encargado'=>$encargado, 'bitacora'=>$bitacora]);
-        $pdf = \PDF::loadView('pdf/oficio', compact('empresa', 'estudiante', 'bitacora', 'destinatario', 'puesto'));
+        $pdf = \PDF::loadView('pdf/oficio', compact('empresa', 'estudiante', 'bitacora', 'destinatario', 'puesto', 'supervisor'));
 
         return $pdf->stream('archivo.pdf');
     }

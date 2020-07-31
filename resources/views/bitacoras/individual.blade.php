@@ -32,9 +32,13 @@
             <div class="text-muted">
                 <p class="text-sm">Empresa / Institución
                 <b class="d-block">{{$empresa->nombre}} ({{$empresa->alias}})</b>
+                <p class="text-sm mt-n3">Dirección
+                <b class="d-block">{{$empresa->direccion}} ({{$empresa->ubicacion}})</b>
                 </p>
                 <p class="text-sm">Encargado
                 <b class="d-block">{{$encargado->nombre}} {{$encargado->apellido}}</b>
+                <p class="text-sm mt-n3">Puesto
+                <b class="d-block">{{$encargado->puesto}} </b>
                 </p>
             </div>
             <h5 class="mt-2 text-muted">Estado de la bitácora</h5>
@@ -140,6 +144,8 @@
     </div>
   </div>
   @endif
+</div>
+
 </div>
 @endsection
 

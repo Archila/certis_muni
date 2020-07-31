@@ -50,13 +50,6 @@ class DefaultSeeder extends Seeder
         Persona::create(['id' => 7, 'nombre' => 'Gerson Jose', 'apellido'=>'Ochoa Lopez', 'telefono'=>79548214, 'correo'=>'gerson@gmail.com' ]);
         Persona::create(['id' => 8, 'nombre' => 'Josue Javier', 'apellido'=>'Cayax Ralda', 'telefono'=>68457178, 'correo'=>'cayax@gmail.com' ]);
 
-        //Estudiantes
-        Estudiante::create(['id' => 1, 'semestre'=>2, 'year'=>'2020', 'registro'=>'201330001', 'carne'=>'26003000101001', 'promedio'=>'75.5', 'creditos'=>220, 'direccion'=>'Zona 1 12-5 Xela', 'practicas'=>'2020-05-05', 'persona_id'=>4, 'carrera_id'=>4 ]);
-        Estudiante::create(['id' => 2, 'semestre'=>2, 'year'=>'2020', 'registro'=>'201330002', 'carne'=>'26003000101001', 'promedio'=>'75.5', 'creditos'=>220, 'direccion'=>'Zona 3 2-5 Xela', 'practicas'=>'2020-05-05', 'persona_id'=>5, 'carrera_id'=>4 ]);
-        Estudiante::create(['id' => 3, 'semestre'=>2, 'year'=>'2020', 'registro'=>'201330003', 'carne'=>'26003000101001', 'promedio'=>'75.5', 'creditos'=>220, 'direccion'=>'Zona 2 11-5 Xela', 'practicas'=>'2020-05-05', 'persona_id'=>6, 'carrera_id'=>4 ]);
-        Estudiante::create(['id' => 4, 'semestre'=>2, 'year'=>'2020', 'registro'=>'201330004', 'carne'=>'26003000101001', 'promedio'=>'75.5', 'creditos'=>220, 'direccion'=>'Zona 3 15-2 Huehue', 'practicas'=>'2020-05-05', 'persona_id'=>7, 'carrera_id'=>1 ]);
-        Estudiante::create(['id' => 5, 'semestre'=>2, 'year'=>'2020', 'registro'=>'201330005', 'carne'=>'26003000101001', 'promedio'=>'75.5', 'creditos'=>220, 'direccion'=>'Zona 7 21-7 Xela', 'practicas'=>'2020-05-05', 'persona_id'=>8, 'carrera_id'=>1 ]);
-
         //Supervisor
         Supervisor::create(['id' => 1, 'profesion'=>'Ingeniero Civil', 'colegiado'=>'202015255', 'persona_id'=>2, ]);
         Supervisor::create(['id' => 2, 'profesion'=>'Ingeniero Mecanico Industrial', 'colegiado'=>'20205424', 'persona_id'=>3, ]);
@@ -90,6 +83,14 @@ class DefaultSeeder extends Seeder
         $user->persona_id = 3;
         $user->rol_id = 6;
         $user->save();
+
+        //Estudiantes
+        Estudiante::create(['id' => 1, 'semestre'=>2, 'year'=>'2020', 'registro'=>'201330001', 'carne'=>'26003000101001', 'promedio'=>'75.5', 'creditos'=>220, 'direccion'=>'Zona 1 12-5 Xela', 'practicas'=>'2020-05-05', 'persona_id'=>4, 'carrera_id'=>4, 'usuario_supervisor'=>3 ]);
+        Estudiante::create(['id' => 2, 'semestre'=>2, 'year'=>'2020', 'registro'=>'201330002', 'carne'=>'26003000101001', 'promedio'=>'75.5', 'creditos'=>220, 'direccion'=>'Zona 3 2-5 Xela', 'practicas'=>'2020-05-05', 'persona_id'=>5, 'carrera_id'=>4, 'usuario_supervisor'=>3 ]);
+        Estudiante::create(['id' => 3, 'semestre'=>2, 'year'=>'2020', 'registro'=>'201330003', 'carne'=>'26003000101001', 'promedio'=>'75.5', 'creditos'=>220, 'direccion'=>'Zona 2 11-5 Xela', 'practicas'=>'2020-05-05', 'persona_id'=>6, 'carrera_id'=>4, 'usuario_supervisor'=>3 ]);
+        Estudiante::create(['id' => 4, 'semestre'=>2, 'year'=>'2020', 'registro'=>'201330004', 'carne'=>'26003000101001', 'promedio'=>'75.5', 'creditos'=>220, 'direccion'=>'Zona 3 15-2 Huehue', 'practicas'=>'2020-05-05', 'persona_id'=>7, 'carrera_id'=>1, 'usuario_supervisor'=>2 ]);
+        Estudiante::create(['id' => 5, 'semestre'=>2, 'year'=>'2020', 'registro'=>'201330005', 'carne'=>'26003000101001', 'promedio'=>'75.5', 'creditos'=>220, 'direccion'=>'Zona 7 21-7 Xela', 'practicas'=>'2020-05-05', 'persona_id'=>8, 'carrera_id'=>1, 'usuario_supervisor'=>2 ]);
+      
 
         //Usuario
         $user = new User();
