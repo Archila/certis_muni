@@ -195,7 +195,7 @@ class EmpresaController extends Controller
             $area_encargado->save();
         }
         if(Auth::user()->rol->id == 2){
-            return redirect()->route('bitacora.crear');   
+            return redirect()->route('practica.solicitud');   
         }
         else{
             return redirect()->route('empresa.index')->with('creado', $empresa->id);   

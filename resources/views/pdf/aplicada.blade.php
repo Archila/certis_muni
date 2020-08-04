@@ -112,28 +112,28 @@
 
             <div class="encabezado_derecha">
                 <br><br> <br><br>                  
-                <p class="linea-encabezado">Of. {{$bitacora->no_oficio}}</p>
-                <p class="linea-encabezado">Quetzaltenango, 20 de enero de 2020</p>
+                <p class="linea-encabezado">Of. {{$oficio->no_oficio}}</p>
+                <p class="linea-encabezado">Quetzaltenango, {{$fecha}}</p>
             </div>        
         </div>      
 
-        <div class="destinatario">
-            <p class="linea-destinatario">{{$destinatario}}</p>
-            <p class="linea-destinatario">{{$puesto}}</p>
-            <p class="linea-destinatario">{{$empresa->nombre}}</p>
-            <p class="linea-destinatario">{{$empresa->direccion}}</p>
-            <p class="linea-destinatario">{{$empresa->ubicacion}}</p>
+        <div class="destinatario">            
+            <p class="linea-destinatario">{{$oficio->destinatario}}</p>
+            <p class="linea-destinatario">{{$oficio->puesto}}</p>
+            <p class="linea-destinatario">{{$oficio->empresa}}</p>
+            <p class="linea-destinatario">{{$oficio->direccion}}</p>
+            <p class="linea-destinatario">{{$oficio->ubicacion}}{{$punto}}</p>
         </div>   
 
         <div class="cuerpo">
-            <p>Respetable Ingenierio: </p>
-            <p class="parrafo_cuerpo"> De la manera más atenta me dirijo a usted para <b>Solicitarle</b>: que el estudiante 
-            <b>{{$estudiante->nombre}}{{' '}}{{$estudiante->apellido}}</b>,  Número de Registro Académico 
-            <b>{{$estudiante->registro}} </b> y Número de Carné <b>{{$estudiante->carne}}</b>, de la  Carrera de 
-            <b>{{$estudiante->carrera}}</b> pueda realizar su Práctica Final con una duración de 400 horas, 
-            en la empresa que usted dignamente dirige.  Agradeciendo se me informe por escrito si es aceptado o no, 
-            indicando el nombre de la persona (Ing. mecánico) que tendrá a su cargo supervisar las actividades que 
-            desarrollará el estudiante mencionado, fecha de inicio y el horario.</p>
+            <p>{{$oficio->encabezado}}: </p>
+            <p class="parrafo_cuerpo"> De la manera más atenta me dirijo a usted para Solicitarle: que el estudiante 
+            <b>{{ strtoupper($oficio->estudiante)}}</b>,  Número de Registro Académico <b>{{$oficio->registro}} </b> 
+            y Número de Carné <b>{{$oficio->carne}}</b>, de la  CARRERA DE <b>{{strtoupper($carrera)}}</b> pueda realizar su 
+            PRÁCTICA FINAL APLICADA con una duración de 400 horas, en la empresa que usted dignamente dirige. 
+            Agradeciendo se me informe por escrito si es aceptado o no, indicando el nombre de la persona 
+            ({{$oficio->cargo_encargado}}) que tendrá a su cargo supervisar las actividades que desarrollará el
+            estudiante mencionando, fecha de inicio y el horario.</p>
 
             <p>En espera de una respuesta favorable, me suscribo de usted.</p>
             <p>Atentamente,</p>

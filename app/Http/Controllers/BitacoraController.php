@@ -101,6 +101,8 @@ class BitacoraController extends Controller
     public function individual(Request $request)
     {
         Gate::authorize('haveaccess', '{"roles":[ 2 ]}' );
+
+        return(Auth::user());
         
         $bitacora = Bitacora::where('usuario_id',Auth::user()->id)->first();        
 

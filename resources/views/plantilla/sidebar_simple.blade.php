@@ -43,27 +43,16 @@
             </a>
           </li>
 
-          @if(Auth::user()->mostrarTabla('bitacora'))
-            @if($sidebar<=69 && $sidebar>=60) @php $bit='active'; $menu6='menu-open' @endphp  @endif
-            @if(Auth::user()->rol->id == 2)
+          @if(Auth::user()->mostrarTabla('practica'))
+            @if($sidebar<=69 && $sidebar>=60) @php $bit='active'; $menu6='menu-open' @endphp  @endif            
             <li class="nav-item">            
-              <a href="{{route('bitacora.individual')}}" class="nav-link {{$bit ?? ''}}">
+              <a href="{{route('practica.index')}}" class="nav-link {{$bit ?? ''}}">
                 <i class="nav-icon fas fa-clipboard"></i>
                 <p>
-                  Bitacora
+                  Práctica
                 </p>
               </a>            
-            </li>     
-            @else
-            <li class="nav-item">            
-              <a href="{{route('bitacora.index')}}" class="nav-link {{$bit ?? ''}}">
-                <i class="nav-icon fas fa-clipboard"></i>
-                <p>
-                  Bitacora
-                </p>
-              </a>            
-            </li>     
-            @endif
+            </li>    
           @endIf
           
           @if(Auth::user()->mostrarTabla('estudiante'))

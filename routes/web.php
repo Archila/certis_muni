@@ -101,6 +101,20 @@ Route::post('area', 'AreaController@guardar')->name('area.guardar');
 Route::put('area/{id}', 'AreaController@actualizar')->name('area.actualizar');
 Route::delete('area', 'AreaController@eliminar')->name('area.eliminar');
 
+//Practica
+Route::get('practica', 'PracticaController@index')->name('practica.index');
+Route::get('solicitud', 'PracticaController@solicitud')->name('practica.solicitud');
+
+//Oficio
+Route::get('oficio/crear', 'OficioController@crear')->name('oficio.crear');
+Route::get('oficio/{id}/editar', 'OficioController@editar')->name('oficio.editar');
+Route::get('oficio/{id}/ver', 'OficioController@ver')->name('oficio.ver');
+Route::get('oficio/{id}/pdf', 'OficioController@pdf')->name('oficio.pdf');
+Route::post('oficio', 'OficioController@guardar')->name('oficio.guardar');
+Route::post('oficio/validar', 'OficioController@validar')->name('oficio.validar');
+Route::put('oficio/{id}', 'OficioController@actualizar')->name('oficio.actualizar');
+Route::delete('oficio', 'OficioController@eliminar')->name('oficio.eliminar');
+
 //Bitacora
 Route::get('bitacora', 'BitacoraController@index')->name('bitacora.index');
 Route::get('bitacora_ind', 'BitacoraController@individual')->name('bitacora.individual');

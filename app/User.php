@@ -45,12 +45,16 @@ class User extends Authenticatable
         return $this->belongsTo('App\Models\Rol');
     }
 
+    public function oficios(){
+        return $this->hasMany('App\Models\Oficio', 'usuario_id');
+    }
+
     public function mostrarTabla($tabla){
         
         if($this->rol->id == 1) {return true;}
 
         if($this->rol->id == 2){
-            if($tabla == 'bitacora'){ return true;}
+            if($tabla == 'practica'){ return true;}
             if($tabla == 'estudiante'){ return false;}
             if($tabla == 'empresa'){ return false;}
             if($tabla == 'encargado'){ return false;}
@@ -61,7 +65,7 @@ class User extends Authenticatable
         }
 
         if($this->rol->id >= 3){
-            if($tabla == 'bitacora'){ return true;}
+            if($tabla == 'practica'){ return true;}
             if($tabla == 'estudiante'){ return true;}
             if($tabla == 'empresa'){ return true;}
             if($tabla == 'encargado'){ return true;}
@@ -72,5 +76,5 @@ class User extends Authenticatable
         }       
 
         return false;
-    }
+    }    
 }

@@ -11,4 +11,8 @@ class Estudiante extends Model
     public function persona(){
         return $this->hasOne('App\Models\Persona');
     }
+
+    public function carrera(){
+        return $this->belongsTo('App\Models\Carrera');
+    }
 }
