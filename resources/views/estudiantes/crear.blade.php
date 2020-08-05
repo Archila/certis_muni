@@ -80,7 +80,14 @@
         </div>    
     </div>
     <div class="form-row">
-        <div class="col-md-4 col-sm-12 mb-3">
+        <div class="col-md-4 col-sm-12 mb-3">            
+            @if(Auth()->user()->rol->id != 1)
+            <label for="validationCustom07">Carrera</label>
+            <select id="validationCustom07" class="form-control" disabled required>                
+                <option  value="{{$carrera->id}}">{{$carrera->nombre}}</option>                
+            </select>
+            <input type="hidden" name="carrera_id" value="{{$carrera->id}}">
+            @else
             <label for="validationCustom07">Carrera</label>
             <select id="validationCustom07" class="form-control" required name="carrera_id">
                 <option disabled>Seleccione una carrera</option>
@@ -91,6 +98,7 @@
             <div class="invalid-feedback">
             Por favor seleccione una carrera
             </div>
+            @endif
         </div>           
         <div class="col-md-8 col-sm-12 mb-3">
             <div class="row">
@@ -105,7 +113,7 @@
                     <label for="validationCustom09">Créditos</label>
                     <input type="number" min="200" class="form-control" id="validationCustom09" required name="creditos">
                     <div class="invalid-feedback">
-                    Por favor ingresar un valor numérico mayor a 200
+                    Por favor ingresar valor numérico mayor a 200
                     </div>
                 </div>      
                 <div class="col-md-4 col-sm-12 mb-3">
@@ -115,7 +123,7 @@
                         <option value="2">Segundo semestre</option>
                     </select>
                     <div class="invalid-feedback">
-                    Por favor seleccione una carrera
+                    Por favor seleccione un semestre
                     </div>
                 </div>   
                 <div class="col-md-4 col-sm-12 mb-3">
@@ -130,6 +138,22 @@
             </div>                
         </div>            
     </div>
+    @if(Auth()->user()->rol->id == 1)
+    <div class="form-row">
+      <div class="col-md-6 mb-2">
+        <label for="validationCustom03">Supervisor a cargo</label>
+        <select id="validationCustom07" class="form-control" required name="usuario_supervisor">
+            <option disabled>Seleccione un supervisor de prácticas finales</option>
+            @foreach($supervisores as $s)
+            <option value="{{$s->usuario_id}}">{{$s->nombre}} {{$s->apellido}}</option>
+            @endforeach
+        </select>
+        <div class="invalid-feedback">
+        Por favor seleccione un semestre
+        </div>
+      </div>      
+    </div>
+    @endif
     <div class="float-sm-right">
       <button class="btn btn-primary" type="submit">Crear</button>
       <a class="btn btn-secondary" href="{{url()->previous()}}" role="cancelar">Regresar</a>

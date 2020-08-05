@@ -240,7 +240,7 @@
                         </div>   
                     </div>   
                     
-                    <div class="col-12 mb-1">
+                    <div class="col-12 my-1">
                     <button class="btn btn-success" type="submit">Guardar cambios</button>
                     <a class="btn btn-secondary" href="{{url()->previous()}}" role="cancelar">Regresar</a>
                     </div>    
@@ -250,7 +250,7 @@
                     <form method="POST" action="{{route('oficio.validar', $oficio->id)}}">
                     @csrf 
                         <input type="hidden" value="{{$oficio->id}}" name="id">
-                        <button class="btn btn-info" type="submit">Validar oficio</button>
+                        <button class="btn btn-info" type="submit" id="btn_validar">Validar oficio</button>
                     </form>
                 </div>
             </div>
@@ -426,6 +426,14 @@
   }, false);
 })();
 
+document.getElementById("btn_validar").addEventListener("click", function(event){
+    var form = document.getElementsByClassName('needs-validation');
+    if (form[0].checkValidity() === false) {
+        event.preventDefault();
+        event.stopPropagation();
+        form[0].classList.add('was-validated');
+    }
+});
 
 function tipoPractica(){
     var forms = document.getElementsByClassName('needs-validation');

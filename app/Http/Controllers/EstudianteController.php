@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Estudiante;
 use App\Models\Persona;
 use App\Models\Carrera;
+use App\Models\Supervisor;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -120,7 +121,22 @@ class EstudianteController extends Controller
         Gate::authorize('haveaccess', $this->roles_gate );
 
         $carreras = Carrera::all();
-        return view('estudiantes.crear',compact('carreras'));
+
+        $supervisores = Supervisor::select( 'users.id as usuario_id', 'supervisor.id as supervisor_id', 'persona.nombre as nombre', 'persona.apellido as apellido');
+        $supervisores = $supervisores->join('persona', 'supervisor.persona_id','=','persona.id');
+        $supervisores = $supervisores->join('users', 'persona.id','=','users.persona_id')->get();
+
+        $carrera = null;
+
+        if(Auth::user()->rol->id != 1){
+            if(Auth::user()->rol->id == 3){ $carrera = Carrera::findOrFail(1);}
+            if(Auth::user()->rol->id == 4){ $carrera = Carrera::findOrFail(2);}
+            if(Auth::user()->rol->id == 5){ $carrera = Carrera::findOrFail(3);}
+            if(Auth::user()->rol->id == 6){ $carrera = Carrera::findOrFail(4);}
+            if(Auth::user()->rol->id == 7){ $carrera = Carrera::findOrFail(5);}
+        }
+
+        return view('estudiantes.crear',compact('carreras', 'supervisores', 'carrera'));
     }
 
     /**
@@ -144,6 +160,13 @@ class EstudianteController extends Controller
         if ($estudiante) {            
             return redirect()->route('estudiante.crear')->with('error', 'ERROR');             
         }        
+
+        if(Auth::user()->rol->id == 1){
+            $usuario_supervisor = $request->usuario_supervisor;
+        }
+        else{
+            $usuario_supervisor = Auth::user()->id;
+        }
 
         //Operaciones con string
         $pos_n = strrpos(trim($request->nombre), " ");
@@ -178,6 +201,7 @@ class EstudianteController extends Controller
         $estudiante->direccion = $request->direccion;
         $estudiante->persona_id = $persona->id;
         $estudiante->carrera_id = $request->carrera_id;
+        $estudiante->usuario_supervisor = $usuario_supervisor;
         $estudiante->save();
         
         //usuario con rol de estudiante

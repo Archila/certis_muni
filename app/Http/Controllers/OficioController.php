@@ -148,6 +148,7 @@ class OficioController extends Controller
         $mes = $meses[($date->format('n')) - 1];
         $fecha = $date->format('d') . ' de ' . $mes . ' de ' . $date->format('Y');
 
+        $fecha_solicitud = null;
         //fecha solicitud
         if($oficio->f_solicitud){
             $date = Carbon::parse($oficio->f_solicitud);
@@ -256,8 +257,6 @@ class OficioController extends Controller
         
         $id = $request->id;
         $oficio = Oficio::findOrFail($id);
-
-
         $datos = Carrera::select('carrera.nombre as carrera', 'carrera.id as carrera_id', 'estudiante.*');
         $datos = $datos->join('estudiante', 'carrera.id', '=','estudiante.carrera_id' );
         $datos = $datos->join('persona', 'estudiante.persona_id', '=', 'persona.id');
@@ -348,6 +347,10 @@ class OficioController extends Controller
             $pdf = \PDF::loadView('pdf/docente', compact('oficio', 'punto', 'supervisor', 'carrera', 'fecha', 'fecha_solicitud'));
         }
         else if($oficio->tipo == 2){
+
+            $date = Carbon::parse($oficio->f_solicitud);
+            $mes = $meses[($date->format('n')) - 1];
+            $fecha_solicitud = $date->format('d') . ' de ' . $mes . ' de ' . $date->format('Y');
             $pdf = \PDF::loadView('pdf/investigacion', compact('oficio', 'punto', 'supervisor', 'carrera', 'fecha', 'fecha_solicitud'));
         }
         else{
