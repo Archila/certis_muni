@@ -24,7 +24,7 @@
             text-align: center;
         }
         .encabezado-texto{
-            margin-top: 0;   
+            margin-top: -0.5em;   
         }
         .linea-encabezado{
             padding: -0.2cm 0.5cm;
@@ -40,7 +40,7 @@
         .logo{
             height: 2cm;
             weight: 2cm;     
-            margin: -0.2cm 0;
+            margin: 0.6em 0 -0.7em 0;
         }   
         .destinatario{
             display: block;
