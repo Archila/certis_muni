@@ -22,6 +22,7 @@ class CreateRolTable extends Migration
         });
 
         Schema::table('users', function (Blueprint $table) {
+          $table->boolean('nuevo')->default(1);
           $table->unsignedBigInteger('rol_id')->default(1);
           $table->unsignedBigInteger('persona_id')->default(1);
 
