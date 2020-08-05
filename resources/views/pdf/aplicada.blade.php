@@ -40,7 +40,7 @@
         .logo{
             height: 2cm;
             weight: 2cm;     
-            margin: 1.1em 0 -0.5em 0;
+            margin: 0.6em 0 -0.7em 0;
         }   
         .destinatario{
             display: block;
