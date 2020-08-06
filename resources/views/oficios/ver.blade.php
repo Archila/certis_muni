@@ -220,7 +220,7 @@
                         <h6>Práctica en investigación</h6>
                         <div class="col-12 mb-2">
                             <label for="tema">Tema de investigación</label>
-                            <textarea class="form-control" id="tema" name="tema" required>{{$oficio->tema}}</textarea>                                        
+                            <textarea class="form-control" id="tema" name="tema" required>{{$oficio->curso}}</textarea>                                        
                         </div>   
                         <div class="col-md-12 ">
                             <label for="fecha_investigacion">Fecha solicitud</label>
