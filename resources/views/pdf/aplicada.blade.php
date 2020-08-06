@@ -4,7 +4,7 @@
 <html lang="es">
     <head>
         <meta charset="UTF-8">
-        <title>Document</title>
+        <title>Oficio</title>
         <style>       
         .encabezado::after {
             content: "";
@@ -128,8 +128,8 @@
         <div class="cuerpo">
             <p>{{$oficio->encabezado}}: </p>
             <p class="parrafo_cuerpo"> De la manera más atenta me dirijo a usted para Solicitarle: que el estudiante 
-            <b>{{ strtoupper($oficio->estudiante)}}</b>,  Número de Registro Académico <b>{{$oficio->registro}} </b> 
-            y Número de Carné <b>{{$oficio->carne}}</b>, de la  CARRERA DE <b>{{strtoupper($carrera)}}</b> pueda realizar su 
+            <b>{{ mb_strtoupper($oficio->estudiante, 'utf-8')}}</b>,  Número de Registro Académico <b>{{$oficio->registro}} </b> 
+            y Número de Carné <b>{{$oficio->carne}}</b>, de la  CARRERA DE <b>{{mb_strtoupper($carrera, 'utf-8')}}</b> pueda realizar su 
             PRÁCTICA FINAL APLICADA con una duración de 400 horas, en la empresa que usted dignamente dirige. 
             Agradeciendo se me informe por escrito si es aceptado o no, indicando el nombre de la persona 
             ({{$oficio->cargo_encargado}}) que tendrá a su cargo supervisar las actividades que desarrollará el

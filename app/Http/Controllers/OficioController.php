@@ -160,9 +160,9 @@ class OficioController extends Controller
         $no_oficio = 'PF-';
 
         if($carrera_id == 1){$no_oficio .= 'IC No. ';}
-        elseif($carrera_id == 2){$no_oficio .= 'IM No. '; $carrera="INGENIERÍA MECÁNICA";}
+        elseif($carrera_id == 2){$no_oficio .= 'IM No. ';}
         elseif($carrera_id == 3){$no_oficio .= 'II No. ';}
-        elseif($carrera_id == 4){$no_oficio .= 'IMI No. '; $carrera="INGENIERÍA MECÁNICA INDUSTRIAL";}
+        elseif($carrera_id == 4){$no_oficio .= 'IMI No. ';}
         elseif($carrera_id == 5 ){$no_oficio .= 'IS No. ';}
 
         $oficios_existentes = Oficio::select('oficio.*', 'carrera.id as carrera_id');
@@ -269,9 +269,9 @@ class OficioController extends Controller
         $no_oficio = 'PF-';
 
         if($carrera_id == 1){$no_oficio .= 'IC No. ';}
-        elseif($carrera_id == 2){$no_oficio .= 'IM No. '; $carrera="INGENIERÍA MECÁNICA";}
+        elseif($carrera_id == 2){$no_oficio .= 'IM No. ';}
         elseif($carrera_id == 3){$no_oficio .= 'II No. ';}
-        elseif($carrera_id == 4){$no_oficio .= 'IMI No. '; $carrera="INGENIERÍA MECÁNICA INDUSTRIAL";}
+        elseif($carrera_id == 4){$no_oficio .= 'IMI No. ';}
         elseif($carrera_id == 5 ){$no_oficio .= 'IS No. ';}
 
         $oficios_existentes = Oficio::select('oficio.*', 'carrera.id as carrera_id');
@@ -321,9 +321,6 @@ class OficioController extends Controller
         $carrera_id = $datos->carrera_id;
         $id_sup = $datos->usuario_supervisor;
 
-        if($carrera_id == 2){$carrera="INGENIERÍA MECÁNICA";}
-        elseif($carrera_id == 4){$carrera="INGENIERÍA MECÁNICA INDUSTRIAL";}
-        
         $usr_sup = Supervisor::select('persona.*');
         $usr_sup = $usr_sup->join('persona', 'persona_id', '=', 'persona.id');
         $usr_sup = $usr_sup->join('users', 'persona.id', '=', 'users.persona_id');
@@ -338,7 +335,7 @@ class OficioController extends Controller
         $fecha = $date->format('d') . ' de ' . $mes . ' de ' . $date->format('Y');
 
         if($oficio->tipo == 1){
-
+            
             $date = Carbon::parse($oficio->f_solicitud);
             $mes = $meses[($date->format('n')) - 1];
             $fecha_solicitud = $date->format('d') . ' de ' . $mes . ' de ' . $date->format('Y');
@@ -346,7 +343,6 @@ class OficioController extends Controller
             $pdf = \PDF::loadView('pdf/docente', compact('oficio', 'punto', 'supervisor', 'carrera', 'fecha', 'fecha_solicitud'));
         }
         else if($oficio->tipo == 2){
-
             $date = Carbon::parse($oficio->f_solicitud);
             $mes = $meses[($date->format('n')) - 1];
             $fecha_solicitud = $date->format('d') . ' de ' . $mes . ' de ' . $date->format('Y');
