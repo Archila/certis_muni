@@ -288,8 +288,10 @@ class OficioController extends Controller
         $year = date('yy');
         $no_oficio .= '-'.(string)$year ;
 
-        $oficio->no_oficio = $no_oficio;
-        $oficio->f_oficio = Carbon::now();
+        if(!$oficio->no_oficio){
+            $oficio->no_oficio = $no_oficio;
+            $oficio->f_oficio = Carbon::now();
+        }                
         $oficio->aprobado = 1;
         $oficio->save();
 
