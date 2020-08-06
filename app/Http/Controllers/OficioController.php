@@ -228,7 +228,7 @@ class OficioController extends Controller
             if($tema[-1] == '"'){ $tema = substr($tema, 0 , -1); }
 
             $oficio->curso = $tema;
-            $oficio->f_solicitud = $request->fecha_docencia;
+            $oficio->f_solicitud = $request->fecha_investigacion;
         }
         else{ // Práctica aplicada 
             $oficio->puesto = $request->puesto;
@@ -337,7 +337,6 @@ class OficioController extends Controller
         $mes = $meses[($date->format('n')) - 1];
         $fecha = $date->format('d') . ' de ' . $mes . ' de ' . $date->format('Y');
 
-
         if($oficio->tipo == 1){
 
             $date = Carbon::parse($oficio->f_solicitud);
@@ -355,8 +354,7 @@ class OficioController extends Controller
         }
         else{
             $pdf = \PDF::loadView('pdf/aplicada', compact('oficio', 'punto', 'supervisor', 'carrera', 'fecha'));
-        }
-       
+        }       
 
         return $pdf->stream('archivo.pdf');
 
