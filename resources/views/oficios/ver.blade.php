@@ -281,7 +281,7 @@
                         <p class="parrafo_cuerpo"> De la manera más atenta me dirijo a usted para Solicitarle: que el estudiante 
                         <b>{{ mb_strtoupper($oficio->estudiante, 'utf-8')}}</b>,  Número de Registro Académico <b>{{$oficio->registro}} </b> 
                         y Número de Carné <b>{{$oficio->carne}}</b>, de la  CARRERA DE <b>{{mb_strtoupper($carrera,'utf-8')}}</b> pueda realizar su 
-                        PRÁCTICA FINAL <span style="color:red;">EN DOCENCIA </span>con una duración de 400 horas, en el curso {{$oficio->curso ?? "**Agregue curso en el formulario a la izquierda**"}}
+                        PRÁCTICA FINAL <span style="color:red;">EN DOCENCIA </span>con una duración de 400 horas, en el curso de {{$oficio->curso ?? "**Agregue curso en el formulario a la izquierda**"}}
                         con código {{$oficio->codigo_curso ?? '000'}}, el cual usted imparte, de acuerdo a la solicitud que realizó con fecha 
                         {{$fecha_solicitud ?? "**Ingrese fecha de solicitud**"}}. Agradeciendo se me informe por escrito si es aceptado o no, indicando la fecha
                         de inicio y el horario en el que él apoyará como Auxiliar Docente.</p>
