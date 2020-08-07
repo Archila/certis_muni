@@ -217,8 +217,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="{{ URL::asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
 <!-- Bootstrap Switch -->
 <script src="{{ URL::asset('plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}"></script>
+<!-- ChartJS -->
+<script src="{{ URL::asset('plugins/chart.js/Chart.min.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ URL::asset('dist/js/adminlte.min.js') }}"></script>
+<!-- FLOT CHARTS -->
+<script src="{{ URL::asset('plugins/flot/jquery.flot.js') }}"></script>
+<!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
+<script src="{{ URL::asset('plugins/flot-old/jquery.flot.resize.min.js') }}"></script>
+<!-- FLOT PIE PLUGIN - also used to draw donut charts -->
+<script src="{{ URL::asset('plugins/flot-old/jquery.flot.pie.min.js') }}"></script>
 
 
 <script type="text/javascript">

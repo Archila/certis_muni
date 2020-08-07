@@ -18,9 +18,7 @@ use Illuminate\Support\Facades\Gate;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->middleware('auth');
+Route::get('/', 'InicioController@index')->name('inicio.index');
 
 Route::get('/home', function () {
     return view('welcome');
