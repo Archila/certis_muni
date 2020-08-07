@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\Gate;
 
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
+
 class OficioController extends Controller
 {
     private $roles_gate = '{"roles":[ 1, 2 ]}';
@@ -66,10 +69,8 @@ class OficioController extends Controller
         $oficio->semestre = $request->semestre;
         $oficio->year = $request->year;
         $oficio->tipo = $request->tipo;
-        $oficio->destinatario = $request->destinatario;
-        $encabezado = (string)$request->encabezado;
-        if($encabezado[-1] == ':'){ $encabezado = substr($encabezado, 0 , -1); }
-        $oficio->encabezado = $encabezado;
+        $oficio->destinatario = $request->destinatario;        
+        $oficio->encabezado = 'Respetable ingeniero';
         $oficio->empresa_id = $request->empresa_id;
         $oficio->usuario_id = Auth::user()->id;
 
@@ -356,5 +357,58 @@ class OficioController extends Controller
 
         return $pdf->stream('archivo.pdf');
 
+    }
+
+    public function revisar($id)
+    {
+        Gate::authorize('haveaccess', '{"roles":[ 1, 3, 4, 5, 6, 7 ]}' );
+        
+        $oficio = Oficio::findOrFail($id);
+       
+        if($oficio->aprobado == 0){abort(403);}
+        
+        return view('oficios.revisar',compact(['oficio']));    
+    }
+
+    public function respuesta_pdf($id)
+    {
+        Gate::authorize('haveaccess', '{"roles":[ 1, 2, 3, 4, 5, 6, 7 ]}' );
+        
+        $oficio = Oficio::findOrFail($id);
+       
+        if($oficio->aprobado == 0){abort(403);}
+
+        //$contents = Storage::get($oficio->ruta_pdf);
+
+        // file not found
+        if( ! Storage::exists($oficio->ruta_pdf) ) {
+            abort(404);
+        }
+    
+        $pdfContent = Storage::get($oficio->ruta_pdf);
+
+        // for pdf, it will be 'application/pdf'
+        $type       = Storage::mimeType($oficio->ruta_pdf);
+        //$fileName   = Storage::name($oficio->ruta_pdf);
+    
+        return Response::make($pdfContent, 200, [
+            'Content-Type'        => $type,
+            'Content-Disposition' => 'inline; filename="algo"'
+        ]);
+    }
+
+    public function rechazar(Request $request)
+    {
+        Gate::authorize('haveaccess', '{"roles":[ 1, 3, 4, 5, 6, 7 ]}' );
+        
+        $oficio = Oficio::findOrFail($request->oficio_id);
+       
+        if($oficio->aprobado == 0){abort(403);}
+
+        $oficio->revisado = 1;
+        $oficio->rechazado = $request->rechazado;
+        $oficio->save();
+        
+        return redirect()->route('practica.index');
     }
 }

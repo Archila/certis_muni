@@ -4,12 +4,18 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-    <li class="breadcrumb-item"><a href="{{route('practica.index')}}">Prácticas finales</a></li>
+    <li class="breadcrumb-item active">Prácticas finales</li>
 @endsection
 
 @section('alerta')
   @if (session('error')=='ERROR')
   <script> alerta_error('Ya existe solicitud en el sistema')</script>
+  @endif
+
+  @if(count($errors) > 0)
+    @foreach ($errors->all() as $error)
+    <script> alerta_error({{$error}})</script>
+    @endforeach
   @endif
 @endsection
 
@@ -125,11 +131,89 @@
 
               <div class="row"> 
               @if($oficio->aprobado) 
+
+                @if($oficio->revisado && !$oficio->rechazado)<!-- APROBADO Y REVISADO --->     
                 <div class="callout callout-success">
-                  <h5 > <i class="icon fas fa-check"></i> La solicitud de prácticas ya fue aprobada. Si ya ha recibido la respuesta afirmativa de la contraparte institucional, por favor proceda a crear una bitácora. </h5>
-                  <br>
-                  <a  href="{{route('bitacora.crear')}}"><button class="btn btn-success">Nueva bitácora</button></a>
-                </div>              
+                  <h5 > <i class="icon fas fa-check"></i> La solicitud de prácticas ya fue aprobada y revisada. Ya puede iniciar con la creación de una bitácora.</h5>
+                  <br>         
+                  <a  href="{{route('bitacora.crear')}}"><button class="btn btn-success">Nueva bitácora</button></a>     
+                </div>   
+                <!-- FIN APROBADO Y REVISADO --->           
+                @else
+                  @if($oficio->rechazado)
+                  <div class="callout callout-warning">
+                    <h5 > <i class="icon fas fa-exclamation-triangle"></i> La solicitud de prácticas no fue aceptada por la contraparte institucional, por favor cree una nueva solicitud.</h5>
+                    <br>         
+                    <a  href="{{route('practica.solicitud')}}"><button class="btn btn-success">Nueva solicitud</button></a>  
+                  </div>   
+                  <!-- FIN APROBADO Y REVISADO --->    
+                  @else
+                    @if($oficio->ruta_pdf)
+                    <div class="callout callout-success">
+                      <h5 > <i class="icon fas fa-check"></i> La respuesta ya ha sido enviada a su supervisor. Por favor espere o contácte con su supervisor de prácticas finales.</h5>
+                      <br>    
+                      <div class="row">
+                        <div class="col-md-8 pr-3" style="height:30em;"><!--Formulario-->
+                        <h4>Respuesta en el sistema</h4>
+                          <iframe src="{{route('oficio.respuesta', $oficio->id)}}" 
+                          width="100%" height="100%">
+
+                          This browser does not support PDFs. Please download the PDF to view it: Download PDF
+
+                          </iframe>
+                        </div>   
+                        <div class="col-md-4">
+                          <form method="POST" action="{{route('practica.respuesta')}}" enctype="multipart/form-data">
+                            @csrf 
+                            <input type="hidden" value="{{$oficio->id}}" name="oficio_id">
+                            <div class="row">
+                              <div class="col-md-12">
+                                <div class="form-group">
+                                  <label for="exampleInputFile">Cambiar archivo</label>
+                                  <div class="input-group">
+                                    <div class="custom-file">
+                                      <input type="file" class="custom-file-input" id="exampleInputFile" name="file">
+                                      <label class="custom-file-label" for="exampleInputFile">Seleccione pdf</label>
+                                    </div>                                    
+                                  </div>
+                                </div>                      
+                              </div>
+                              <div class="col-md-12 mt-4">
+                              <button type="submit" class="btn btn-primary">Cambiar</button>
+                              </div>
+                            </div>
+                            </form>                  
+                          </div>           
+                        </div>
+                      </div> 
+                    @else
+                    <div class="callout callout-success">
+                      <h5 > <i class="icon fas fa-check"></i> La solicitud de prácticas ya fue aprobada. Si ya ha recibido la respuesta de la contraparte institucional, por favor envíe la respuesta en formato PDF. </h5>
+                      <br>                 
+                      <form method="POST" action="{{route('practica.respuesta')}}" enctype="multipart/form-data">
+                      @csrf 
+                      <input type="hidden" value="{{$oficio->id}}" name="oficio_id">
+                      <div class="row">
+                        <div class="col-md-9">
+                          <div class="form-group">
+                            <label for="exampleInputFile">Ingreso de archivo</label>
+                            <div class="input-group">
+                              <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="exampleInputFile" name="file">
+                                <label class="custom-file-label" for="exampleInputFile">Seleccione pdf</label>
+                              </div>                              
+                            </div>
+                          </div>                      
+                        </div>
+                        <div class="col-md-3 mt-4">
+                        <button type="submit" class="btn btn-primary">Enviar</button>
+                        </div>
+                      </div>
+                      </form>                  
+                    </div>           
+                    @endif
+                  @endif
+                @endif      
               @else 
                 <div class="callout callout-warning">
                   <h5> <i class="icon fas fa-exclamation-triangle"></i> La solicitud de prácticas no ha sido aprobada, por favor espere o contácte con su supervisor de prácticas finales.</h5>
@@ -178,6 +262,7 @@
     });
   }, false);
 })();
+
 </script>
 
 @endsection

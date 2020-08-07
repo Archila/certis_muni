@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\Gate;
 
+use Illuminate\Http\File;
+use Illuminate\Support\Facades\Storage;
+
 class PracticaController extends Controller
 {
     private $roles_gate = '{"roles":[ 1, 2 ]}';
@@ -30,7 +33,8 @@ class PracticaController extends Controller
 
         if(Auth::user()->rol->id == 2){ 
 
-            $oficio = Auth::user()->oficios()->first();            
+            $oficio = Auth::user()->oficios()->first();      
+            $oficio = Oficio::where('usuario_id',Auth::user()->id)->orderBy('created_at', 'desc')->first();      
             if($oficio){ 
                 $bitacora = Oficio::find($oficio->id)->bitacora(); 
                 if($bitacora->count() == 0){$bitacora = null;}
@@ -52,7 +56,7 @@ class PracticaController extends Controller
             $estudiantes = $estudiantes->orderBy('estudiante.created_at', 'asc')->get();
 
             $bitacoras = Bitacora::get();
-            $oficios = Oficio::get();
+            $oficios = Oficio::orderBy('updated_at','desc')->get();
             if($bitacoras->count()== 0){$bitacoras = null;}
             if($oficios->count()== 0){$oficios = null;}
 
@@ -68,6 +72,22 @@ class PracticaController extends Controller
         $empresa = Empresa::where('usuario_id', Auth::user()->id )->first();
 
         return view('practicas.solicitud',compact(['empresas', 'empresa']));    
+    }
+
+    public function respuesta(Request $request)
+    {
+        
+        $request->validate([
+            'file' => 'required|mimes:pdf,PDF|max:2048',
+        ]);
+
+        $path = Storage::put('public', $request->file);        
+        
+        $oficio = Oficio::findOrFail($request->oficio_id);
+        $oficio->ruta_pdf = $path;
+        $oficio->save();
+
+        return redirect()->route('practica.index');
     }
 
 }

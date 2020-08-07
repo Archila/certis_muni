@@ -3,8 +3,8 @@
 @section('titulo', 'Prácticas finales')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-    <li class="breadcrumb-item"><a href="{{route('practica.index')}}">Prácticas finales</a></li>
+    <li class="breadcrumb-item"><a href="/">Inicio</a></li>    
+    <li class="breadcrumb-item active">Prácticas finales</li>
 @endsection
 
 @section('alerta')
@@ -77,19 +77,46 @@
                 @else<!--BITACORAS EN EL SISTEMA -->  
                 <table class="table">
                     <thead class="thead-light">
+                        <th></th>
                         <th>Estudiante</th>
                         <th>Carne</th>
                         <th>Registro</th>                        
-                        <th>Fecha solicitud</th>
+                        <th>Fecha creación</th>
                         <th>Tipo</th>
-                        <th>Estado</th>
-                        <th></th>
+                        <th>Estado</th>                        
                     </thead>
                     <tbody>
                     @foreach($oficios as $o)
                         @foreach($estudiantes as $e)
                         @if($o->usuario_id == $e->usuario_id)
                         <tr>
+                            @if($o->aprobado)
+                            <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
+                                <i class="fas fa-cog"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-left" role="menu">
+                                <a href="{{route('oficio.pdf', $o->id)}}" class="dropdown-item">Ver oficio pdf</a>
+                                @if(!$o->revisado)
+                                <a href="{{route('oficio.revisar', $o->id)}}" class="dropdown-item">Revisar</a>
+                                @else
+                                <a href="{{route('oficio.respuesta', $o->id)}}" class="dropdown-item">Respuesta pdf</a>                                
+                                @endif
+                            </div>
+                                          
+                            </td>
+                            @else
+                            <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
+                                <i class="fas fa-cog"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-left" role="menu">
+                                <a href="{{route('oficio.ver', $o->id)}}" class="dropdown-item">Ver solicitud</a>                                
+                            </div>              
+                            </td>
+                            @endif
                             <td>{{$e->nombre}} {{$e->apellido}}</td>
                             <td>{{$e->carne}} </td>
                             <td>{{$e->registro}}</td>
@@ -104,19 +131,24 @@
                             @endif
                             </td>
                             <td>
-                            @if($o->aprobado)                                
-                            <span class="badge badge-success">Aprobada</span>  </td>
-                            <td>
-                            <a href="{{route('oficio.pdf', $o->id)}}" type="button" class="btn btn-primary btn-xs"><i class="fas fa-file-pdf"></i></a>
+                            @if($o->rechazado)                                
+                            <span class="badge badge-danger">Rechazado</span>                                                  
                             </td>              
                             @else
-                            <span class="badge badge-warning">No aprobada</span>  
-                            </td>
-                            <td>
-                            <a href="{{route('oficio.ver', $o->id)}}" type="button" class="btn btn-info btn-xs"><i class="fas fa-eye"></i></a>
-                            </td>
+                                @if($o->revisado)
+                                <span class="badge badge-success">Aceptado</span>  
+                                </td>        
+                                @else
+                                    @if($o->aprobado)
+                                    <span class="badge bg-purple">Aprobado</span>  
+                                    </td> 
+                                    @else
+                                    <span class="badge badge-warning">No aprobado</span>
+                                    </td> 
+                                    @endif
+                                @endif                            
+                            </td>                            
                             @endif
-                            
                         </tr>
                         @endif
                         @endforeach

@@ -109,19 +109,11 @@
     @endif <!-- EXISTENCIA DE EMPRESA POR EL USUARIO-->
     
     <div class="form-row mb-3">
-      <div class="col-md-5">
+      <div class="col-md-7">
         <label for="destinatario">Destinatario carta solicitud</label>
         <input type="text" class="form-control encargado" id="destinatario" name="destinatario" required > 
         <div class="invalid-feedback">
         Ingrese el destinatario.
-        </div>      
-      </div>   
-
-      <div class="col-md-5 ">
-        <label for="saludo">Saludo</label>
-        <input type="text" class="form-control encargado" id="saludo" name="encabezado" required placeholder="Ej: Respetable ingeniero, Estimada señora"> 
-        <div class="invalid-feedback">
-        
         </div>      
       </div>   
     </div>
@@ -152,7 +144,7 @@
     <div class="" id="div_investigacion" class="mb-3" style="display:none;">
       <h5>Práctica en investigación</h5>
       <div class="form-row">
-        <div class="col-md-10 ">
+        <div class="col-md-11 ">
           <label for="tema">Tema o proyecto de investigación</label>
           <input type="text" class="form-control encargado" id="tema" name="tema" required > 
           <div class="invalid-feedback">

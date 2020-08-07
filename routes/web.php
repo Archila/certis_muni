@@ -104,14 +104,18 @@ Route::delete('area', 'AreaController@eliminar')->name('area.eliminar');
 //Practica
 Route::get('practica', 'PracticaController@index')->name('practica.index');
 Route::get('solicitud', 'PracticaController@solicitud')->name('practica.solicitud');
+Route::post('respuesta', 'PracticaController@respuesta')->name('practica.respuesta');
 
 //Oficio
 Route::get('oficio/crear', 'OficioController@crear')->name('oficio.crear');
 Route::get('oficio/{id}/editar', 'OficioController@editar')->name('oficio.editar');
 Route::get('oficio/{id}/ver', 'OficioController@ver')->name('oficio.ver');
 Route::get('oficio/{id}/pdf', 'OficioController@pdf')->name('oficio.pdf');
+Route::get('oficio/{id}/revisar', 'OficioController@revisar')->name('oficio.revisar');
+Route::get('oficio/{id}/respuesta', 'OficioController@respuesta_pdf')->name('oficio.respuesta');
 Route::post('oficio', 'OficioController@guardar')->name('oficio.guardar');
 Route::post('oficio/validar', 'OficioController@validar')->name('oficio.validar');
+Route::post('oficio/rechazar', 'OficioController@rechazar')->name('oficio.rechazar');
 Route::put('oficio/{id}', 'OficioController@actualizar')->name('oficio.actualizar');
 Route::delete('oficio', 'OficioController@eliminar')->name('oficio.eliminar');
 
