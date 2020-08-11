@@ -230,12 +230,12 @@ class BitacoraController extends Controller
         elseif($estudiante->carrera_id == 5 ){$codigo .= 'BPFIS';}
 
         $bitacoras_validas = Bitacora::select('bitacora.*', 'carrera.id as carrera_id');
-        $bitacoras_validas = $bitacoras_validas->join('users', 'bitacora.usuario_id', '=', 'users.id');
+        $bitacoras_validas = $bitacoras_validas->join('oficio', 'bitacora.oficio_id', '=', 'oficio.id');
+        $bitacoras_validas = $bitacoras_validas->join('users', 'oficio.usuario_id', '=', 'users.id');
         $bitacoras_validas = $bitacoras_validas->join('persona', 'users.persona_id', '=', 'persona.id');
         $bitacoras_validas = $bitacoras_validas->join('estudiante', 'persona.id', '=', 'estudiante.persona_id');
         $bitacoras_validas = $bitacoras_validas->join('carrera', 'estudiante.carrera_id', '=', 'carrera.id');
-        $bitacoras_validas =  $bitacoras_validas->where('carrera.id', $estudiante->carrera_id);
-        $bitacoras_validas =  $bitacoras_validas->where('bitacora.valida', 1)->count();
+        $bitacoras_validas =  $bitacoras_validas->where('carrera.id', $estudiante->carrera_id)->count();
 
         $mes = date('m');
         $year= date('yy');

@@ -38,7 +38,7 @@ class PracticaController extends Controller
             $oficio = Oficio::where('usuario_id',Auth::user()->id)->orderBy('created_at', 'desc')->first();      
             if($oficio){ 
                 $bitacora = Oficio::find($oficio->id)->bitacora()->first(); 
-                if($bitacora->count() == 0){$bitacora = null;}
+                if(!$bitacora){$bitacora = null;}
             }
             else{ $bitacora = null;}
             $encargado = null;
