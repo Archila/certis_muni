@@ -4,8 +4,14 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-    <li class="breadcrumb-item"><a href="{{route('bitacora.index')}}">Bitácora</a></li>
+    @if(Auth()->user()->rol->id==2)
+    <li class="breadcrumb-item"><a href="{{route('practica.index')}}">Prácticas</a></li>
     <li class="breadcrumb-item active">Nueva bitácora</li>
+    @else
+    <li class="breadcrumb-item"><a href="{{route('bitacora.index')}}">Bitácora</a></li>
+    <li class="breadcrumb-item"><a href="{{route('bitacora.ver', $bitacora->id)}}">{{$estudiante->nombre}} {{$estudiante->apellido}} ({{$estudiante->registro}})</a></li>
+    <li class="breadcrumb-item active">Revisar</li>
+    @endif    
 @endsection
 
 @section('alerta')
@@ -21,72 +27,27 @@
   </div>
   <div class="card-body">
   <form class="needs-validation" method="POST" action="{{route('bitacora.guardar')}}" novalidate>    
-    @csrf 
-    <div class="form-row">
-      <div class="col-md-9 mb-3">
-        <div class="row">
-          <div class="col-md-6 mb-3">
-            <label for="validationCustom03">Semestre</label>
-            <select id="validationCustom07" class="form-control" required name="semestre">
-                <option disabled>Seleccione un semestre</option>
-                <option value="1">Primer semestre</option>
-                <option value="2">Segundo semestre</option>
-            </select>
-            <div class="invalid-feedback">
-            Por favor seleccione un semestre
-            </div>
-          </div>      
-          <div class="col-md-3 mb-3">
-            <label for="validationCustom05">Año</label>
-            <div class="input-group input-group">
-              <select id="validationCustom07" class="form-control" required name="year">
-                  <option disabled>Seleccione un semestre</option>
-                  <option value="2020">2020</option>
-                  <option value="2021">2021</option>
-                  <option value="2022">2022</option>
-              </select>             
-            </div>
-            <div class="invalid-feedback">
-            Por favor seleccione un año
-            </div>
-          </div>         
-          <div class="col-md-3 mb-3">
-            <label for="validationCustom05">Tipo</label>
-            <div class="input-group input-group">
-              <select id="validationCustom07" class="form-control" required name="tipo">
-                  <option disabled>Seleccione un tipo</option>
-                  <option value="1">Docencia</option>
-                  <option value="2">Investigación</option>
-                  <option value="3">Aplicada</option>
-              </select>             
-            </div>
-            <div class="invalid-feedback">
-            Por favor seleccione un año
-            </div>
-          </div>           
-        </div>
-      </div>  
-    </div>
+    @csrf        
     
-    <!-- Si el estudiante ha ingresado empresa -->
-    @if($empresa)
     <div class="form-row">
       <div class="col-12">
         <div class="callout callout-info">
           <dl class="row">
-            <dd class="col-sm-12 mb-n1 mt-n1"> <b>Empresa: </b> {{$empresa->nombre}}</dd>
+            <dd class="col-sm-12 mb-n1 mt-n1"> <b>Empresa o institución: </b> {{$empresa->nombre}}</dd>
             <dd class="col-sm-6 mb-n1"> <b>Dirección: </b> {{$empresa->direccion}}</dd>
             <dd class="col-sm-6 mb-n1"> <b>Ubicación: </b> {{$empresa->ubicacion}}</dd>
             <dd class="col-sm-4 mb-n3"> <b>Alias: </b> {{$empresa->alias}}</dd>
             <dd class="col-sm-2 mb-n3"> <b>Telefono: </b> {{$empresa->telefono}}</dd>
-            <dd class="col-sm-4 mb-n3"> <b>Correo: </b> {{$empresa->correo}}</dd>              
+            <dd class="col-sm-4 mb-n3"> <b>Correo: </b> {{$empresa->correo}}</dd>       
+            <dd class="col-sm-4 mb-n3"> <b>O: </b> {{$oficio->ruta_pdf}}</dd>              
           </dl>        
         </div>          
       </div>          
       <input type="hidden" name="empresa_id" value="{{$empresa->id}}" id="select_empresa"> 
       <input type="hidden" value="{{$empresa->nombre}}" id="nombre_empresa"> 
+      <input type="hidden" value="{{$oficio->id}}" name="oficio_id">
     </div>
-
+    
     <div class="form-row">
       <div class="col-md-4 mt-4 mb-3">        
         <label for="select_areas">Seleccione un área de la empresa</label>
@@ -158,105 +119,7 @@
           </div>              
         </div>
       </div> 
-
     </div>
-
-    <!-- FIN Empresa -->  
-    <!-- Si el estudiante no ha ingresado empresa -->
-    @else
-      <div class="form-row">
-        <div class="col-md-8">
-          <label for="select_empresa">Empresa</label>
-          <div class="input-group input-group">
-            <select id="select_empresa" class="form-control" required name="empresa_id" onchange="select_area()" >
-                @forelse ($empresas as $em)
-                  <option value="{{$em->id}}">{{$em->nombre}} ({{$em->alias}}) {{$em->ubicacion}}</option>
-                @empty
-                  <option disabled>No hay empresas, por favor cree una</option>
-                @endforelse                
-            </select>
-            <span class="input-group-append">
-              <a href="{{route('empresa.crear')}}"><button type="button" class="btn btn-success"><i class="fas fa-plus"></i></button></a> 
-            </span>
-          </div>
-          <div class="invalid-feedback">
-          Por favor seleccione una empresa o cree una.
-          </div>
-        </div>
-
-        <div class="col-md-4 mb-3">        
-          <label for="select_areas">Seleccione un área de la empresa</label>
-          <div class="input-group input-group">
-            <select id="select_areas" class="form-control" required name="area_id" onchange="encargadoArea()" >
-                <option disabled>Seleccione un área</option>
-                
-            </select>   
-            <span class="input-group-append">
-              <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal_area"><i class="fas fa-plus"></i></button>
-            </span>             
-          </div>
-          <div class="invalid-feedback">
-          Por favor seleccione un area
-          </div>
-        </div>
-
-        <div class="col-md-9" >
-          <div class="form-group ml-2">
-            <div class="custom-control custom-switch">
-                <input type="checkbox" checked class="custom-control-input" id="cbx_encargado" onclick="cbxEncargado()" name="existente" >
-                <label class="custom-control-label" for="cbx_encargado">Encargados del area</label>
-            </div>
-          </div>     
-
-          <div id="encargado-area">
-            <div class="col-md-12 mt-n3">
-            <label for="select_encargado_area">Encargados disponibles</label>
-              <div class="input-group input-group">
-                <select id="select_encargado_area" class="form-control" required name="encargado_area_id">
-                    <option disabled>Seleccione un encargado</option>
-                    
-                </select>
-              </div>
-              <div class="invalid-feedback">
-                Por favor seleccione un encargado o cree uno
-              </div>
-            </div>
-          </div>
-
-          <div id="encargado-nuevo">
-            <div class="row">
-              <div class="col-md-5 mt-n3">
-                <label for="puesto">Puesto</label>
-                <input type="text" class="form-control encargado" id="puesto" name="puesto" required > 
-                <div class="invalid-feedback">
-                Ingrese el puesto del encargado en la empresa.
-                </div>      
-              </div>   
-
-              <div class="col-md-7 mt-n3">
-              <label for="select_necargado">Encargado</label>
-                <div class="input-group input-group">
-                  <select id="select_encargado" class="form-control" required name="encargado_id">
-                  @forelse ($encargados as $e)
-                    <option value="{{$e->encargado_id}}">{{$e->nombre}} {{$e->apellido}}</option>
-                  @empty
-                    <option disabled>No hay encargados, por favor cree uno</option>
-                  @endforelse                          
-                  </select>
-                  <span class="input-group-append">
-                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal_encargado"><i class="fas fa-plus"></i></button>
-                  </span>   
-                </div>
-                <div class="invalid-feedback">
-                Por favor seleccione un encargado o cree uno
-                </div>
-              </div>
-            </div>              
-          </div>
-        </div>  
-      </div>
-    <!-- FIN NO EMPRESA -->
-    @endif
       
     <div class="float-sm-right">
       <button class="btn btn-primary" type="submit">Crear</button>

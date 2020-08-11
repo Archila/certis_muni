@@ -11,6 +11,9 @@
   @if (session('error')=='ERROR')
   <script> alerta_error('Ya existe solicitud en el sistema')</script>
   @endif
+  @if (session('creado')>0)
+  <script> alerta_create('Bitácora creada exitosamente')</script>
+  @endif
 @endsection
 
 @section('contenido')
@@ -43,13 +46,47 @@
                 @else<!--BITACORAS EN EL SISTEMA -->  
                 <table class="table">
                     <thead class="thead-light">
+                        <th></th>
                         <th>Estudiante</th>
+                        <th>Carne</th>
+                        <th>Registro</th>
+                        <th>Fecha creación</th>
+                        <th>Tipo</th>
                     </thead>
-                    @foreach($bitacoras as $b)
-                        @foreach($estudiantes as $e)
-
-                        @endforeach
-                    @endforeach
+                    @foreach($bitacoras as $b) <!-- CICLO BITACORAS -->
+                        @foreach($estudiantes as $e)<!-- CICLO ESTUDIANTES -->
+                            @foreach($oficios as $o)<!-- CICLO OFICIOS -->
+                            @if($o->usuario_id == $e->usuario_id && $b->oficio_id == $o->id)
+                            <tr>
+                                <td>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fas fa-cog"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-left" role="menu">
+                                    <a href="{{route('bitacora.ver', $b->id)}}" class="dropdown-item">Ver bitácora</a>
+                                    <a href="{{route('oficio.pdf', $o->id)}}" class="dropdown-item">Ver oficio pdf</a>
+                                    <a href="{{route('oficio.respuesta', $o->id)}}" class="dropdown-item">Ver respuesta pdf</a>   
+                                </div>  
+                                </td>
+                                <td>{{$e->nombre}} {{$e->apellido}}</td>
+                                <td>{{$e->carne}} </td>
+                                <td>{{$e->registro}}</td>
+                                <td>{{date('d-M-Y', strtotime($b->created_at))}}</td>
+                                <td>
+                                @if($o->tipo == 1)                                
+                                <span class="badge bg-lightblue">Docente</span>                                
+                                @elseif($o->tipo == 2)
+                                <span class="badge bg-gray">Investigación</span>  
+                                @else
+                                <span class="badge bg-navy">Aplicada</span>  
+                                @endif
+                                </td>
+                            </tr>
+                            @endif
+                            @endforeach<!-- FIN CICLO OFICIOS -->
+                        @endforeach<!-- FIN CICLO ESTUDIANTES -->
+                    @endforeach<!-- FIN CICLO BITACORAS -->
                 </table>  
                 @endempty <!-- BITACORAS -->  
                 </div>

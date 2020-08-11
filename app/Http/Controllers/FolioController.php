@@ -53,11 +53,12 @@ class FolioController extends Controller
         $folio->fecha_final = $request->fecha_final;
         $folio->horas = $request->horas;
         $folio->descripcion = $request->descripcion;
+        $folio->observaciones = $request->observaciones;
         $folio->bitacora_id = $request->bitacora_id;     
         $folio->save();
 
-        $bitacora = Bitacora::findOrFail($request->bitacora_id);
-        $horas =  (float)$bitacora->horas + (float)$request->horas;
+        $bitacora = Bitacora::findOrFail($request->bitacora_id);        
+        $horas = Folio::where('bitacora_id',$bitacora->id)->sum('horas');
         $bitacora->horas = (string)$horas;
         $bitacora->save();
         
@@ -81,9 +82,18 @@ class FolioController extends Controller
      * @param  \App\Models\Folio  $folio
      * @return \Illuminate\Http\Response
      */
-    public function edit(Folio $folio)
-    {
-        //
+    public function editar($id)
+    {   
+        $folio = Folio::findOrFail($id);
+        if($folio->revisado){ abort(403);}
+
+        $bitacora = Bitacora::findOrFail($folio->bitacora_id);
+
+        $folios = Folio::select('folio.*');
+        $folios = $folios->where('bitacora_id',$bitacora->id);
+        $folios = $folios->orderBy('numero')->get();
+
+        return view('folios.editar', compact(['bitacora','folio', 'folios']));
     }
 
     /**
@@ -93,9 +103,26 @@ class FolioController extends Controller
      * @param  \App\Models\Folio  $folio
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Folio $folio)
+    public function actualizar(Request $request, $id)
     {
-        //
+        $folio = Folio::findOrFail($id);
+
+        $horas_anterior = $folio->horas;
+
+        $folio->numero = $request->numero;
+        $folio->fecha_inicial = $request->fecha_inicial;
+        $folio->fecha_final = $request->fecha_final;
+        $folio->horas = $request->horas;
+        $folio->descripcion = $request->descripcion;
+        $folio->observaciones = $request->observaciones;
+        $folio->save();
+
+        $bitacora = Bitacora::findOrFail($folio->bitacora_id);
+        $horas = Folio::where('bitacora_id',$bitacora->id)->sum('horas');
+        $bitacora->horas = $horas;
+        $bitacora->save();
+        
+        return redirect()->route('bitacora.ver', $bitacora->id)->with('editado', $folio->id);
     }
 
     /**
@@ -106,6 +133,6 @@ class FolioController extends Controller
      */
     public function destroy(Folio $folio)
     {
-        //
+           
     }
 }

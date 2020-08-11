@@ -8,6 +8,7 @@ use App\Models\Encargado;
 use App\Models\Carrera;
 use App\Models\Bitacora;
 use App\Models\Oficio;
+use App\Models\Folio;
 use App\Models\Estudiante;
 use Illuminate\Http\Request;
 
@@ -36,12 +37,25 @@ class PracticaController extends Controller
             $oficio = Auth::user()->oficios()->first();      
             $oficio = Oficio::where('usuario_id',Auth::user()->id)->orderBy('created_at', 'desc')->first();      
             if($oficio){ 
-                $bitacora = Oficio::find($oficio->id)->bitacora(); 
+                $bitacora = Oficio::find($oficio->id)->bitacora()->first(); 
                 if($bitacora->count() == 0){$bitacora = null;}
             }
             else{ $bitacora = null;}
+            $encargado = null;
+            $empresa = null;
+            $folios = null;
+            if($bitacora){
+                $empresa = Empresa::findOrFail($oficio->empresa_id);
+                $folios = Folio::where('bitacora_id', $bitacora->id)->orderBy('numero', 'asc')->get();
+
+                $encargado= Encargado::select('encargado.*', 'persona.*', 'encargado.id as encargado_id', 'area_encargado.puesto as puesto');
+                $encargado = $encargado->join('persona', 'persona_id', '=', 'persona.id');
+                $encargado = $encargado->leftJoin('area_encargado', 'encargado.id', '=', 'area_encargado.encargado_id');
+                $encargado = $encargado->leftJoin('area', 'area_encargado.area_id', '=', 'area.id');
+                $encargado = $encargado->where('encargado.id', $bitacora->encargado_id)->first();
+            }
             
-            return view('practicas.individual',compact(['bitacora', 'oficio']));            
+            return view('practicas.individual',compact(['bitacora', 'oficio', 'empresa','encargado', 'folios']));            
         }
         else{
 
@@ -55,7 +69,7 @@ class PracticaController extends Controller
             }
             $estudiantes = $estudiantes->orderBy('estudiante.created_at', 'asc')->get();
 
-            $bitacoras = Bitacora::get();
+            $bitacoras = Bitacora::all();
             $oficios = Oficio::orderBy('updated_at','desc')->get();
             if($bitacoras->count()== 0){$bitacoras = null;}
             if($oficios->count()== 0){$oficios = null;}

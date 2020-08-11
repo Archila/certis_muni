@@ -5,11 +5,11 @@
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="/">Inicio</a></li>
     @if(Auth()->user()->rol->id==2)
-    <li class="breadcrumb-item"><a href="{{route('bitacora.individual')}}">Bitácora</a></li>
-    <li class="breadcrumb-item active">Semestre {{$bitacora->semestre}} ({{$bitacora->year}})</li>    
+    <li class="breadcrumb-item"><a href="{{route('practica.index')}}">Práctica</a></li>
+    <li class="breadcrumb-item active">{{$bitacora->nombre}}</li>    
     @else
-    <li class="breadcrumb-item"><a href="{{route('bitacora.index')}}">Bitácora</a></li>
-    <li class="breadcrumb-item active">{{$estudiante->nombre}} {{$estudiante->apellido}} ({{$estudiante->registro}})</li>
+    <li class="breadcrumb-item"><a href="{{route('practica.index')}}">Práctica</a></li>
+    <li class="breadcrumb-item active">Bitácora - {{$estudiante->nombre}} {{$estudiante->apellido}} ({{$estudiante->registro}})</li>
     @endif
 @endsection
 
@@ -20,6 +20,12 @@
   @if (session('valido')>0)
   <script> alerta_info('La bitácora ya está validada.')</script>
   @endif
+  @if (session('revisado')>0)
+  <script> alerta_info('No se puede editar, el folio ya fue revisado')</script>
+  @endif
+  @if (session('editado')>0)
+  <script> alerta_create(' Folio editado exitosamente')</script>
+  @endif
 @endsection
 
 @section('contenido')
@@ -27,16 +33,16 @@
         <div class="card-header">
         @if($bitacora->semestre==1) @php $semestre='Primer semestre'; @endphp @else @php $semestre='Segundo semestre'; @endphp @endif
         <h4 class="">
-            Ver bitácora - {{$semestre}} - {{$bitacora->year}}
+            {{$bitacora->nombre}}
         </h4>
         </div>
         <div class="card-body">
-        @if($bitacora->oficio && Auth()->user()->rol->id !=2)
+        @if(Auth()->user()->rol->id !=2)
         <div class="callout callout-info">
-          <h5 class="my-n2">Oficio: {{$bitacora->no_oficio}}</h5>
+          <h5 class="my-n2">Oficio: {{$oficio->no_oficio}}</h5>
         </div>       
         @endif
-        @if($bitacora->valida && Auth()->user()->rol->id !=2)
+        @if(Auth()->user()->rol->id !=2)
         <div class="callout callout-success">
           <h5 class="my-n2">No. de bitácora: {{$bitacora->codigo}}</h5>
         </div>       
@@ -59,16 +65,32 @@
           <p class="col-sm-6 mt-n1"><b>Encargado: </b>{{$encargado->nombre}} {{$encargado->apellido}}</p>
           <p class="col-sm-6 mt-n1"><b>Puesto: </b>{{$encargado->puesto}}</p>
         </div>
-        @if($bitacora->valida)
+        
         <div class="row mt-2">
             <div class="col-md-9 col-sm-12 ">
                 <h4>Horas acumuladas: {{$bitacora->horas}}</h4>
             </div>
-            @if(Auth()->user()->rol->id ==2)
-            <div class="col-md-3 col-sm-12">
-                <a class="btn btn-block btn-success btn-sm" href="{{route('bitacora.crear_folio', $bitacora->id)}}">Agregar folio</a>
-            </div>
-            @endif
+            <div class="col-md-3 mb-3">
+              <div class="btn-group">
+                  <button type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown">
+                  Opciones
+                  </button>
+                  <div class="dropdown-menu dropdown-menu-left" role="menu">
+                    @if(Auth()->user()->rol->id ==2)                    
+                    <a href="{{route('bitacora.crear_folio', $bitacora->id)}}" class="dropdown-item">Agregar folio</a>
+                    <a href="{{route('oficio.respuesta', $oficio->id)}}" class="dropdown-item">Respuesta pdf</a>     
+                    @else
+                    <a href="{{route('bitacora.revisar', $bitacora->id)}}" class="dropdown-item">Revisar folios</a>
+                    <a href="{{route('pdf.oficio', $bitacora->id)}}" class="dropdown-item">Ver oficio</a>
+                    <a href="{{route('oficio.respuesta', $oficio->id)}}" class="dropdown-item">Respuesta pdf</a>  
+                    @endif
+                    <a class="dropdown-divider"></a>
+                    <a href="{{route('pdf.caratula', $bitacora->id)}}" class="dropdown-item">Ver Caratula</a>
+                    <a href="{{route('pdf.caratula', $bitacora->id)}}" class="dropdown-item">Imprimir folios</a>
+                    <a href="{{route('pdf.caratula', $bitacora->id)}}" class="dropdown-item">Generar folios vacio</a>
+                  </div>                  
+              </div>
+            </div>            
         </div>
           <div class="col-12">
             <div class="card card-primary card-tabs">
@@ -128,15 +150,22 @@
                         <div class="row">
                             <h4>Descripción</h4>
                         </div>     
-                        <div class="post">                        
+                        <div class="post px-2" style="text-align: justify; text-justify: inter-word;">                        
                           <p> {{$f->descripcion}} </p>                       
                         </div>
                         <div class="row mt-n1">
                             <h4>Observaciones</h4>
                         </div>     
-                        <div class="post">                        
+                        <div class="post px-2" style="text-align: justify; text-justify: inter-word;">                        
                           <p> {{$f->observaciones}} </p>                       
-                        </div>                        
+                        </div>    
+                        <div class="row">
+                          <div class="col-md-2 offset-md-10">
+                          @if(!$f->revisado)
+                          <a href="{{route('folio.editar', $f->id)}}" class="btn btn-block btn-sm btn-outline-success">Editar folio</a>
+                          @endif
+                          </div>
+                        </div>                    
                     </div>
                     @php $activo=''; @endphp
                     @endforeach  
@@ -144,51 +173,8 @@
               </div>
               <!-- /.card -->
             </div>  
-          </div>  
-        @endif
-        @if(!$bitacora->valida && Auth()->user()->rol->id ==2)
-        <div class="callout callout-danger">
-          <h4><i class="fas fa-exclamation"></i> Tu bitácora está en proceso de aprobación.</h4>
-
-          <p>Por favor espera o contacta con tu supervisor de prácticas finales.</p>
+          </div> 
         </div>
-        @endif
-
-        @if(Auth()->user()->rol->id !=2)
-          @if(!$bitacora->oficio && !$bitacora->valida)
-          <div class='row'>
-            <form class='col-md-2 offset-md-10 mt-3' method="post" action="{{route('bitacora.oficio', $bitacora->id)}}" >          
-            @csrf
-                <input type="hidden" name="id" id="input" class="form-control">
-                <button type="submit" class="btn btn-info">Generar oficio</button>
-            </form>       
-          </div>          
-          @elseif($bitacora->oficio && !$bitacora->valida)
-          <div class="row">
-            <form class='col-md-2 offset-md-8 mt-3' method="post" action="{{route('bitacora.validar', $bitacora->id)}}" >          
-            @csrf
-                <input type="hidden" name="id" id="input" class="form-control">
-                <button type="submit" class="btn btn-success btn-block">Validar</button>
-                
-            </form>      
-            <div class="col-md-2 mt-3">
-              <a class="btn btn-block btn-info" href="{{route('pdf.oficio', $bitacora->id)}}">Ver oficio</a>
-            </div> 
-          </div>          
-          @else   
-          <div class='row'>            
-            <div class="col-md-2 offset-md-6 mt-3">
-              <a class="btn btn-block btn-info btn-block" href="{{route('pdf.oficio', $bitacora->id)}}">Ver oficio</a>
-            </div> 
-            <div class="col-md-2 mt-3">
-              <a class="btn btn-block btn-warning btn-block" href="{{route('pdf.caratula', $bitacora->id)}}">Ver Caratula</a>
-            </div> 
-            <div class="col-md-2 mt-3">
-              <a class="btn btn-block bg-orange btn-block" href="{{route('bitacora.revisar', $bitacora->id)}}">Revisar folios</a>
-            </div> 
-          </div>     
-          @endif
-        @endif
     </div>
 @endsection
 

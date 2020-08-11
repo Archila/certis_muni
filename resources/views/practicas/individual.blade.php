@@ -11,6 +11,9 @@
   @if (session('error')=='ERROR')
   <script> alerta_error('Ya existe solicitud en el sistema')</script>
   @endif
+  @if (session('creado')>0)
+  <script> alerta_create('Bitácora creada exitosamente')</script>
+  @endif
 
   @if(count($errors) > 0)
     @foreach ($errors->all() as $error)
@@ -233,8 +236,240 @@
       @endempty <!-- FIN ESTUDIANTE SIN BITACORA CON/SIN OFICIO -->
     @else<!-- ESTUDIANTE CON BITACORA -->        
     
-    @endempty <!-- FIN CON/SIN BITACORA -->
-    
+    <div class="card card-success">
+      <div class="card-header">
+        <h3 class="card-title">Bitácora</h3>
+
+        <div class="card-tools">
+          <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+          </button>
+        </div>
+        <!-- /.card-tools -->
+      </div>
+      <!-- /.card-header -->
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 col-md-12 col-lg-4 order-2 order-md-1">
+              <h3 class="text-primary"><i class="fas fa-clipboard"></i> 
+              {{$bitacora->nombre}}</h3>
+              <div class="text-muted">
+                  <p class="text-sm">Empresa / Institución
+                  <b class="d-block">{{$empresa->nombre}} ({{$empresa->alias}})</b>
+                  <p class="text-sm mt-n3">Dirección
+                  <b class="d-block">{{$empresa->direccion}} ({{$empresa->ubicacion}})</b>
+                  </p>
+                  <p class="text-sm">Encargado
+                  <b class="d-block">{{$encargado->nombre}} {{$encargado->apellido}}</b>
+                  <p class="text-sm mt-n3">Puesto
+                  <b class="d-block">{{$encargado->puesto}} </b>
+                  </p>
+              </div>                      
+                <ul class="list-unstyled">
+                    @if(Auth()->user()->rol->id !=2)     
+                    <li>
+                    <a href="{{route('pdf.oficio', $bitacora->id)}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i>Ver oficio</a>
+                    </li>   
+                    <li>
+                    <a href="{{route('bitacora.revisar', $bitacora->id)}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i>Revisar folios</a>
+                    </li>                    
+                    @endif
+                    @if($oficio->ruta_pdf)
+                    <li>
+                    <a href="{{route('oficio.respuesta', $oficio->id)}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i>Respuesta institución</a>
+                    </li> 
+                    @endif                   
+                    <li>
+                    <a href="{{route('pdf.caratula', $bitacora->id)}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i>Caratula</a>
+                    </li>
+                    <li>
+                    <a href="{{route('pdf.folios', $bitacora->id)}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i>Imprimir folios</a>
+                    </li>   
+                    <li>
+                    <a href="{{route('pdf.folios', $bitacora->id)}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i>Generar folios vacios</a>
+                    </li>                  
+                </ul>         
+              <div class="text-center mb-3">  
+                  <a href="{{route('bitacora.ver', $bitacora->id)}}" class="btn btn-sm btn-primary">Detalle folios</a>
+                  <a href="{{route('bitacora.crear_folio', $bitacora->id)}}" class="btn btn-sm btn-success">Agregar folio</a>
+              </div>
+          </div>
+
+          <div class="col-12 col-md-12 col-lg-8 order-1 order-md-2">
+              <div class="row">
+                  <div class="col-12 col-sm-4">
+                  <div class="info-box bg-light">
+                      <div class="info-box-content">
+                      <span class="info-box-text text-center text-muted">Código</span>
+                      <span class="info-box-number text-center text-muted mb-0">{{$bitacora->codigo ?? '--'}}</span>
+                      </div>
+                  </div>
+                  </div>
+                  <div class="col-12 col-sm-4">
+                  <div class="info-box bg-light">
+                      <div class="info-box-content">
+                      <span class="info-box-text text-center text-muted">Tipo</span>
+                      <span class="info-box-number text-center text-muted mb-0">
+                      @if($oficio->tipo == 1) Docencia @elseif($oficio->tipo == 2) Investigación @else Aplicada @endif                    
+                      </span>
+                      </div>
+                  </div>
+                  </div>
+                  <div class="col-12 col-sm-4">
+                  <div class="info-box bg-light">
+                      <div class="info-box-content">
+                      <span class="info-box-text text-center text-muted">Horas acumuladas</span>
+                      <span class="info-box-number text-center text-muted mb-0">{{$bitacora->horas}}<span>
+                      </div>
+                  </div>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-12">
+                  <h5>Folios agregados</h5>
+                      <div class="post">
+                          <table class="table table-sm">
+                              <thead class="thead-light">
+                                  <th>Folio #</th>
+                                  <th>Revisado</th>
+                                  <th>Horas</th>
+                              </thead>
+                              <tbody>
+                              @if($folios)
+                              @php $cont = 0; @endphp
+                                  @foreach ($folios as $f)
+                                  <tr>
+                                      <td>{{$f->numero}}</td>
+                                      <td>@if($f->revisado)<span class="badge badge-success">SI</span>  @php $cont += $f->horas; @endphp
+                                      @else <span class="badge badge-danger">NO</span>@endif</td>
+                                      <td>{{$f->horas}}</td>                                    
+                                  </tr>                               
+                                  @endforeach
+                                  <tr>
+                                      <td colspan="1"></td>
+                                      <th colspan="2">Horas revisadas: {{$cont}}</th>
+                                  </tr>
+                              @endif
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      </div>
+      <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+
+    <div class="row">
+        <div class="col-12">
+          <div class="card card-primary collapsed-card">
+            <div class="card-header">
+              <h3 class="card-title">Solicitud practicas finales</h3>
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+                </button>
+              </div>
+              <!-- /.card-tools -->
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">              
+              <div class="row">                  
+                <div class="col-6 col-sm-2">
+                  <div class="info-box bg-light">
+                      <div class="info-box-content">
+                      <span class="info-box-text text-center text-muted">Creación:  </span>
+                      <span class="info-box-number text-center text-muted mb-0">{{date('d-m-Y', strtotime($oficio->created_at))}}</span>
+                      </div>
+                  </div>
+                </div>
+                <div class="col-6 col-sm-2">
+                  <div class="info-box bg-light">
+                      <div class="info-box-content">
+                      <span class="info-box-text text-center text-muted">Aprobada: </span>
+                      <span class="info-box-number text-center text-muted mb-0">
+                      @if($oficio->aprobado) <span class="badge bg-success">SI</span> @else <span class="badge bg-danger">NO</span> @endif
+                      <span>
+                      </div>
+                  </div>
+                </div>
+                <div class="col-6 col-sm-2">
+                  <div class="info-box bg-light">
+                      <div class="info-box-content">
+                      <span class="info-box-text text-center text-muted">Tipo: </span>
+                      <span class="info-box-number text-center text-muted mb-0">
+                      @if($oficio->tipo == 1) Docencia @elseif($oficio->tipo == 2) Investigación @else Aplicada @endif
+                      <span>
+                      </div>
+                  </div>
+                </div>
+                <div class="col-6 col-sm-2">
+                  <div class="info-box bg-light">
+                      <div class="info-box-content">
+                      <span class="info-box-text text-center text-muted">Semestre: </span>
+                      <span class="info-box-number text-center text-muted mb-0">
+                      @if($oficio->semestre == 1) Primero @else Segundo @endif
+                      <span>
+                      </div>
+                  </div>
+                </div>
+                <div class="col-6 col-sm-2">
+                  <div class="info-box bg-light">
+                      <div class="info-box-content">
+                      <span class="info-box-text text-center text-muted">Año: </span>
+                      <span class="info-box-number text-center text-muted mb-0">{{$oficio->year}}<span>
+                      </div>
+                  </div>
+                </div> 
+                <div class="col-6 col-sm-2">
+                  <div class="info-box bg-light">
+                      <div class="info-box-content">
+                      <span class="info-box-text text-center text-muted">Fecha aprobación:  </span>
+                      <span class="info-box-number text-center text-muted mb-0">{{date('d-m-Y', strtotime($oficio->f_oficio))}}</span>
+                      </div>
+                  </div>
+                </div>
+              </div> 
+              <!-- /.FIN ROW 1 -->
+
+              <dl class="row">
+                <dd class="col-sm-12 mb-n1"> <b>Empresa: </b> {{$oficio->empresa}}</dd>
+                <dd class="col-sm-6 "> <b>Dirección: </b> {{$oficio->direccion}}</dd>
+                <dd class="col-sm-6 "> <b>Ubicación: </b> {{$oficio->ubicacion}}</dd>
+                <dd class="col-sm-4 "> <b>Estudiante: </b> {{$oficio->estudiante}}</dd>
+                <dd class="col-sm-3 "> <b>Carne: </b> {{$oficio->carne}}</dd>
+                <dd class="col-sm-3 "> <b>Registro: </b> {{$oficio->registro}}</dd>       
+
+                <dd class="col-sm-6 mb-n1"> <b>Destinatario: </b> {{$oficio->destinatario}}</dd>      
+                <dd class="col-sm-6 mb-n1"> <b>Saludo: </b> {{$oficio->encabezado}}</dd>     
+                @if($oficio->tipo == 1) 
+                <dd class="col-sm-10 mb-n1"> <b>Curso: </b> {{$oficio->curso}}</dd>
+                <dd class="col-sm-2 mb-n1"> <b>Código: </b> {{$oficio->codigo_curso}}</dd>
+                @elseif($oficio->tipo == 2) 
+                <dd class="col-sm-10 mb-n1"> <b>Tema o investigación: </b>"{{$oficio->curso}}"</dd>
+                @else
+                <dd class="col-sm-10 mb-n1"> <b>Puesto: </b>{{$oficio->puesto}}</dd>
+                @endif
+              </dl>                   
+
+              <div class="row"> 
+                <div class="callout callout-success">
+                  <h5 > <i class="icon fas fa-check"></i> La solicitud de prácticas ya fue aprobada y revisada.</h5>
+                  @if($oficio->ruta_pdf)
+                  <p>Para ver la respuesta de la contraparte institucional, click <a href="{{route('oficio.respuesta', $oficio->id)}}">aquí</a> </p>
+                  @endif
+                </div>   
+              </div>
+              <!-- /.FIN ROW 3 -->
+
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+      </div>
+    @endempty <!-- FIN CON/SIN BITACORA -->    
     </div>
 
 </div>

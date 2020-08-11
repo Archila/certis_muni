@@ -1,12 +1,12 @@
 @extends('plantilla.plantilla',['sidebar'=>65])
 
-@section('titulo', 'Crear folio')
+@section('titulo', 'Editar folio')
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="/">Inicio</a></li>
     <li class="breadcrumb-item"><a href="{{route('practica.index')}}">Práctica</a></li>
     <li class="breadcrumb-item"><a href="{{route('bitacora.ver', $bitacora->id)}}">{{$bitacora->nombre}}</a></li>
-    <li class="breadcrumb-item active">Agregar folio</li>
+    <li class="breadcrumb-item active">Editar folio</li>
 @endsection
 
 @section('alerta')
@@ -21,55 +21,52 @@
     <h3>Crear nuevo folio</h3> 
   </div>
   <div class="card-body">
-  <form class="needs-validation" method="POST" action="{{route('folio.guardar')}}" novalidate>    
-    @csrf
-    <input type="hidden" value="{{$bitacora->id}}" name="bitacora_id">
+  <form class="needs-validation" method="POST" action="{{route('folio.actualizar', $folio->id)}}" novalidate>  
+    @method('PUT')   
+    @csrf 
     <div class="form-row">
-      <div class="col-md-2 mb-3">
-        @empty($folios)
-        <label for="validationCustom03">Número</label>
-        <input type="number" min="1" class="form-control" id="validationCustom03" required name="numero" autofocus>
-        <div class="invalid-feedback">
-          Por favor ingrese número de folio
-        </div>      
-        @else
+      <div class="col-md-2 mb-3">        
+      <input type="hidden" name="id" value="{{$folio->id}}">
         <label for="validationCustom03">Número</label>
         <select id="validationCustom07" class="form-control" required name="numero">
             <option disabled>Seleccione un número</option>
             @for ($i = 1; $i < 21 ; $i++)
               @php $mostrar = true; @endphp
               @foreach($folios as $f)              
-                @if($f->numero == $i)
+                @if($f->numero == $i && $f->numero != $folio->numero)
                 @php $mostrar=false; @endphp
                 @endif
               @endforeach  
               @if($mostrar)
-              <option value="{{ $i }}">{{ $i }}</option>
+                @if($folio->numero == $i)
+                <option value="{{ $i }}" selected>{{ $i }}</option>
+                @else
+                <option value="{{ $i }}">{{ $i }}</option>
+                @endif
               @endif            
             @endfor
         </select>
         <div class="invalid-feedback">
           Por favor seleccione un número de folio
-        </div>        
-        @endempty
+        </div>      
       </div>      
       <div class="col-md-3 mb-3">
         <label for="validationCustom05">Fecha inicial</label>
-        <input type="date" class="form-control" id="validationCustom05" required name="fecha_inicial" >
+        <input type="date" class="form-control" id="validationCustom05" required name="fecha_inicial" value="{{$folio->fecha_inicial}}">
         <div class="invalid-feedback">
           Por favor ingrese fecha inicial de folio
         </div>   
       </div>    
       <div class="col-md-3 mb-3">
         <label for="validationCustom06">Fecha final</label>
-        <input type="date" class="form-control" id="validationCustom06" required name="fecha_final" >
+        <input type="date" class="form-control" id="validationCustom06" required name="fecha_final" value="{{$folio->fecha_final}}">
         <div class="invalid-feedback">
           Por favor ingrese fecha final de folio
         </div>   
       </div>  
       <div class="col-md-3 mb-3">
         <label for="validationCustom06">Horas</label>
-        <input type="text" class="form-control" id="validationCustom06" required name="horas" >
+        <input type="text" class="form-control" id="validationCustom06" required name="horas" value="{{$folio->horas}}" >
         <div class="invalid-feedback">
           Por favor ingrese cantidad de horas para el folio
         </div>   
@@ -95,7 +92,7 @@
               <div class="">
                 <textarea class="form-control" id="descripcion" name="descripcion" required
                 placeholder="Ingrese las actividades realizadas en su práctica"
-                style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding:10px;"></textarea>   
+                style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding:10px;">{{$folio->descripcion}}</textarea>   
                 <div class="invalid-feedback">
                   Por favor ingrese descripción del folio.
                 </div>   
@@ -105,7 +102,7 @@
             <h4>Observaciones</h4>
               <div class="mb-3">
                 <textarea class="form-control" id="observaciones" name="observaciones" required
-                style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding:10px;"></textarea> 
+                style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding:10px;">{{$folio->observaciones}}</textarea> 
               </div>              
             </div>
           </div>
@@ -113,7 +110,7 @@
         <!-- /.col-->
     </div>
     <div class="float-sm-right">
-      <button class="btn btn-primary" type="submit">Crear</button>
+      <button class="btn btn-success" type="submit">Editar</button>
       <a class="btn btn-secondary" href="{{url()->previous()}}" role="cancelar">Regresar</a>
     </div>    
   </form>

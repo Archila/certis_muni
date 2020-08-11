@@ -30,15 +30,16 @@ class InicioController extends Controller
 
         if(Auth::user()->rol->id == 2){ 
 
-            $oficio = Auth::user()->oficios()->first();      
+            /*$oficio = Auth::user()->oficios()->first();      
             $oficio = Oficio::where('usuario_id',Auth::user()->id)->orderBy('created_at', 'desc')->first();      
             if($oficio){ 
-                $bitacora = Oficio::find($oficio->id)->bitacora(); 
-                if($bitacora->count() == 0){$bitacora = null;}
+                $bitacoras = Bitacora::where('oficio_id',$oficio->id)->get(); 
+                if($bitacoras->count() == 0){$bitacora = null;}
+                else { $bitacora = $bitacoras->first();}
             }
-            else{ $bitacora = null;}
-            
-            return view('practicas.individual',compact(['bitacora', 'oficio']));            
+            else{ $bitacora = null;}*/
+
+            return redirect()->route('practica.index');            
         }
         else{
 
