@@ -172,15 +172,59 @@
             <div class="col-md-6">
                 <div class="callout callout-warning">
                   <h5> <i class="icon fas fa-exclamation-triangle"></i>No hay documento de respuesta subido por el estudiante.</h5>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                Subir respuesta pdf
+                </button>
                 </div>
             </div>
-            @endif
-            
+            @endif            
         </div>
-    
+    </div>
+
+    <div class="row">
+        <div class="col-md-3 offset-md-9 p-3">
+        @if($oficio->ruta_pdf)
+            <button type="button" class="btn btn-primary btn-sm btn-block" data-toggle="modal" data-target="#exampleModal">
+            Cambiar respuesta pdf
+            </button>
+        @endif
+        </div>
     </div>
 
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Subir archivo pdf</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="{{route('practica.respuesta')}}" enctype="multipart/form-data">
+        @csrf 
+        <input type="hidden" name="oficio_id" value="{{$oficio->id}}">
+            <div class="">
+                <label for="exampleInputFile">Respuesta contraparte institucional</label>
+                <div class="custom-file">
+                <input type="file" class="custom-file-input" id="customFileLang" lang="es" name="file">
+                <label class="custom-file-label" for="customFileLang">Seleccionar Archivo</label>
+                </div>
+            </div>   
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="submit" class="btn btn-primary">Subir archivo</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 @endsection
 
 @section('page_script')

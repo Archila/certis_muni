@@ -175,7 +175,7 @@
                                   <label for="exampleInputFile">Cambiar archivo</label>
                                   <div class="input-group">
                                     <div class="custom-file">
-                                      <input type="file" class="custom-file-input" id="exampleInputFile" name="file">
+                                      <input type="file" class="custom-file-input" id="exampleInputFile" name="file"> 
                                       <label class="custom-file-label" for="exampleInputFile">Seleccione pdf</label>
                                     </div>                                    
                                   </div>

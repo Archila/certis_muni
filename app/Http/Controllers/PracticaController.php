@@ -101,7 +101,13 @@ class PracticaController extends Controller
         $oficio->ruta_pdf = $path;
         $oficio->save();
 
-        return redirect()->route('practica.index');
+        if(Auth::user()->rol->id == 2){
+            return redirect()->route('practica.index');
+        }
+        else{
+            return redirect()->route('oficio.revisar', $oficio->id);
+        }
+        
     }
 
 }
