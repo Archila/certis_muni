@@ -186,7 +186,6 @@ class BitacoraController extends Controller
     public function guardar(Request $request)
     {
         Gate::authorize('haveaccess', $this->roles_gate );
-                
         $oficio = Oficio::findOrFail($request->oficio_id);
 
         if(!$oficio->revisado || $oficio->rechazado){
@@ -528,5 +527,16 @@ class BitacoraController extends Controller
         $revision->save();
 
         return redirect()->route('bitacora.revisar', $id)->with('revision', true); 
+    }
+
+    public function fecha_extension($id, Request $request)
+    {
+        Gate::authorize('haveaccess', '{"roles":[ 1, 3, 4, 5, 6, 7 ]}' );
+        $bitacora = Bitacora::findOrFail($request->id);
+
+        $bitacora->f_aprobacion = $request->fecha;
+        $bitacora->save();
+               
+        return redirect()->route('bitacora.ver',$bitacora->id);
     }
 }

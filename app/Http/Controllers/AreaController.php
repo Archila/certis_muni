@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Area;
+use App\Models\Area;
 use Illuminate\Http\Request;
 
 class AreaController extends Controller
@@ -72,9 +72,16 @@ class AreaController extends Controller
      * @param  \App\Area  $area
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Area $area)
-    {
-        //
+    public function actualizar(Request $request)
+    {   
+        $area = Area::findOrFail($request->area_id);
+        $area->nombre = $request->nombre_area;
+        $area->descripcion = $request->descripcion_area;
+        $area->save();
+
+        $empresa_id = $request->empresa_id;
+
+        return redirect()->route('empresa.editar', $empresa_id)->with('area', $area->id); 
     }
 
     /**

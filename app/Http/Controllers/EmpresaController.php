@@ -235,7 +235,7 @@ class EmpresaController extends Controller
      */
     public function editar($id)
     {
-        $areas = Area::select('area.nombre as area', 'encargado.*', 'area.id as area_id', 'encargado.id as encargado_id', 'persona.*');
+        $areas = Area::select('area.nombre as area', 'area.descripcion as descripcion', 'encargado.*', 'area.id as area_id', 'encargado.id as encargado_id', 'persona.*');
         $areas ->leftJoin('area_encargado', 'area.id', '=', 'area_encargado.area_id');
         $areas ->leftJoin('encargado', 'area_encargado.encargado_id', '=', 'encargado.id');
         $areas ->leftJoin('empresa', 'area.empresa_id', '=', 'empresa.id');

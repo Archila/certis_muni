@@ -44,7 +44,26 @@
         @endif
         @if(Auth()->user()->rol->id !=2)
         <div class="callout callout-success">
-          <h5 class="my-n2">No. de bitácora: {{$bitacora->codigo}}</h5>
+          <div class="row">
+            <div class="col-md-6">
+            <h5 class="my-n2">No. de bitácora: {{$bitacora->codigo}}</h5>
+            </div>
+            <div class="col-md-6">
+            @if($bitacora->f_aprobacion)
+            <h5 class="my-n2">Fecha de extensión: {{date('d-m-Y', strtotime($bitacora->f_aprobacion))}}&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="button" class="btn btn-sm btn-outline-success" data-toggle="modal" data-target="#exampleModal">
+              Cambiar
+            </button>
+            </h5>
+            @else
+            <h5 class="my-n2">Fecha de extensión: SIN FECHA&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="button" class="btn btn-sm btn-outline-success" data-toggle="modal" data-target="#exampleModal">
+              Agregar
+            </button>
+            </h5>
+            @endif
+            </div>
+          </div>          
         </div>       
         @endif
         <div class="row shadow-sm bg-white rounded">
@@ -176,6 +195,35 @@
           </div> 
         </div>
     </div>
+
+<!-- Modal FECHA -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Fecha de extensión de la bitácora</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <form class="needs-validation" method="POST" action="{{route('bitacora.fecha_extension', $bitacora->id)}}" novalidate >
+      @method('PUT')   
+      @csrf   
+      <input type="hidden" name="id" value="{{$bitacora->id}}">
+      <div class="col-md-12 ">
+          <label for="fecha">Seleccione fecha</label>
+          <input type="date" class="form-control" id="fecha" name="fecha" required value="{{$bitacora->f_aprobacion}}">                             
+      </div> 
+      </div>
+      <div class="modal-footer">        
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
 @endsection
 
 @section('page_script')

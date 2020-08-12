@@ -125,6 +125,7 @@ Route::get('bitacora/{id}/editar', 'BitacoraController@editar')->name('bitacora.
 Route::get('bitacora/{id}/ver', 'BitacoraController@ver')->name('bitacora.ver');
 Route::post('bitacora', 'BitacoraController@guardar')->name('bitacora.guardar');
 Route::put('bitacora/{id}', 'BitacoraController@actualizar')->name('bitacora.actualizar');
+Route::put('bitacora/fecha_extension/{id}', 'BitacoraController@fecha_extension')->name('bitacora.fecha_extension');
 Route::delete('bitacora', 'BitacoraController@eliminar')->name('bitacora.eliminar');
 Route::get('bitacora/{id}/folio/crear', 'BitacoraController@crear_folio')->name('bitacora.crear_folio');
 Route::get('bitacora/{id}/pdf', 'BitacoraController@pdf')->name('bitacora.pdf');
@@ -156,6 +157,7 @@ Route::get('pdf', 'PDFController@index')->name('pdf.index');
 Route::get('pdf/caratula/{id}', 'PDFController@caratula')->name('pdf.caratula');
 Route::get('pdf/oficio/{id}', 'PDFController@oficio')->name('pdf.oficio');
 Route::get('pdf/folios/{id}', 'PDFController@folios')->name('pdf.folios');
+Route::get('pdf/vacios/{id}', 'PDFController@vacios')->name('pdf.vacios');
 
 //API
 Route::get('api/folios_revisar', 'ApiController@folios_revisar')->name('api.folios_revisar');

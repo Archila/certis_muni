@@ -12,6 +12,9 @@
   @if (session('error')=='ERROR')
   <script> alerta_error('Ya existe empresa con ese nombre')</script>
   @endif  
+  @if (session('area')>=1)
+  <script> alerta_info('Area modificada exitosamente.')</script>
+  @endif  
 @endsection
 
 @section('contenido')
@@ -162,6 +165,7 @@
             <th>Profesión</th>
             <th>Teléfono</th>
             <th>Correo</th>
+            <th></th>
           </thead>
           <tbody>
           @foreach ($areas as $i)
@@ -171,6 +175,8 @@
               <td>{{$i->profesion}}</td>
               <td>{{$i->telefono}}</td>
               <td>{{$i->correo}}</td>
+              <td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal" 
+              data-id="{{$i->area_id}}" data-area="{{$i->area}}" data-descripcion="{{$i->descripcion}}"><i class="fas fa-edit"></i></button></td>
             </tr>
           @endforeach
           </tbody>        
@@ -189,6 +195,40 @@
   </form>
   </div>
 </div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form class="needs-validation" method="POST" action="{{route('area.actualizar', 1)}}" novalidate >
+      @method('PUT')   
+      @csrf
+      <div class="modal-body">      
+        <input type="hidden" id="area_id" name="area_id">
+        <input type="hidden" id="form_empresa" name="empresa_id" value="{{$empresa->empresa_id}}">
+          <div class="form-group">
+            <label for="nombre_area-name" class="col-form-label">Nombre:</label>
+            <input type="text" class="form-control" id="nombre_area" name="nombre_area" required>
+          </div>
+          <div class="form-group">
+            <label for="descripcion" class="col-form-label">Descripción:</label>
+            <textarea class="form-control" id="descripcion" name="descripcion_area"></textarea>
+          </div>
+      </div>
+      <div class="modal-footer">        
+        <button class="btn btn-success" type="submit">Guardar cambios</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 @endsection
 
 @section('page_script')
@@ -219,5 +259,19 @@
     });
   }, false);
 })();
+
+$('#exampleModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var id = button.data('id') // Extract info from data-* attributes
+  var area = button.data('area') // Extract info from data-* attributes
+  var descripcion = button.data('descripcion') // Extract info from data-* attributes
+  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+  var modal = $(this)
+  modal.find('.modal-title').text('Editar:' + area)
+  modal.find('.modal-body #nombre_area').val(area)
+  modal.find('.modal-body #area_id').val(id)
+  modal.find('.modal-body #descripcion').val(descripcion)
+})
 </script>
 @endsection

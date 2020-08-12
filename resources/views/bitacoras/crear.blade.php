@@ -38,8 +38,7 @@
             <dd class="col-sm-6 mb-n1"> <b>Ubicación: </b> {{$empresa->ubicacion}}</dd>
             <dd class="col-sm-4 mb-n3"> <b>Alias: </b> {{$empresa->alias}}</dd>
             <dd class="col-sm-2 mb-n3"> <b>Telefono: </b> {{$empresa->telefono}}</dd>
-            <dd class="col-sm-4 mb-n3"> <b>Correo: </b> {{$empresa->correo}}</dd>       
-            <dd class="col-sm-4 mb-n3"> <b>O: </b> {{$oficio->ruta_pdf}}</dd>              
+            <dd class="col-sm-4 mb-n3"> <b>Correo: </b> {{$empresa->correo}}</dd>         
           </dl>        
         </div>          
       </div>          
@@ -122,7 +121,7 @@
     </div>
       
     <div class="float-sm-right">
-      <button class="btn btn-primary" type="submit">Crear</button>
+      <button class="btn btn-success" type="submit">Crear</button>
       <a class="btn btn-secondary" href="{{url()->previous()}}" role="cancelar">Regresar</a>
     </div>    
   </form>
@@ -159,9 +158,9 @@
             </div>               
           </div>        
         </div>        
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <div class="modal-footer">          
           <button type="submit" class="btn btn-success btn-crear" onclick="form_area()">Crear</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         </div>
         </form>
       </div>
@@ -229,9 +228,9 @@
           </div>
 
         </div>        
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <div class="modal-footer"> 
           <button type="submit" class="btn btn-success" onclick="form_encargado()">Crear</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         </div>
         </form>
       </div>
