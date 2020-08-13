@@ -285,7 +285,7 @@
                     <a href="{{route('pdf.folios', $bitacora->id)}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i>Imprimir folios</a>
                     </li>   
                     <li>
-                    <a href="{{route('pdf.folios', $bitacora->id)}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i>Generar folios vacios</a>
+                    <a href="{{route('pdf.vacios', $bitacora->id)}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i>Generar folios vacios</a>
                     </li>                  
                 </ul>         
               <div class="text-center mb-3">  

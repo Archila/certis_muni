@@ -137,34 +137,13 @@ class PDFController extends Controller
         Gate::authorize('haveaccess', $this->roles_gate );
         
         $bitacora = Bitacora::findOrFail($id);
+        $oficio = Oficio::findOrFail($bitacora->oficio_id);
         if(Auth::user()->rol->id == 2){        
-            if(Auth::user()->id != $bitacora->usuario_id){abort(403);}
+            if(Auth::user()->id != $oficio->usuario_id){abort(403);}
         }
-        
-        $estudiante = Estudiante::select('estudiante.*', 'persona.*', 'carrera.nombre as carrera');
-        $estudiante = $estudiante->join('persona', 'persona_id', '=', 'persona.id');
-        $estudiante = $estudiante->join('carrera', 'carrera_id', '=', 'carrera.id');
-        $estudiante = $estudiante->join('users', 'persona.id', '=', 'users.persona_id');
-        $estudiante = $estudiante->where('users.id', $bitacora->usuario_id)->first();
-        
-        $empresa = Empresa::findOrFail($bitacora->empresa_id);
-
-        if($request->destinatario){
-            $destinatario = $request->destinatario;
-            $puesto = $request->puesto;
-        }
-        else{
-            $encargado = Encargado::select('encargado.*', 'persona.*', 'area.puesto as puesto');
-            $encargado = $encargado->join('persona', 'persona_id', '=', 'persona.id');
-            $encargado = $encargado->leftJoin('area_encargado', 'encargado.id', '=', 'area_encargado.encargado_id');
-            $encargado = $encargado->leftJoin('area', 'area_encargado.area_id', '=', 'area.id');
-            $encargado = $encargado->where('encargado.id',$bitacora->encargado_id)->first();
-            $destinatario = $encargado->nombre . ' ' . $encargado->apellido;
-            $puesto = $encargado->puesto;
-        }
-        
+                
         //$pdf = \PDF::loadView('pdf/prueba',['estudiante'->$estudiante, 'empresa'=>$empresa, 'encargado'=>$encargado, 'bitacora'=>$bitacora]);
-        $pdf = \PDF::loadView('pdf/folios', compact('empresa', 'estudiante', 'bitacora', 'destinatario', 'puesto'));
+        $pdf = \PDF::loadView('pdf/folios', compact('bitacora'));
 
         return $pdf->stream('archivo.pdf');
     }
@@ -174,34 +153,13 @@ class PDFController extends Controller
         Gate::authorize('haveaccess', $this->roles_gate );
         
         $bitacora = Bitacora::findOrFail($id);
+        $oficio = Oficio::findOrFail($bitacora->oficio_id);
         if(Auth::user()->rol->id == 2){        
-            if(Auth::user()->id != $bitacora->usuario_id){abort(403);}
-        }
-        
-        $estudiante = Estudiante::select('estudiante.*', 'persona.*', 'carrera.nombre as carrera');
-        $estudiante = $estudiante->join('persona', 'persona_id', '=', 'persona.id');
-        $estudiante = $estudiante->join('carrera', 'carrera_id', '=', 'carrera.id');
-        $estudiante = $estudiante->join('users', 'persona.id', '=', 'users.persona_id');
-        $estudiante = $estudiante->where('users.id', $bitacora->usuario_id)->first();
-        
-        $empresa = Empresa::findOrFail($bitacora->empresa_id);
-
-        if($request->destinatario){
-            $destinatario = $request->destinatario;
-            $puesto = $request->puesto;
-        }
-        else{
-            $encargado = Encargado::select('encargado.*', 'persona.*', 'area.puesto as puesto');
-            $encargado = $encargado->join('persona', 'persona_id', '=', 'persona.id');
-            $encargado = $encargado->leftJoin('area_encargado', 'encargado.id', '=', 'area_encargado.encargado_id');
-            $encargado = $encargado->leftJoin('area', 'area_encargado.area_id', '=', 'area.id');
-            $encargado = $encargado->where('encargado.id',$bitacora->encargado_id)->first();
-            $destinatario = $encargado->nombre . ' ' . $encargado->apellido;
-            $puesto = $encargado->puesto;
+            if(Auth::user()->id != $oficio->usuario_id){abort(403);}
         }
         
         //$pdf = \PDF::loadView('pdf/prueba',['estudiante'->$estudiante, 'empresa'=>$empresa, 'encargado'=>$encargado, 'bitacora'=>$bitacora]);
-        $pdf = \PDF::loadView('pdf/vacios', compact('empresa', 'estudiante', 'bitacora', 'destinatario', 'puesto'));
+        $pdf = \PDF::loadView('pdf/vacios', compact('bitacora'));
 
         return $pdf->stream('archivo.pdf');
     }
