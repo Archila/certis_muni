@@ -67,6 +67,50 @@
         .final{
             float: right;
         }
+        .firmas{
+            display: block;           
+            margin: 2.2cm 1cm 0 1cm;
+            font-size: 10;  
+            width: 100%;
+            overflow: auto;
+        }
+        .firmas p{
+            padding-top: -0.4cm;
+        }
+        .c1{
+            width: 28%;
+            float:left;
+            text-align: center;
+        }
+        .c2{
+            width: 55%;
+            float:left;
+            text-align: center;
+            padding-left:1cm;            
+        }
+        .sello{
+            width: 15%;
+            float:left;
+            text-align: left; 
+        }
+        .c3{
+            width: 54%;
+            float:left;
+            padding: 0.2cm;
+            border: 0.5px solid;
+            border-style: solid;
+            margin-top:-50px;            
+        }
+
+        .c3 p {
+            text-align: justify;
+        }
+
+        .c3 p:after {
+        content: "";
+        display: inline-block;
+        width: 100%%;
+        }
 
     .content { 
         width: 100%; 
@@ -180,7 +224,46 @@
 
             <div class="content__left">Fecha de extensión de la bitácora</div>
             <div class="content__right">&nbsp;</div>
-            <div class="content__middle"><span class="">&nbsp;{{$bitacora->f_aprovacion}}</span></div>     
+            @if($bitacora->f_aprobacion)
+            <div class="content__middle"><span class="">&nbsp;{{date('d-m-Y', strtotime($bitacora->f_aprobacion))}}</span></div>   
+            @else
+            <div class="content__middle"><span class="">&nbsp;** SIN FECHA **</span></div>  
+            @endif  
+        </div>
+
+        <div class="firmas">
+            <div class="c1">
+            <p style="text-align: left;">_________________________</p>
+            <p>F. Estudiante</p>
+            </div>            
+            <div class="c2">
+            <p>_________________________________________</p>
+            <p>Firma de contraparte institucional</p>
+            </div>    
+            <div class="sello">
+                sello
+            </div>                    
+        </div>
+        <br><br>
+
+        <div class="firmas">
+            <div class="c1">
+            <p style="text-align: left;">_________________________</p>
+            <p>F. Asesor docente de práctica</p>
+            </div>
+            <div class="sello">
+                sello
+            </div>    
+            <div class="c3">
+            <p >
+            Se autoriza la siguiente bitácora para plasmar información de</p>
+            <p >
+            la práctica final de Ingeniería <span style="text-decoration: underline">&nbsp;{{$carrera}}</span> </p>
+            <p >
+            la bitácora consta de <span style="text-decoration: underline;">&nbsp;20</span> folios (hojas de descripción</p>               
+            <p >
+            de actividades) y una hoja de información general</p>
+            </div>                 
         </div>
    
     </body>

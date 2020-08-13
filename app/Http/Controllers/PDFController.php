@@ -62,11 +62,18 @@ class PDFController extends Controller
             if(Auth::user()->id != $oficio->usuario_id){abort(403);}
         }
 
-        $estudiante = Estudiante::select('estudiante.*', 'persona.*', 'carrera.nombre as carrera');
+        $estudiante = Estudiante::select('estudiante.*', 'persona.*', 'carrera.nombre as carrera', 'carrera.id as carrera_id');
         $estudiante = $estudiante->join('persona', 'persona_id', '=', 'persona.id');
         $estudiante = $estudiante->join('carrera', 'carrera_id', '=', 'carrera.id');
         $estudiante = $estudiante->join('users', 'persona.id', '=', 'users.persona_id');
         $estudiante = $estudiante->where('users.id',$oficio->usuario_id)->first();
+
+        $carrera_id = $estudiante->carrera_id;
+        if($carrera_id == 1){$carrera = 'Civil';}
+        elseif($carrera_id == 2){$carrera = 'Mecánica';}
+        elseif($carrera_id == 3){$carrera = 'Industrial';}
+        elseif($carrera_id == 4){$carrera = 'Mecánica Industrial';}
+        elseif($carrera_id == 5 ){$carrera = 'en Sistemas';}
 
         $empresa = Empresa::findOrFail($oficio->empresa_id);
 
@@ -77,7 +84,7 @@ class PDFController extends Controller
         $encargado = $encargado->where('encargado.id',$bitacora->encargado_id)->first();
 
         //$pdf = \PDF::loadView('pdf/prueba',['estudiante'->$estudiante, 'empresa'=>$empresa, 'encargado'=>$encargado, 'bitacora'=>$bitacora]);
-        $pdf = \PDF::loadView('pdf/caratula', compact('empresa', 'estudiante', 'encargado', 'bitacora', 'oficio'));
+        $pdf = \PDF::loadView('pdf/caratula', compact('empresa', 'estudiante', 'encargado', 'bitacora', 'oficio','carrera'));
 
         return $pdf->stream('archivo.pdf');
     }
