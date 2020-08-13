@@ -105,8 +105,8 @@
                     @endif
                     <a class="dropdown-divider"></a>
                     <a href="{{route('pdf.caratula', $bitacora->id)}}" class="dropdown-item">Ver Caratula</a>
-                    <a href="{{route('pdf.caratula', $bitacora->id)}}" class="dropdown-item">Imprimir folios</a>
-                    <a href="{{route('pdf.caratula', $bitacora->id)}}" class="dropdown-item">Generar folios vacio</a>
+                    <a href="{{route('pdf.folios', $bitacora->id)}}" class="dropdown-item">Imprimir folios</a>
+                    <a href="{{route('pdf.vacios', $bitacora->id)}}" class="dropdown-item">Generar folios vacio</a>
                   </div>                  
               </div>
             </div>            

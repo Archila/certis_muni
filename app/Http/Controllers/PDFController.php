@@ -141,9 +141,11 @@ class PDFController extends Controller
         if(Auth::user()->rol->id == 2){        
             if(Auth::user()->id != $oficio->usuario_id){abort(403);}
         }
+
+        $folios = Folio::where('bitacora_id',$bitacora->id)->get();
                 
         //$pdf = \PDF::loadView('pdf/prueba',['estudiante'->$estudiante, 'empresa'=>$empresa, 'encargado'=>$encargado, 'bitacora'=>$bitacora]);
-        $pdf = \PDF::loadView('pdf/folios', compact('bitacora'));
+        $pdf = \PDF::loadView('pdf/folios', compact('bitacora', 'folios'));
 
         return $pdf->stream('archivo.pdf');
     }
