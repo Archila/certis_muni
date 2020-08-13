@@ -432,7 +432,7 @@ document.getElementById("btn_validar").addEventListener("click", function(event)
         event.preventDefault();
         event.stopPropagation();
         form[0].classList.add('was-validated');
-        alerta_danger('Por favor guardar cambios antes de validar');
+        alerta_error('Por favor guardar cambios antes de validar');
     }
 });
 
