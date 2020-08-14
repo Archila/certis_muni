@@ -146,6 +146,7 @@ class OficioController extends Controller
         //Uso de fecha en espanol
         $meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
         $date = Carbon::now();
+        $date->setTimezone('America/Guatemala');
         $mes = $meses[($date->format('n')) - 1];
         $fecha = $date->format('d') . ' de ' . $mes . ' de ' . $date->format('Y');
 
@@ -291,7 +292,9 @@ class OficioController extends Controller
 
         if(!$oficio->no_oficio){
             $oficio->no_oficio = $no_oficio;
-            $oficio->f_oficio = Carbon::now();
+            $date = Carbon::now();
+            $date->setTimezone('America/Guatemala');
+            $oficio->f_oficio = $date;
         }                
         $oficio->aprobado = 1;
         $oficio->save();
