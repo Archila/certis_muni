@@ -60,6 +60,8 @@ class ApiController extends Controller
         $areas = Area::where('area.empresa_id',$request->empresa_id);
         $areas = $areas->orderBy('created_at','desc')->get();
 
+        return dd($request);
+
         $msg = '';
         foreach ($areas as $a){
             $msg .= '<option value="'.$a->id.'">'.$a->nombre.'</option>';
