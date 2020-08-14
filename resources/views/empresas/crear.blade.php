@@ -4,8 +4,13 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+    @if(Auth()->user()->rol->id==2)
+    <li class="breadcrumb-item"><a href="{{route('practica.index')}}">Práctica</a></li>
+    <li class="breadcrumb-item active">Nueva empresa</li>
+    @else
     <li class="breadcrumb-item"><a href="{{route('empresa.index')}}">Empresas</a></li>
     <li class="breadcrumb-item active">Nueva empresa</li>
+    @endif
 @endsection
 
 @section('alerta')

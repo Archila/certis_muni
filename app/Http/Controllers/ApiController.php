@@ -65,7 +65,7 @@ class ApiController extends Controller
             $msg .= '<option value="'.$a->id.'">'.$a->nombre.'</option>';
         }
         
-        return response()->json(['success'=>true, 'msg'=>$msg]);
+        return response()->json(['success'=>true, 'msg'=>$msg, 'areas'=>$areas]);
     }
 
     public function encargados_area(Request $request)

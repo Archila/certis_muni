@@ -50,7 +50,7 @@
                         <th>Estudiante</th>
                         <th>Carne</th>
                         <th>Registro</th>
-                        <th>Fecha creación</th>
+                        <th>No. Bitácora</th>
                         <th>Tipo</th>
                     </thead>
                     @foreach($bitacoras as $b) <!-- CICLO BITACORAS -->
@@ -72,7 +72,13 @@
                                 <td>{{$e->nombre}} {{$e->apellido}}</td>
                                 <td>{{$e->carne}} </td>
                                 <td>{{$e->registro}}</td>
-                                <td>{{date('d-M-Y', strtotime($b->created_at))}}</td>
+                                <td>
+                                @if($b->codigo)
+                                {{$b->codigo}}
+                                @else
+                                <span >--</span>
+                                @endif
+                                </td>                                
                                 <td>
                                 @if($o->tipo == 1)                                
                                 <span class="badge bg-lightblue">Docente</span>                                
@@ -118,7 +124,7 @@
                         <th>Estudiante</th>
                         <th>Carne</th>
                         <th>Registro</th>                        
-                        <th>Fecha creación</th>
+                        <th>No. Oficio</th>
                         <th>Tipo</th>
                         <th>Estado</th>                        
                     </thead>
@@ -157,7 +163,13 @@
                             <td>{{$e->nombre}} {{$e->apellido}}</td>
                             <td>{{$e->carne}} </td>
                             <td>{{$e->registro}}</td>
-                            <td>{{date('d-M-Y', strtotime($o->created_at))}}</td>
+                            <td>
+                            @if($o->no_oficio)
+                            {{$o->no_oficio}}
+                            @else
+                            <span >--</span>
+                            @endif
+                            </td>    
                             <td>
                             @if($o->tipo == 1)                                
                             <span class="badge bg-lightblue">Docente</span>                                

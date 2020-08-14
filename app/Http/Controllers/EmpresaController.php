@@ -327,6 +327,4 @@ class EmpresaController extends Controller
 
         return view('empresas.encargado', ['empresa'=>$empresa, 'encargados'=>$encargados]);
     }
-
-
 }

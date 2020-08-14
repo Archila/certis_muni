@@ -151,7 +151,7 @@
         <div class="row">
             
             <div class="col-md-6 pr-3" style="height:25em;"><!--Formulario-->
-            <iframe src="http://localhost:8000/oficio/1/pdf" 
+            <iframe src="{{route('pdf.oficio', $oficio->id)}}" 
             width="100%" height="100%">
 
             This browser does not support PDFs. Please download the PDF to view it: Download PDF
