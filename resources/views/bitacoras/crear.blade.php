@@ -287,8 +287,9 @@ function select_area(){
     });
     jQuery.ajax({
         url: "{{ route('api.areas_empresa') }}",
-        method: 'get',
+        method: 'post',
         data: {
+            _token: "{{ csrf_token() }}",
             empresa_id: jQuery('#select_empresa').val(),            
         },
         success: function(result){
@@ -306,9 +307,9 @@ function encargados(){
     });
     jQuery.ajax({
         url: "{{ route('api.encargados') }}",
-        method: 'get',
+        method: 'post',
         data: {
-                    
+          _token: "{{ csrf_token() }}",            
         },
         success: function(result){
             $('#select_encargado').html(result['msg']);
@@ -323,8 +324,9 @@ function encargadoArea(){
     });
     jQuery.ajax({
         url: "{{ route('api.encargados_area') }}",
-        method: 'get',
+        method: 'post',
         data: {
+            _token: "{{ csrf_token() }}",
             area_id: jQuery('#select_areas').val(),            
         },
         success: function(result){

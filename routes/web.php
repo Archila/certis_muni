@@ -160,10 +160,10 @@ Route::get('pdf/folios/{id}', 'PDFController@folios')->name('pdf.folios');
 Route::get('pdf/vacios/{id}', 'PDFController@vacios')->name('pdf.vacios');
 
 //API
-Route::get('api/folios_revisar', 'ApiController@folios_revisar')->name('api.folios_revisar');
-Route::get('api/areas_empresa', 'ApiController@areas_empresa')->name('api.areas_empresa');
-Route::get('api/encargados_area', 'ApiController@encargados_area')->name('api.encargados_area');
-Route::get('api/encargados', 'ApiController@encargados')->name('api.encargados');
+Route::post('api/folios_revisar', 'ApiController@folios_revisar')->name('api.folios_revisar');
+Route::post('api/areas_empresa', 'ApiController@areas_empresa')->name('api.areas_empresa');
+Route::post('api/encargados_area', 'ApiController@encargados_area')->name('api.encargados_area');
+Route::post('api/encargados', 'ApiController@encargados')->name('api.encargados');
 Route::post('api/crear_area', 'ApiController@crear_area')->name('api.crear_area');
 Route::post('api/crear_encargado', 'ApiController@crear_encargado')->name('api.crear_encargado');
 
