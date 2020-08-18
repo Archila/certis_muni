@@ -59,7 +59,7 @@
             font-size: 9;
             display: block;
             border: 1px solid black;
-            margin: 1rem 4rem;
+            margin: 1rem 4rem 0 4rem;
             font-size: 10;  
             width: 100%;
             height: 11rem;
@@ -208,7 +208,7 @@
             <p class="p4">Observaciones:</p>
         </div>
         <div class="firmas">
-        <br>
+        <br><br><br>
         <div class="sello">
                 sello
         </div>   
