@@ -149,7 +149,7 @@
         </div>
 
         <div class="caja">
-            <p>Tipo de docencia a desarrollar: </p>
+            <p>Tipo de práctica a desarrollar: </p>
             <p>
                 <span>En docencia </span> 
                 <span class="tipo">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @if($oficio->tipo == 1) X @endif &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>

@@ -83,9 +83,23 @@
           <hr>
           <p class="col-sm-6 mt-n1"><b>Encargado: </b>{{$encargado->nombre}} {{$encargado->apellido}}</p>
           <p class="col-sm-6 mt-n1"><b>Puesto: </b>{{$bitacora->puesto ?? $encargado->puesto}} 
+            @if(Auth()->user()->rol->id !=2)
             <button type="button" class="btn btn-tool" data-toggle="modal" data-target="#modalPuesto">
               <i class="fas fa-edit"></i>
             </button>
+            @endif
+          </p>
+          <p class="col-sm-6 "><b>Fecha inicio prácticas: </b>
+            @if($bitacora->fecha_inicio)
+            {{date('d-m-Y', strtotime($bitacora->fecha_inicio))}}
+            @else
+            Sin fecha
+            @endif  
+            @if(Auth()->user()->rol->id !=2)           
+            <button type="button" class="btn btn-tool" data-toggle="modal" data-target="#modalInicio">
+              <i class="fas fa-edit"></i>
+            </button>
+            @endif
           </p>
         </div>
         
@@ -246,7 +260,7 @@
       <input type="hidden" name="id" value="{{$bitacora->id}}">
       <div class="col-md-12 ">
           <label for="puesto">Cambiar puesto</label>
-          <input type="text" class="form-control" id="puesto" name="puesto" required value="{{$encargado->puesto}}">                             
+          <input type="text" class="form-control" id="puesto" name="puesto" required value="{{$bitacora->puesto}}">                             
       </div> 
       </div>
       <div class="modal-footer">        
@@ -257,6 +271,36 @@
     </div>
   </div>
 </div>
+
+<!-- Modal INICIO -->
+<div class="modal fade" id="modalInicio" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Fecha de inicio de prácticas</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <form class="needs-validation" method="POST" action="{{route('bitacora.fecha_inicio', $bitacora->id)}}" novalidate >
+      @method('PUT')   
+      @csrf   
+      <input type="hidden" name="id" value="{{$bitacora->id}}">
+      <div class="col-md-12 ">
+          <label for="fecha">Seleccione fecha</label>
+          <input type="date" class="form-control" id="fecha" name="fecha" required value="{{$bitacora->fecha_inicio}}">                             
+      </div> 
+      </div>
+      <div class="modal-footer">        
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 @endsection
 
 @section('page_script')
