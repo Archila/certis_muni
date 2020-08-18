@@ -52,7 +52,7 @@
             margin: 1rem 4rem;
             font-size: 10;  
             width: 100%;
-            height: 25rem;
+            height: 27rem;
             overflow: auto;
         }
         .observaciones{
