@@ -163,7 +163,6 @@
         </div>
 
         <div class="caja">
-
             <div class="content__left">Ubicación</div>
             <div class="content__right">&nbsp;</div>
             <div class="content__middle"><span class="">&nbsp;{{$empresa->ubicacion}}</span></div>
@@ -178,7 +177,7 @@
 
             <div class="content__left">Correo electrónico</div>
             <div class="content__right">&nbsp;</div>
-            <div class="content__middle"><span class="">&nbsp;{{$empresa->correo}}</span></div>
+            <div class="content__middle"><span class="">&nbsp;{{$encargado->correo}}</span></div>
 
             <div class="content__left">Nombre del responsable del practicante</div>
             <div class="content__right">&nbsp;</div>
@@ -186,8 +185,7 @@
 
             <div class="content__left">Puesto que ocupa</div>
             <div class="content__right">&nbsp;</div>
-            <div class="content__middle"><span class="">&nbsp;{{$encargado->puesto}}</span></div>
-            
+            <div class="content__middle"><span class="">&nbsp;{{$encargado->puesto}}</span></div>            
         </div>
 
         <div class="caja">
@@ -214,7 +212,7 @@
 
             <div class="content__left">Correo electrónico</div>
             <div class="content__right">&nbsp;</div>
-            <div class="content__middle"><span class="">&nbsp;{{$encargado->correo}}</span></div>            
+            <div class="content__middle"><span class="">&nbsp;{{$estudiante->correo}}</span></div>            
         </div>
 
         <div class="caja">        

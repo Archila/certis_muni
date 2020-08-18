@@ -207,9 +207,8 @@
         <div class="observaciones">
             <p class="p4">Observaciones:</p>
         </div>
-
         <div class="firmas">
-        <br><br><br>
+        <br>
         <div class="sello">
                 sello
         </div>   
