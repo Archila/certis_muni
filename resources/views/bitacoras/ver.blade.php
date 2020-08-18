@@ -51,14 +51,14 @@
             <div class="col-md-6">
             @if($bitacora->f_aprobacion)
             <h5 class="my-n2">Fecha de extensión: {{date('d-m-Y', strtotime($bitacora->f_aprobacion))}}&nbsp;&nbsp;&nbsp;&nbsp;
-            <button type="button" class="btn btn-sm btn-outline-success" data-toggle="modal" data-target="#exampleModal">
-              Cambiar
+            <button type="button" class="btn btn-tool" data-toggle="modal" data-target="#exampleModal">
+              <i class="fas fa-edit"></i>
             </button>
             </h5>
             @else
             <h5 class="my-n2">Fecha de extensión: SIN FECHA&nbsp;&nbsp;&nbsp;&nbsp;
-            <button type="button" class="btn btn-sm btn-outline-success" data-toggle="modal" data-target="#exampleModal">
-              Agregar
+            <button type="button" class="btn btn-tool " data-toggle="modal" data-target="#exampleModal">
+              <i class="fas fa-edit"></i>
             </button>
             </h5>
             @endif
@@ -82,7 +82,11 @@
           <p class="col-sm-6 "></p>
           <hr>
           <p class="col-sm-6 mt-n1"><b>Encargado: </b>{{$encargado->nombre}} {{$encargado->apellido}}</p>
-          <p class="col-sm-6 mt-n1"><b>Puesto: </b>{{$encargado->puesto}}</p>
+          <p class="col-sm-6 mt-n1"><b>Puesto: </b>{{$bitacora->puesto ?? $encargado->puesto}} 
+            <button type="button" class="btn btn-tool" data-toggle="modal" data-target="#modalPuesto">
+              <i class="fas fa-edit"></i>
+            </button>
+          </p>
         </div>
         
         <div class="row mt-2">
@@ -214,6 +218,35 @@
       <div class="col-md-12 ">
           <label for="fecha">Seleccione fecha</label>
           <input type="date" class="form-control" id="fecha" name="fecha" required value="{{$bitacora->f_aprobacion}}">                             
+      </div> 
+      </div>
+      <div class="modal-footer">        
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal PUESTO -->
+<div class="modal fade" id="modalPuesto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Cambiar puesto encargado de prácticas</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <form class="needs-validation" method="POST" action="{{route('bitacora.puesto', $bitacora->id)}}" novalidate >
+      @method('PUT')   
+      @csrf   
+      <input type="hidden" name="id" value="{{$bitacora->id}}">
+      <div class="col-md-12 ">
+          <label for="puesto">Cambiar puesto</label>
+          <input type="text" class="form-control" id="puesto" name="puesto" required value="{{$encargado->puesto}}">                             
       </div> 
       </div>
       <div class="modal-footer">        

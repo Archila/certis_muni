@@ -185,7 +185,7 @@
 
             <div class="content__left">Puesto que ocupa</div>
             <div class="content__right">&nbsp;</div>
-            <div class="content__middle"><span class="">&nbsp;{{$encargado->puesto}}</span></div>            
+            <div class="content__middle"><span class="">&nbsp;{{$bitacora->puesto ?? $encargado->puesto}}</span></div>            
         </div>
 
         <div class="caja">

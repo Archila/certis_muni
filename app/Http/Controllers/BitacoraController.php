@@ -539,4 +539,15 @@ class BitacoraController extends Controller
                
         return redirect()->route('bitacora.ver',$bitacora->id);
     }
+
+    public function puesto($id, Request $request)
+    {
+        Gate::authorize('haveaccess', '{"roles":[ 1, 3, 4, 5, 6, 7 ]}' );
+        $bitacora = Bitacora::findOrFail($request->id);
+
+        $bitacora->puesto = $request->puesto;
+        $bitacora->save();
+               
+        return redirect()->route('bitacora.ver',$bitacora->id);
+    }
 }

@@ -126,6 +126,7 @@ Route::get('bitacora/{id}/ver', 'BitacoraController@ver')->name('bitacora.ver');
 Route::post('bitacora', 'BitacoraController@guardar')->name('bitacora.guardar');
 Route::put('bitacora/{id}', 'BitacoraController@actualizar')->name('bitacora.actualizar');
 Route::put('bitacora/fecha_extension/{id}', 'BitacoraController@fecha_extension')->name('bitacora.fecha_extension');
+Route::put('bitacora/puesto/{id}', 'BitacoraController@puesto')->name('bitacora.puesto');
 Route::delete('bitacora', 'BitacoraController@eliminar')->name('bitacora.eliminar');
 Route::get('bitacora/{id}/folio/crear', 'BitacoraController@crear_folio')->name('bitacora.crear_folio');
 Route::get('bitacora/{id}/pdf', 'BitacoraController@pdf')->name('bitacora.pdf');
