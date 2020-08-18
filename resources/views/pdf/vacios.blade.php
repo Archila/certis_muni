@@ -52,7 +52,7 @@
             margin: 1rem 4rem;
             font-size: 10;  
             width: 100%;
-            height: 28rem;
+            height: 25rem;
             overflow: auto;
         }
         .observaciones{
@@ -62,7 +62,7 @@
             margin: 1rem 4rem 0 4rem;
             font-size: 10;  
             width: 100%;
-            height: 10rem;
+            height: 9rem;
             overflow: auto;
         }
         .firmas{
