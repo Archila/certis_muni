@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class FechaBitacoraTable extends Migration
+class EncargadoBitacoraTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +14,10 @@ class FechaBitacoraTable extends Migration
     public function up()
     {
         Schema::table('bitacora', function (Blueprint $table) {
-            $table->string('fecha_inicio')->nullable();
-            $table->string('puesto', 100)->nullable();            
-          });
-    }
+            $table->date('encargado',100)->nullable();
+            $table->string('correo', 100)->nullable();            
+        });
+    }   
 
     /**
      * Reverse the migrations.
@@ -27,8 +27,8 @@ class FechaBitacoraTable extends Migration
     public function down()
     {
         Schema::table('bitacora', function (Blueprint $table) {
-            $table->dropColumn('fecha_inicio');
-            $table->dropColumn('puesto');
+            $table->dropColumn('encargado');
+            $table->dropColumn('correo');
         });
     }
 }

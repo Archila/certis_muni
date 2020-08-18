@@ -561,4 +561,26 @@ class BitacoraController extends Controller
                
         return redirect()->route('bitacora.ver',$bitacora->id);
     }
+
+    public function encargado($id, Request $request)
+    {
+        Gate::authorize('haveaccess', '{"roles":[ 1, 3, 4, 5, 6, 7 ]}' );
+        $bitacora = Bitacora::findOrFail($request->id);
+
+        $bitacora->encargado = $request->nombre;
+        $bitacora->save();
+               
+        return redirect()->route('bitacora.ver',$bitacora->id);
+    }
+
+    public function correo($id, Request $request)
+    {
+        Gate::authorize('haveaccess', '{"roles":[ 1, 3, 4, 5, 6, 7 ]}' );
+        $bitacora = Bitacora::findOrFail($request->id);
+
+        $bitacora->correo = $request->correo;
+        $bitacora->save();
+               
+        return redirect()->route('bitacora.ver',$bitacora->id);
+    }
 }

@@ -81,10 +81,23 @@
           <p class="col-sm-6 "><b>Ubicación: </b>{{$empresa->ubicacion}}</p>
           <p class="col-sm-6 "></p>
           <hr>
-          <p class="col-sm-6 mt-n1"><b>Encargado: </b>{{$encargado->nombre}} {{$encargado->apellido}}</p>
+          <p class="col-sm-6 mt-n1"><b>Encargado: </b>{{$bitacora->encargado ?? $encargado->nombre.' '.$encargado->apellido}}
+            @if(Auth()->user()->rol->id !=2)
+            <button type="button" class="btn btn-tool" data-toggle="modal" data-target="#modalEncargado">
+              <i class="fas fa-edit"></i>
+            </button>
+            @endif
+          </p>
           <p class="col-sm-6 mt-n1"><b>Puesto: </b>{{$bitacora->puesto ?? $encargado->puesto}} 
             @if(Auth()->user()->rol->id !=2)
             <button type="button" class="btn btn-tool" data-toggle="modal" data-target="#modalPuesto">
+              <i class="fas fa-edit"></i>
+            </button>
+            @endif
+          </p>
+          <p class="col-sm-12 mt-n3"><b>Correo encargado: </b>{{$bitacora->correo ?? $encargado->correo}} 
+            @if(Auth()->user()->rol->id !=2)
+            <button type="button" class="btn btn-tool" data-toggle="modal" data-target="#modalCorreo">
               <i class="fas fa-edit"></i>
             </button>
             @endif
@@ -290,6 +303,64 @@
       <div class="col-md-12 ">
           <label for="fecha">Seleccione fecha</label>
           <input type="date" class="form-control" id="fecha" name="fecha" required value="{{$bitacora->fecha_inicio}}">                             
+      </div> 
+      </div>
+      <div class="modal-footer">        
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Encargado -->
+<div class="modal fade" id="modalEncargado" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Cambiar nombre encargado de prácticas</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <form class="needs-validation" method="POST" action="{{route('bitacora.encargado', $bitacora->id)}}" novalidate >
+      @method('PUT')   
+      @csrf   
+      <input type="hidden" name="id" value="{{$bitacora->id}}">
+      <div class="col-md-12 ">
+          <label for="nombre">Nombre</label>
+          <input type="text" class="form-control" id="nombre" name="nombre" required value="{{$bitacora->encargado}}">                             
+      </div> 
+      </div>
+      <div class="modal-footer">        
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Correo -->
+<div class="modal fade" id="modalCorreo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Cambiar correo encargado de prácticas</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <form class="needs-validation" method="POST" action="{{route('bitacora.correo', $bitacora->id)}}" novalidate >
+      @method('PUT')   
+      @csrf   
+      <input type="hidden" name="id" value="{{$bitacora->id}}">
+      <div class="col-md-12 ">
+          <label for="correo">Correo encargado</label>
+          <input type="text" class="form-control" id="correo" name="correo" required value="{{$bitacora->correo}}">                             
       </div> 
       </div>
       <div class="modal-footer">        

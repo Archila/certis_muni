@@ -83,14 +83,14 @@
         .p2{
             font-size: 9;
             padding: 0 0.5rem;
-            width: 50%;
+            width: 20%;
             float:left;
         }
         .p3{
             font-size: 9;
             margin-top: 0rem;
             margin-right: 1.5rem;
-            width: 50%;
+            width: 80%;
             float:right;
             text-align: right;
         }
@@ -176,6 +176,7 @@
     </style>
     </head>
     <body>
+    @php $cont=0; @endphp
     @for ($i = 1; $i <= 20; $i++)
     
         <!--ENCABEZADO -->
@@ -199,14 +200,15 @@
         <div class="descripcion">
             <p class="p1"><b>Descripción de Actividades</b></p>
             <p class="p2">Actividades efectuadas</p>
-            @php $vacio = true; @endphp
+            @php $vacio = true;  @endphp
             @foreach($folios as $f)
                 @if($f->numero == $i)
-                @php $vacio = false; @endphp
-                <p class="p3">Fecha:          
+                @php $vacio = false; $cont += $f->horas; @endphp
+                <p class="p3">
+                <b>Horas: </b>{{$f->horas}}<b>&nbsp;&nbsp;&nbsp;Horas acumuladas: </b>{{$cont}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha:          
                 <span style="text-decoration: underline;">{{date('d/m/Y', strtotime($f->fecha_inicial))}} a {{date('d/m/Y', strtotime($f->fecha_final))}}</span></p>
-                    @if(strlen($f->descripcion)>= 1950)
-                    <p class="contenido">{{substr($f->descripcion,0,1945)}}...</p>
+                    @if(strlen($f->descripcion)>= 1875)
+                    <p class="contenido">{{substr($f->descripcion,0,1870)}}...</p>
                     @else
                     <p class="contenido">{{$f->descripcion}}</p>
                     @endif  
@@ -223,8 +225,8 @@
             <p class="p4">Observaciones:</p>
             @foreach($folios as $f)
             @if($f->numero == $i)
-                @if(strlen($f->observaciones)>= 795)
-                <p class="contenido">{{substr($f->observaciones,0,790)}}...</p>
+                @if(strlen($f->observaciones)>= 615)
+                <p class="contenido">{{substr($f->observaciones,0,610)}}...</p>
                 @else
                 <p class="contenido">{{$f->observaciones}}</p>
                 @endif            

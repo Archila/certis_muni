@@ -127,6 +127,8 @@ Route::post('bitacora', 'BitacoraController@guardar')->name('bitacora.guardar');
 Route::put('bitacora/{id}', 'BitacoraController@actualizar')->name('bitacora.actualizar');
 Route::put('bitacora/fecha_extension/{id}', 'BitacoraController@fecha_extension')->name('bitacora.fecha_extension');
 Route::put('bitacora/fecha_inicio/{id}', 'BitacoraController@fecha_inicio')->name('bitacora.fecha_inicio');
+Route::put('bitacora/encargado/{id}', 'BitacoraController@encargado')->name('bitacora.encargado');
+Route::put('bitacora/correo/{id}', 'BitacoraController@correo')->name('bitacora.correo');
 Route::put('bitacora/puesto/{id}', 'BitacoraController@puesto')->name('bitacora.puesto');
 Route::delete('bitacora', 'BitacoraController@eliminar')->name('bitacora.eliminar');
 Route::get('bitacora/{id}/folio/crear', 'BitacoraController@crear_folio')->name('bitacora.crear_folio');
