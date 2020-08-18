@@ -62,7 +62,7 @@
             margin: 1rem 4rem 0 4rem;
             font-size: 10;  
             width: 100%;
-            height: 11rem;
+            height: 10rem;
             overflow: auto;
         }
         .firmas{
@@ -207,21 +207,22 @@
         <div class="observaciones">
             <p class="p4">Observaciones:</p>
         </div>
+
+
         <div class="firmas">
         <br><br><br>
-        <div class="sello">
-                sello
-        </div>   
-        <br><br>
+            <div class="sello">
+                    sello
+            </div>   
+            <br><br>
             <div class="c1">
-            <p style="text-align: left;">____________________________</p>
-            <p>Firma del Estudiante</p>
+                <p style="text-align: left;">____________________________</p>
+                <p>Firma del Estudiante</p>
             </div>            
             <div class="c2">
-            <p>____________________________________________________</p>
-            <p>Firma y sello del Responsable por la contraparte institucional</p>
-            </div>    
-                             
+                <p>____________________________________________________</p>
+                <p>Firma y sello del Responsable por la contraparte institucional</p>
+            </div>         
         </div>
         <br><br><br><br><br>
 
