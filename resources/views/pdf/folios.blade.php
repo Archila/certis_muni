@@ -52,17 +52,17 @@
             margin: 1rem 4rem;
             font-size: 10;  
             width: 100%;
-            height: 28rem;
+            height: 27rem;
             overflow: auto;
         }
         .observaciones{
             font-size: 9;
             display: block;
             border: 1px solid black;
-            margin: 1rem 4rem;
+            margin: 1rem 4rem 0 4rem;
             font-size: 10;  
             width: 100%;
-            height: 11rem;
+            height: 9rem;
             overflow: auto;
         }
         .firmas{
