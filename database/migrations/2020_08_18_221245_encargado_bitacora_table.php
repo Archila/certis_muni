@@ -14,7 +14,7 @@ class EncargadoBitacoraTable extends Migration
     public function up()
     {
         Schema::table('bitacora', function (Blueprint $table) {
-            $table->date('encargado',100)->nullable();
+            $table->string('encargado',100)->nullable();
             $table->string('correo', 100)->nullable();            
         });
     }   

@@ -14,7 +14,7 @@ class FechaBitacoraTable extends Migration
     public function up()
     {
         Schema::table('bitacora', function (Blueprint $table) {
-            $table->string('fecha_inicio')->nullable();
+            $table->date('fecha_inicio')->nullable();
             $table->string('puesto', 100)->nullable();            
           });
     }

@@ -177,11 +177,11 @@
 
             <div class="content__left">Correo electrónico</div>
             <div class="content__right">&nbsp;</div>
-            <div class="content__middle"><span class="">&nbsp;{{$encargado->correo}}</span></div>
+            <div class="content__middle"><span class="">&nbsp;{{$bitacora->correo ?? $encargado->correo}}</span></div>
 
             <div class="content__left">Nombre del responsable del practicante</div>
             <div class="content__right">&nbsp;</div>
-            <div class="content__middle"><span class="">&nbsp;{{$encargado->nombre}}{{' '}}{{$encargado->apellido}}</span></div>
+            <div class="content__middle"><span class="">&nbsp;{{$bitacora->encargado ?? $encargado->nombre.' '.$encargado->apellido}}</span></div>
 
             <div class="content__left">Puesto que ocupa</div>
             <div class="content__right">&nbsp;</div>
