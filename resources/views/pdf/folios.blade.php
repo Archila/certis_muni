@@ -56,7 +56,7 @@
             overflow: auto;
         }
         .observaciones{
-            font-size: 9;
+            font-size: 8;
             display: block;
             border: 1px solid black;
             margin: 1rem 4rem 0 4rem;
@@ -95,14 +95,21 @@
             text-align: right;
         }
         .p4{
-            font-size: 9;
+            font-size: 10;
             padding: -0.8rem 0.5rem;
             width: 100%;
         }
         .contenido{
-            font-size: 11;
+            font-size: 10;
             padding: -0.2rem 1.5rem;
             text-align: justify;
+        }
+        .contenido2{
+            padding: -0.2rem 1rem;
+            text-align: justify;
+            height: 23rem;
+            margin-top: 1rem;
+            /*border: none;*/
         }
         .caja{
             display: block;
@@ -207,11 +214,9 @@
                 <p class="p3">
                 <b>Horas: </b>{{$f->horas}}<b>&nbsp;&nbsp;&nbsp;Horas acumuladas: </b>{{$cont}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha:          
                 <span style="text-decoration: underline;">{{date('d/m/Y', strtotime($f->fecha_inicial))}} a {{date('d/m/Y', strtotime($f->fecha_final))}}</span></p>
-                    @if(strlen($f->descripcion)>= 1875)
-                    <p class="contenido">{{substr($f->descripcion,0,1870)}}...</p>
-                    @else
-                    <p class="contenido">{{$f->descripcion}}</p>
-                    @endif  
+                    
+                <div id="p_{{$f->id}}" class="contenido2" id="p_{{$f->id}}">@php echo $f->descripcion; @endphp</div>
+                    
                 @endif
             @endforeach  
             @if($vacio)
@@ -225,10 +230,10 @@
             <p class="p4">Observaciones:</p>
             @foreach($folios as $f)
             @if($f->numero == $i)
-                @if(strlen($f->observaciones)>= 615)
-                <p class="contenido">{{substr($f->observaciones,0,610)}}...</p>
+                @if(strlen($f->observaciones)>= 685)                
+                <p class="contenido">{{substr($f->observaciones,0,680)}}...</p>
                 @else
-                <p class="contenido">{{$f->observaciones}}</p>
+                <p class="contenido">{{$f->observaciones}}</p>                
                 @endif            
             @endif
             @endforeach
@@ -252,6 +257,7 @@
         </div>
         <br><br><br><br><br>
     @endfor
+
     </body>
 </html>
 

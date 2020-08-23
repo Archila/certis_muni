@@ -75,7 +75,7 @@
         </div>   
       </div>  
     </div>
-    <div class="form-row">
+    <div class="form-row">    
     <div class="col-md-12">
           <div class="card card-outline card-info">
             <div class="card-header">
@@ -93,18 +93,18 @@
             <!-- /.card-header -->
             <div class="card-body pad">
               <div class="">
-                <textarea class="form-control" id="descripcion" name="descripcion" required
-                placeholder="Ingrese las actividades realizadas en su práctica"
-                style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding:10px;"></textarea>   
+                <textarea class="textarea form-control" id="descripcion" name="descripcion" required 
+                placeholder="Ingrese las actividades realizadas en su práctica" rows="8"
+                  style="width: 100%; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>                  
                 <div class="invalid-feedback">
-                  Por favor ingrese descripción del folio.
+                  Por favor ingrese descripción de actividades del folio.
                 </div>   
               </div>              
             </div>
             <div class="card-body pad">
             <h4>Observaciones</h4>
               <div class="mb-3">
-                <textarea class="form-control" id="observaciones" name="observaciones" required
+                <textarea class="form-control" id="observaciones" name="observaciones"
                 style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding:10px;"></textarea> 
               </div>              
             </div>
@@ -124,7 +124,6 @@
 @section('page_script')
 <!-- page script -->
 <script>
-   
 // Example starter JavaScript for disabling form submissions if there are invalid fields
 (function() {
   'use strict';
@@ -134,6 +133,7 @@
     // Loop over them and prevent submission
     var validation = Array.prototype.filter.call(forms, function(form) {
       form.addEventListener('submit', function(event) {
+        console.log("SI ENTRA")
         if (form.checkValidity() === false) {
           event.preventDefault();
           event.stopPropagation();
@@ -143,6 +143,22 @@
     });
   }, false);
 })();
+
+$(function () {
+    // Summernote
+    $('.textarea').summernote({
+      placeholder: 'Ingreso de actividades',
+      tabsize: 2,
+      height: 250, 
+      toolbar: [
+        ['style', ['style']],
+        ['font', ['bold', 'underline', 'clear']],
+        ['color', ['color']],
+        ['para', ['ul', 'ol', 'paragraph']],
+      ]
+    })
+  })
+
 </script>
 @endsection
 

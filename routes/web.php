@@ -162,6 +162,7 @@ Route::get('pdf/caratula/{id}', 'PDFController@caratula')->name('pdf.caratula');
 Route::get('pdf/oficio/{id}', 'PDFController@oficio')->name('pdf.oficio');
 Route::get('pdf/folios/{id}', 'PDFController@folios')->name('pdf.folios');
 Route::get('pdf/vacios/{id}', 'PDFController@vacios')->name('pdf.vacios');
+Route::get('pdf/prueba/{id}', 'PDFController@prueba')->name('pdf.prueba');
 
 //API
 Route::post('api/folios_revisar', 'ApiController@folios_revisar')->name('api.folios_revisar');

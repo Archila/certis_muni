@@ -90,9 +90,9 @@
             <!-- /.card-header -->
             <div class="card-body pad">
               <div class="">
-                <textarea class="form-control" id="descripcion" name="descripcion" required
-                placeholder="Ingrese las actividades realizadas en su práctica"
-                style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding:10px;">{{$folio->descripcion}}</textarea>   
+              <textarea class="textarea form-control" id="descripcion" name="descripcion" required 
+                placeholder="Ingrese las actividades realizadas en su práctica" rows="8"
+                  style="width: 100%; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{{$folio->descripcion}}</textarea>     
                 <div class="invalid-feedback">
                   Por favor ingrese descripción del folio.
                 </div>   
@@ -101,7 +101,7 @@
             <div class="card-body pad">
             <h4>Observaciones</h4>
               <div class="mb-3">
-                <textarea class="form-control" id="observaciones" name="observaciones" required
+                <textarea class="form-control" id="observaciones" name="observaciones"
                 style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding:10px;">{{$folio->observaciones}}</textarea> 
               </div>              
             </div>
@@ -140,6 +140,21 @@
     });
   }, false);
 })();
+
+$(function () {
+    // Summernote
+    $('.textarea').summernote({
+      placeholder: 'Ingreso de actividades',
+      tabsize: 2,
+      height: 250, 
+      toolbar: [
+        ['style', ['style']],
+        ['font', ['bold', 'underline', 'clear']],
+        ['color', ['color']],
+        ['para', ['ul', 'ol', 'paragraph']],
+      ]
+    })
+  })
 </script>
 @endsection
 

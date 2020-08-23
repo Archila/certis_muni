@@ -150,6 +150,24 @@ class PDFController extends Controller
         return $pdf->stream('archivo.pdf');
     }
 
+    public function prueba($id, Request $request)
+    {
+        Gate::authorize('haveaccess', $this->roles_gate );
+        
+        $bitacora = Bitacora::findOrFail($id);
+        $oficio = Oficio::findOrFail($bitacora->oficio_id);
+        if(Auth::user()->rol->id == 2){        
+            if(Auth::user()->id != $oficio->usuario_id){abort(403);}
+        }
+
+        $folios = Folio::where('bitacora_id',$bitacora->id)->get();
+       
+        //$pdf = \PDF::loadView('pdf/prueba',['estudiante'->$estudiante, 'empresa'=>$empresa, 'encargado'=>$encargado, 'bitacora'=>$bitacora]);
+        return view('pdf/folios', compact('bitacora', 'folios'));
+
+        //return $pdf->stream('archivo.pdf');
+    }
+
     public function vacios($id, Request $request)
     {
         Gate::authorize('haveaccess', $this->roles_gate );

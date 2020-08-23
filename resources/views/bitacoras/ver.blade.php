@@ -200,8 +200,9 @@
                         <div class="row">
                             <h4>Descripción</h4>
                         </div>     
-                        <div class="post px-2" style="text-align: justify; text-justify: inter-word;">                        
-                          <p> {{$f->descripcion}} </p>                       
+                        <div class="post px-2" style="text-align: justify; text-justify: inter-word;">  
+                          <input type="hidden" class="variable" id="desc_{{$f->id}}" value="{{$f->descripcion}}">                      
+                          <p id="p_{{$f->id}}">Cargando ...</p>                       
                         </div>
                         <div class="row mt-n1">
                             <h4>Observaciones</h4>
@@ -395,6 +396,22 @@
     });
   }, false);
 })();
+
+function descripciones(){
+  var variables = document.getElementsByClassName('variable');
+  var validation = Array.prototype.filter.call(variables, function(v) {
+    var identificador = v.id;
+    var ident = identificador.substring(5, identificador.length);
+    var ident ='p_'+ident;
+    document.getElementById(ident).innerHTML = v.value.trim(); 
+  });
+}
+
+$( document ).ready(function() {
+    descripciones(); 
+});
+
+
 </script>
 @endsection
 
