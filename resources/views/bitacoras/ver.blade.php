@@ -178,7 +178,7 @@
                                 </div>
                             </div>
                             </div>
-                            <div class="col-12 col-sm-3">
+                            <div class="col-12 col-sm-2">
                             <div class="info-box bg-light">
                                 <div class="info-box-content">
                                 <span class="info-box-text text-center text-muted">Horas </span>
@@ -186,12 +186,22 @@
                                 </div>
                             </div>
                             </div>
-                            <div class="col-12 col-sm-3">
+                            <div class="col-12 col-sm-2">
                             <div class="info-box bg-light">
                                 <div class="info-box-content">
                                 <span class="info-box-text text-center text-muted">Revisado </span>
                                 <span class="info-box-number text-center text-muted mb-0">
                                 @if($f->revisado) <span class="badge bg-success">SI</span> @else <span class="badge bg-danger">NO</span> @endif
+                                <span>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="col-12 col-sm-2">
+                            <div class="info-box bg-light">
+                                <div class="info-box-content">
+                                <span class="info-box-text text-center text-muted">Vista previa </span>
+                                <span class="info-box-number text-center text-muted mb-0">
+                                <a href="{{route('pdf.individual', $f->id)}}" class="btn btn-block btn-sm btn-outline-success">PDF</a>
                                 <span>
                                 </div>
                             </div>

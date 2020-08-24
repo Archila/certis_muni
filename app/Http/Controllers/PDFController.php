@@ -183,4 +183,17 @@ class PDFController extends Controller
 
         return $pdf->stream('archivo.pdf');
     }
+
+    public function individual($id, Request $request)
+    {
+        Gate::authorize('haveaccess', $this->roles_gate );
+        
+        $folio = Folio::findOrFail($id);
+                
+        //$pdf = \PDF::loadView('pdf/prueba',['estudiante'->$estudiante, 'empresa'=>$empresa, 'encargado'=>$encargado, 'bitacora'=>$bitacora]);
+        $pdf = \PDF::loadView('pdf/individual', compact('folio'));
+
+        return $pdf->stream('individual.pdf');
+    }
+
 }
