@@ -201,7 +201,7 @@
                                 <div class="info-box-content">
                                 <span class="info-box-text text-center text-muted">Vista previa </span>
                                 <span class="info-box-number text-center text-muted mb-0">
-                                <a href="{{route('pdf.individual', $f->id)}}" class="btn btn-block btn-sm btn-outline-success">PDF</a>
+                                <a href="{{route('pdf.individual', $f->id)}}" class="btn btn-block btn-sm btn-outline-info">PDF</a>
                                 <span>
                                 </div>
                             </div>
