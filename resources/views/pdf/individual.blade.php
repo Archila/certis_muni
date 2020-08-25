@@ -202,11 +202,19 @@
             </div>
         </div>
         <br><br><br><br><br><br> <br>
+        @php $cont =0; @endphp
+        @for($i = 1; $i <= $folio->numero; $i++)
+            @foreach($folios as $f)
+                @if($f->numero == $i)
+                @php $cont +=$f->horas; @endphp
+                @endif
+            @endforeach
+        @endfor
         <div class="descripcion">
             <p class="p1"><b>Descripción de Actividades</b></p>
             <p class="p2">Actividades efectuadas</p>                  
                 <p class="p3">
-                <b>Horas: </b>{{$folio->horas}}<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha:          
+                <b>Horas: </b>{{$folio->horas}}<b>&nbsp;&nbsp;&nbsp;Horas acumuladas: </b>{{$cont}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fecha:          
                 <span style="text-decoration: underline;">{{date('d/m/Y', strtotime($folio->fecha_inicial))}} a {{date('d/m/Y', strtotime($folio->fecha_final))}}</span></p>                    
                 <div  class="contenido2">@php echo $folio->descripcion; @endphp</div>                           
         </div>
