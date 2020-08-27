@@ -113,7 +113,7 @@
                                             <p class="col-sm-12 mb-n1"><b>Fecha final: </b>({{date('d-m-Y', strtotime($f->fecha_final))}}</p>
                                             </div>
                                             </td>
-                                            <td style="font-size: 0.8em;">{{$f->descripcion}}</td>
+                                            <td style="font-size: 0.8em;">@php echo $f->descripcion; @endphp</td>
                                             <td style="font-size: 0.8em;">{{$f->observaciones}}</td>
                                         </tr>
                                         @endif
@@ -207,7 +207,7 @@
                                 <p class="col-sm-12"><b>Fecha final: </b>({{date('d-m-Y', strtotime($f->fecha_final))}}</p>
                                 </div>
                                 </td>
-                                <td style="font-size: 0.85em;">{{$f->descripcion}}</td>
+                                <td style="font-size: 0.85em;">@php echo $f->descripcion; @endphp</td>
                                 <td style="font-size: 0.85em;">{{$f->observaciones}}</td>
                             </tr>
                             @endif
