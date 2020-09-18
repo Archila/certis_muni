@@ -173,6 +173,12 @@ Route::post('api/encargados', 'ApiController@encargados')->name('api.encargados'
 Route::post('api/crear_area', 'ApiController@crear_area')->name('api.crear_area');
 Route::post('api/crear_encargado', 'ApiController@crear_encargado')->name('api.crear_encargado');
 
+//Usuario
+Route::get('user/cambiar', 'UsuarioController@cambiar')->name('usuario.cambiar');
+Route::post('user/confirmar', 'UsuarioController@confirmar')->name('usuario.confirmar');
+Route::get('user/nueva', 'UsuarioController@nueva')->name('usuario.nueva');
+Route::post('user/actualizar', 'UsuarioController@actualizar')->name('usuario.actualizar');
+
 Route::get('/test', function () {
     
     $user = User::findOrFail(3);

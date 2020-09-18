@@ -96,6 +96,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <i class="fas fa-power-off"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">       
+          <a class="dropdown-item" href="{{ route('usuario.cambiar') }}">
+            {{ __('Cambiar contraseña') }}
+          </a>
           <a class="dropdown-item" href="{{ route('logout') }}"
             onclick="event.preventDefault();
                           document.getElementById('logout-form').submit();">
