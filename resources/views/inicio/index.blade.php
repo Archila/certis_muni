@@ -63,6 +63,72 @@
         </div>
         <!-- /.card -->
     </div>
+
+    <div class="col-md-12">
+      <div class="card card-success card-outline"> 
+          <div class="card-header">
+          <h3 class="card-title">
+              <i class="far fa-chart-bar"></i>
+              Datos generales
+          </h3>
+          <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+              </button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+              </button>
+          </div>
+          </div>
+          <div class="card-body">
+          <table class="table table-bordered">
+          <thead>
+            <th>Registro</th>
+            <th>Estudiante</th>
+            <th>Horas</th>
+            <th>Tipo</th>
+            <th>Revisión 1</th>
+            <th>Revisión 2</th>
+            <th>Revisión 3</th>
+            <th>Revisión 4</th>
+            <th>Revisión 5</th>
+          </thead>
+          <tbody>
+          @foreach($estudiantes as $e)
+          <tr>
+            <td>{{$e['registro']}}</td>
+            <td>{{$e['nombre']}} {{$e['apellido']}}</td>
+            <td> 
+              @php $cont =0; @endphp
+              @foreach($revisiones as $r)
+                @if($e['bitacora_id']==$r['bitacora_id'])
+                  @php $cont += $r['horas']; @endphp
+                @endif
+              @endforeach
+              {{$cont}}
+            </td>
+            <td>@if($e->tipo == 1)                                
+            <span class="badge bg-lightblue">Docente</span>                                
+            @elseif($e->tipo == 2)
+            <span class="badge bg-gray">Investigación</span>  
+            @else
+            <span class="badge bg-navy">Aplicada</span>  
+            @endif</td>
+            @foreach($revisiones as $r)
+              @php $fecha ='S/F'; $cont==1; @endphp
+              @if($e['bitacora_id']==$r['bitacora_id'])
+                @php $fecha = date('d-m-Y', strtotime($r['fecha'])); @endphp
+                <td>{{$fecha}}</td>
+              @elseif($cont<=5)
+              <td>{{$fecha}}</td> @php $cont++; @endphp
+              @endif              
+            @endforeach
+          </tr>
+          @endforeach
+          </tbody>
+          </table>
+          </div>
+      </div>
+    </div>
+
 </div>
     
     

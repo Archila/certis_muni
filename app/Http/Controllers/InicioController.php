@@ -59,10 +59,37 @@ class InicioController extends Controller
             $no_aprobados=$oficios->where('aprobado', 0)->count();
 
             $no_revisados = $oficios->where('aprobado', 1)->where('revisado',0)->count();
-            $rechazados = $oficios->where('aprobado', 1)->where('revisado',1)->where('rechazado',1)->count();;
-            $revisados = $oficios->where('aprobado', 1)->where('revisado',1)->where('rechazado',0)->count();;
+            $rechazados = $oficios->where('aprobado', 1)->where('revisado',1)->where('rechazado',1)->count();
+            $revisados = $oficios->where('aprobado', 1)->where('revisado',1)->where('rechazado',0)->count();
 
-            return view('inicio.index',compact(['aprobados', 'no_aprobados', 'no_revisados', 'rechazados', 'revisados']));    
+            $estudiantes = Oficio::select('oficio.tipo', 'persona.nombre', 'persona.apellido','estudiante.registro', 'bitacora.id as bitacora_id');
+            $estudiantes->join('users', 'oficio.usuario_id', '=', 'users.id');
+            $estudiantes->join('persona', 'users.persona_id', '=', 'persona.id');
+            $estudiantes->join('estudiante', 'persona.id', '=', 'estudiante.persona_id');
+            $estudiantes->join('bitacora', 'oficio.id', '=', 'bitacora.oficio_id');
+            $estudiantes = $estudiantes->where('bitacora.valida',1);
+            if(Auth::user()->rol->id != 1){                
+                $estudiantes = $estudiantes->where('estudiante.usuario_supervisor',Auth::user()->id)->get();
+            }
+            else{
+                $estudiantes = $estudiantes->get();
+            }            
+
+            $revisiones = Oficio::select('revision.horas', 'revision.fecha', 'bitacora.id as bitacora_id');
+            $revisiones->join('users', 'oficio.usuario_id', '=', 'users.id');
+            $revisiones->join('persona', 'users.persona_id', '=', 'persona.id');
+            $revisiones->join('estudiante', 'persona.id', '=', 'estudiante.persona_id');
+            $revisiones->join('bitacora', 'oficio.id', '=', 'bitacora.oficio_id');
+            $revisiones->join('revision', 'bitacora.id', '=', 'revision.bitacora_id');
+            $revisiones = $revisiones->where('bitacora.valida',1);
+            if(Auth::user()->rol->id != 1){                
+                $revisiones = $revisiones->where('estudiante.usuario_supervisor',Auth::user()->id)->get();
+            }
+            else{
+                $revisiones = $revisiones->get();
+            }     
+
+            return view('inicio.index',compact(['aprobados', 'no_aprobados', 'no_revisados', 'rechazados', 'revisados','estudiantes','revisiones']));    
         }
     }
 }
