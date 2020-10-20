@@ -89,7 +89,6 @@
             <th>Revisión 2</th>
             <th>Revisión 3</th>
             <th>Revisión 4</th>
-            <th>Revisión 5</th>
           </thead>
           <tbody>
           @foreach($estudiantes as $e)
@@ -113,11 +112,11 @@
             <span class="badge bg-navy">Aplicada</span>  
             @endif</td>
             @foreach($revisiones as $r)
-              @php $fecha ='S/F'; $cont==1; @endphp
+              @php $fecha ='S/F'; $cont =1; @endphp
               @if($e['bitacora_id']==$r['bitacora_id'])
                 @php $fecha = date('d-m-Y', strtotime($r['fecha'])); @endphp
                 <td>{{$fecha}}</td>
-              @elseif($cont<=5)
+              @elseif($cont<=4)
               <td>{{$fecha}}</td> @php $cont++; @endphp
               @endif              
             @endforeach
