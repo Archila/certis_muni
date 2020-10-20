@@ -115,9 +115,7 @@
               @php $fecha ='S/F'; $cont =1; @endphp
               @if($e['bitacora_id']==$r['bitacora_id'])
                 @php $fecha = date('d-m-Y', strtotime($r['fecha'])); @endphp
-                <td>{{$fecha}}</td> @php $cont++; @endphp
-              @elseif($cont<=4)
-              <td>{{$fecha}}</td> @php $cont++; @endphp
+                <td>{{$fecha}}</td>               
               @endif              
             @endforeach
           </tr>
