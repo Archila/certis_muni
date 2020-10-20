@@ -67,7 +67,7 @@ class InicioController extends Controller
             $estudiantes->join('persona', 'users.persona_id', '=', 'persona.id');
             $estudiantes->join('estudiante', 'persona.id', '=', 'estudiante.persona_id');
             $estudiantes->join('bitacora', 'oficio.id', '=', 'bitacora.oficio_id');
-            $estudiantes = $estudiantes->where('bitacora.valida',1);
+            $estudiantes = $estudiantes->where('oficio.aprobado',1);
             if(Auth::user()->rol->id != 1){                
                 $estudiantes = $estudiantes->where('estudiante.usuario_supervisor',Auth::user()->id)->get();
             }
@@ -81,13 +81,14 @@ class InicioController extends Controller
             $revisiones->join('estudiante', 'persona.id', '=', 'estudiante.persona_id');
             $revisiones->join('bitacora', 'oficio.id', '=', 'bitacora.oficio_id');
             $revisiones->join('revision', 'bitacora.id', '=', 'revision.bitacora_id');
-            $revisiones = $revisiones->where('bitacora.valida',1);
+            $revisiones = $revisiones->where('oficio.aprobado',1);
             if(Auth::user()->rol->id != 1){                
                 $revisiones = $revisiones->where('estudiante.usuario_supervisor',Auth::user()->id)->get();
             }
             else{
                 $revisiones = $revisiones->get();
             }     
+
 
             return view('inicio.index',compact(['aprobados', 'no_aprobados', 'no_revisados', 'rechazados', 'revisados','estudiantes','revisiones']));    
         }
