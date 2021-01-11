@@ -22,11 +22,26 @@
 @endsection
 
 @section('contenido')
+<div class="container row">
+<ul class="navbar-nav ml-auto">
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Semestre - Año
+    </a>
+    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+      <a href="{{route('estudiante.index', ['year'=>2020, 'semestre'=>2])}}" class="dropdown-item">Semestre 2 - 2020</a>
+      <a href="{{route('estudiante.index', ['year'=>2021, 'semestre'=>1])}}" class="dropdown-item">Semestre 1 - 2021</a>
+      <a href="{{route('estudiante.index', ['year'=>2021, 'semestre'=>2])}}" class="dropdown-item">Semestre 2 - 2021</a>
+    </div>
+  </li>
+</ul>
+</div>
+
 <div class="card">
   <div class="card-header">
     <div class="row">
         <div class="col-md-9 col-sm-12">
-            <h3>Listado de estudiantes</h3> 
+            <h3>Listado de estudiantes Semestre @php echo $semestre; @endphp - Año @php echo $year; @endphp</h3> 
         </div>
         <div class="col-md-3 col-sm-12">
             <a class="btn btn-block btn-primary btn-sm" href="{{route('estudiante.crear')}}">Nuevo estudiante</a>

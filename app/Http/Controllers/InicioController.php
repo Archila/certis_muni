@@ -24,7 +24,7 @@ class InicioController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $request)
     {
         Gate::authorize('haveaccess', '{"roles":[ 1, 2, 3, 4, 5, 6, 7 ]}' );
 
@@ -43,11 +43,18 @@ class InicioController extends Controller
         }
         else{
 
+            $year = date('Y');
+            $semestre = 1;
+            if(date('M')>6){$semestre = 2;}
+            if($request->has('year')) $year=$request->year;
+            if($request->has('semestre'))  $semestre=$request->semestre;
+
             $oficios = Oficio::select('oficio.*', 'estudiante.usuario_supervisor as usuario_supervisor');
             $oficios->join('users', 'oficio.usuario_id', '=', 'users.id');
             $oficios->join('persona', 'users.persona_id', '=', 'persona.id');
             $oficios->join('estudiante', 'persona.id', '=', 'estudiante.persona_id');
-
+            $oficios = $oficios->where('estudiante.year',$year);
+            $oficios = $oficios->where('estudiante.semestre',$semestre);
             if(Auth::user()->rol->id != 1){                
                 $oficios = $oficios->where('estudiante.usuario_supervisor',Auth::user()->id)->get();
             }
@@ -68,6 +75,8 @@ class InicioController extends Controller
             $estudiantes->join('estudiante', 'persona.id', '=', 'estudiante.persona_id');
             $estudiantes->join('bitacora', 'oficio.id', '=', 'bitacora.oficio_id');
             $estudiantes = $estudiantes->where('oficio.aprobado',1);
+            $estudiantes = $estudiantes->where('estudiante.year',$year);
+            $estudiantes = $estudiantes->where('estudiante.semestre',$semestre);
             if(Auth::user()->rol->id != 1){                
                 $estudiantes = $estudiantes->where('estudiante.usuario_supervisor',Auth::user()->id)->get();
             }
@@ -90,7 +99,7 @@ class InicioController extends Controller
             }     
 
 
-            return view('inicio.index',compact(['aprobados', 'no_aprobados', 'no_revisados', 'rechazados', 'revisados','estudiantes','revisiones']));    
+            return view('inicio.index',compact(['aprobados', 'no_aprobados', 'no_revisados', 'rechazados', 'revisados','estudiantes','revisiones','year','semestre']));    
         }
     }
 }

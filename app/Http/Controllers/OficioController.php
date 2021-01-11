@@ -59,6 +59,12 @@ class OficioController extends Controller
 
         $empresa = Empresa::findOrFail($request->empresa_id);
 
+        $year = date('Y');
+        $semestre = 1;
+        if(date('M')>6){$semestre = 2;}
+        if($request->has('year')) $year=$request->year;
+        if($request->has('semestre'))  $semestre=$request->semestre;
+
         $estudiante = Estudiante::select('estudiante.*', 'persona.*', 'carrera.nombre as carrera', 'carrera.id as carrera_id');
         $estudiante = $estudiante->join('persona', 'persona_id', '=', 'persona.id');
         $estudiante = $estudiante->join('carrera', 'carrera_id', '=', 'carrera.id');
@@ -66,8 +72,8 @@ class OficioController extends Controller
         $estudiante = $estudiante->where('users.id',Auth::user()->id)->first();
 
         $oficio = new Oficio();
-        $oficio->semestre = $request->semestre;
-        $oficio->year = $request->year;
+        $oficio->semestre = $semestre;
+        $oficio->year = $year;
         $oficio->tipo = $request->tipo;
         $oficio->destinatario = $request->destinatario;        
         $oficio->encabezado = 'Respetable ingeniero';

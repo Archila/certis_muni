@@ -28,7 +28,7 @@ class PracticaController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index(Request $request)
     {
         Gate::authorize('haveaccess', '{"roles":[ 1, 2, 3, 4, 5, 6, 7 ]}' );
 
@@ -59,6 +59,12 @@ class PracticaController extends Controller
         }
         else{
 
+            $year = date('Y');
+            $semestre = 1;
+            if(date('M')>6){$semestre = 2;}
+            if($request->has('year')) $year=$request->year;
+            if($request->has('semestre'))  $semestre=$request->semestre;
+
             $estudiantes = Estudiante::select('estudiante.*', 'carrera.nombre as carrera', 'persona.*', 'estudiante.id as estudiante_id',
             'users.id as usuario_id');
             $estudiantes ->join('carrera', 'carrera_id', '=', 'carrera.id');
@@ -67,6 +73,8 @@ class PracticaController extends Controller
             if(Auth::user()->rol->id != 1){
                 $estudiantes = $estudiantes->where('usuario_supervisor',Auth::user()->id);
             }
+            $estudiantes = $estudiantes->where('estudiante.year',$year);
+            $estudiantes = $estudiantes->where('estudiante.semestre',$semestre);
             $estudiantes = $estudiantes->orderBy('estudiante.created_at', 'asc')->get();
 
             $bitacoras = Bitacora::all();
@@ -74,7 +82,7 @@ class PracticaController extends Controller
             if($bitacoras->count()== 0){$bitacoras = null;}
             if($oficios->count()== 0){$oficios = null;}
 
-            return view('practicas.index',compact(['bitacoras','oficios', 'estudiantes']));    
+            return view('practicas.index',compact(['bitacoras','oficios', 'estudiantes', 'year', 'semestre']));    
         }
     }
 

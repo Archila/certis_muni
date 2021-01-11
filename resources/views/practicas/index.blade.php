@@ -17,9 +17,24 @@
 @endsection
 
 @section('contenido')
+<div class="container row">
+<ul class="navbar-nav ml-auto">
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Semestre - Año
+    </a>
+    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+      <a href="{{route('practica.index', ['year'=>2020, 'semestre'=>2])}}" class="dropdown-item">Semestre 2 - 2020</a>
+      <a href="{{route('practica.index', ['year'=>2021, 'semestre'=>1])}}" class="dropdown-item">Semestre 1 - 2021</a>
+      <a href="{{route('practica.index', ['year'=>2021, 'semestre'=>2])}}" class="dropdown-item">Semestre 2 - 2021</a>
+    </div>
+  </li>
+</ul>
+</div>
+
 <div class="card">
     <div class="card-header">
-        <h3>Prácticas finales</h3> 
+        <h3>Prácticas finales Semestre final @php echo $semestre; @endphp - Año @php echo $year; @endphp</h3> 
     </div>
 
     <div class="card-body">

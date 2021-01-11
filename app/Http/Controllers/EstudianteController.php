@@ -42,6 +42,12 @@ class EstudianteController extends Controller
             'registro' => 'nullable|string',
             'carrera_id' => 'nullable|string',
         ]);
+
+        $year = date('Y');
+        $semestre = 1;
+        if(date('M')>6){$semestre = 2;}
+        if($request->has('year')) $year=$request->year;
+        if($request->has('semestre'))  $semestre=$request->semestre;
   
         $many = 5;
         if($request->has('many')) $many = $request->many;
@@ -99,6 +105,9 @@ class EstudianteController extends Controller
                 $estudiantes->orWhere('carrera_id', 5); //Sistemas
             }
         }
+
+        $estudiantes = $estudiantes->where('estudiante.year',$year);
+        $estudiantes = $estudiantes->where('estudiante.semestre',$semestre);
          
         if ($request->has('many')) {
           $estudiantes = $estudiantes->orderBy($sort_by, $direction)->paginate($many);          
@@ -108,7 +117,7 @@ class EstudianteController extends Controller
         }
   
         //return response()->json($carreras);
-        return view('estudiantes.index',compact('estudiantes'));
+        return view('estudiantes.index',compact(['estudiantes', 'year', 'semestre']));
     }
 
     /**
@@ -149,6 +158,7 @@ class EstudianteController extends Controller
     {  
         Gate::authorize('haveaccess', $this->roles_gate );
 
+        $year = date('yy');
         /* 
         $request->validate([
             'carne' => 'required|unique:estudiante,carne',
@@ -157,7 +167,7 @@ class EstudianteController extends Controller
 
         $estudiante = Estudiante::where('carne', '=',$request->carne)->orWhere('registro', '=',$request->registro)->first();
 
-        if ($estudiante) {            
+        if ($estudiante) {          
             return redirect()->route('estudiante.crear')->with('error', 'ERROR');             
         }        
 
@@ -187,8 +197,6 @@ class EstudianteController extends Controller
         $persona->telefono = $request->telefono;
         $persona->correo = $request->correo;
         $persona->save();
-
-        $year = date('yy');
         
         $estudiante = new Estudiante();
         $estudiante->semestre = $request->semestre;

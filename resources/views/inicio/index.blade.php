@@ -13,6 +13,21 @@
 @endsection
 
 @section('contenido')
+<div class="container row">
+<ul class="navbar-nav ml-auto">
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Semestre - Año
+    </a>
+    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+      <a href="{{route('inicio.index', ['year'=>2020, 'semestre'=>2])}}" class="dropdown-item">Semestre 2 - 2020</a>
+      <a href="{{route('inicio.index', ['year'=>2021, 'semestre'=>1])}}" class="dropdown-item">Semestre 1 - 2021</a>
+      <a href="{{route('inicio.index', ['year'=>2021, 'semestre'=>2])}}" class="dropdown-item">Semestre 2 - 2021</a>
+    </div>
+  </li>
+</ul>
+</div>
+
 
 <!-- Variables -->
 <input type="hidden" value="{{$aprobados}}" id="aprobados">
@@ -27,7 +42,7 @@
             <div class="card-header">
             <h3 class="card-title">
                 <i class="far fa-chart-bar"></i>
-                Solicitudes de práctica final
+                Solicitudes de práctica final Semestre @php echo $semestre; @endphp - Año @php echo $year; @endphp
             </h3>
 
             <div class="card-tools">
@@ -48,7 +63,7 @@
         <!-- DONUT CHART -->
         <div class="card card-danger">
             <div class="card-header">
-            <h3 class="card-title">Solicitudes aprobadas</h3>
+            <h3 class="card-title">Solicitudes aprobadas Semestre @php echo $semestre; @endphp - Año @php echo $year; @endphp</h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
@@ -69,7 +84,7 @@
           <div class="card-header">
           <h3 class="card-title">
               <i class="far fa-chart-bar"></i>
-              Datos generales
+              Datos generales Semestre @php echo $semestre; @endphp - Año @php echo $year; @endphp
           </h3>
           <div class="card-tools">
               <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
