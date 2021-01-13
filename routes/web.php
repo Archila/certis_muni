@@ -100,7 +100,8 @@ Route::put('area/{id}', 'AreaController@actualizar')->name('area.actualizar');
 Route::delete('area', 'AreaController@eliminar')->name('area.eliminar');
 
 //Practica
-Route::get('practica/', 'PracticaController@index')->name('practica.index');
+Route::get('practica', 'PracticaController@index')->name('practica.index');
+Route::get('practica/periodo', 'PracticaController@periodo')->name('practica.periodo');
 Route::get('solicitud', 'PracticaController@solicitud')->name('practica.solicitud');
 Route::post('respuesta', 'PracticaController@respuesta')->name('practica.respuesta');
 

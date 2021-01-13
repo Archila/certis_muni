@@ -128,4 +128,40 @@ class PracticaController extends Controller
         
     }
 
+    public function periodo(Request $request)
+    {
+        Gate::authorize('haveaccess', '{"roles":[ 1, 3, 4, 5, 6, 7 ]}' );
+
+        $year = date('Y');
+        $semestre = 1;
+        if(date('M')>6){$semestre = 2;}
+        if($request->has('year')) {$year=$request->year;}
+        if($request->has('semestre')) {$semestre=$request->semestre;}
+
+        //return dd(["r_year"=>$request->year, "r_semestre"=>$request->semestre, "y"=>$year, "s"=>$semestre ]);
+        //return dd($request);
+
+        $estudiantes = Estudiante::select('estudiante.*', 'carrera.nombre as carrera', 'persona.*', 'estudiante.id as estudiante_id',
+        'users.id as usuario_id');
+        $estudiantes ->join('carrera', 'carrera_id', '=', 'carrera.id');
+        $estudiantes ->join('persona', 'persona_id', '=', 'persona.id');
+        $estudiantes ->join('users', 'persona.id', '=', 'users.persona_id');
+        if(Auth::user()->rol->id != 1){
+            $estudiantes = $estudiantes->where('usuario_supervisor',Auth::user()->id);
+        }
+        $estudiantes = $estudiantes->where('estudiante.year',$year);
+        $estudiantes = $estudiantes->where('estudiante.semestre',$semestre);
+        $estudiantes = $estudiantes->orderBy('estudiante.created_at', 'asc')->get();
+
+        $bitacoras = Bitacora::all();
+        $oficios = Oficio::orderBy('updated_at','desc')->get();
+        $solicitudes = Solicitud::all();
+        if($bitacoras->count()== 0){$bitacoras = null;}
+        if($oficios->count()== 0){$oficios = null;}
+        if($solicitudes->count()== 0){$solicitudes = null;}
+
+        return view('practicas.periodo',compact(['solicitudes','bitacoras','oficios', 'estudiantes', 'year', 'semestre']));    
+    }
+
+
 }
