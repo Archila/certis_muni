@@ -67,8 +67,10 @@ class PracticaController extends Controller
             $year = date('Y');
             $semestre = 1;
             if(date('M')>6){$semestre = 2;}
-            if($request->has('year')) $year=$request->year;
-            if($request->has('semestre'))  $semestre=$request->semestre;
+            if($request->has('year')) {$year=$request->year;}
+            if($request->has('semestre')) {$semestre=$request->semestre;}
+
+            return dd(["r_year"=>$request->year, "r_semestre"=>$request->semestre, "y"=>$year, "s"=>$semestre ]);
 
             $estudiantes = Estudiante::select('estudiante.*', 'carrera.nombre as carrera', 'persona.*', 'estudiante.id as estudiante_id',
             'users.id as usuario_id');

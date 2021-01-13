@@ -34,7 +34,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h3>Prácticas finales final Semestre @php echo $semestre; @endphp - Año @php echo $year; @endphp</h3> 
+        <h3>Prácticas finales Semestre @php echo $semestre; @endphp - Año @php echo $year; @endphp</h3> 
     </div>
 
     <div class="card-body">
