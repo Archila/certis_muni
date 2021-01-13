@@ -49,6 +49,10 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Oficio', 'usuario_id');
     }
 
+    public function solicitudes(){
+        return $this->hasMany('App\Models\Solicitud', 'usuario_id');
+    }
+
     public function mostrarTabla($tabla){
         
         if($this->rol->id == 1) {return true;}

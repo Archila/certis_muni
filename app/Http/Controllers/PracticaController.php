@@ -10,6 +10,8 @@ use App\Models\Bitacora;
 use App\Models\Oficio;
 use App\Models\Folio;
 use App\Models\Estudiante;
+use App\Models\Solicitud;
+
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -54,8 +56,11 @@ class PracticaController extends Controller
                 $encargado = $encargado->leftJoin('area', 'area_encargado.area_id', '=', 'area.id');
                 $encargado = $encargado->where('encargado.id', $bitacora->encargado_id)->first();
             }
+
+            $solicitud = Solicitud::all();
+            $solicitud = $solicitud->where('usuario_id',Auth::user()->id)->first();
             
-            return view('practicas.individual',compact(['bitacora', 'oficio', 'empresa','encargado', 'folios']));            
+            return view('practicas.individual',compact(['solicitud','bitacora', 'oficio', 'empresa','encargado', 'folios']));            
         }
         else{
 
@@ -79,10 +84,12 @@ class PracticaController extends Controller
 
             $bitacoras = Bitacora::all();
             $oficios = Oficio::orderBy('updated_at','desc')->get();
+            $solicitudes = Solicitud::all();
             if($bitacoras->count()== 0){$bitacoras = null;}
             if($oficios->count()== 0){$oficios = null;}
+            if($solicitudes->count()== 0){$solicitudes = null;}
 
-            return view('practicas.index',compact(['bitacoras','oficios', 'estudiantes', 'year', 'semestre']));    
+            return view('practicas.index',compact(['solicitudes','bitacoras','oficios', 'estudiantes', 'year', 'semestre']));    
         }
     }
 

@@ -29,7 +29,171 @@
     </div>
 
     <div class="card-body">
-    
+
+    @empty($bitacora) @php $collapsed = ""; @endphp 
+    @else @php $collapsed = "collapsed-card"; @endphp @endempty
+
+    <div class="card card-warning @php echo $collapsed; @endphp">
+      <div class="card-header">
+        <h3 class="card-title">Requisitos y carga de solicitud y compromiso.</h3>
+
+        <div class="card-tools">
+          <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+          </button>
+        </div>
+        <!-- /.card-tools -->
+      </div>
+      <!-- /.card-header -->
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 col-md-12 col-lg-4 order-2 order-md-1">
+              <h3 class="text-primary"><i class="fas fa-clipboard"></i> 
+              Plantillas para cartas de solicitud y compromiso de prácticas finales</h3>
+              <div class="text-muted">
+                  <p class="text-sm">Los siguientes son documentos que sirven como guía para generar su carta de 
+                  solicitud y compromiso de prácticas finales. Por favor sustituya los textos en rojo con la información 
+                  correspondiente, imprima la carta (blanco y negro); firme la carta y luego la sube al sistema por este 
+                  medio como el requisito que corresponde.
+                  </p>
+              </div>              
+                <ul class="list-unstyled">
+                    <li>
+                    <a href="{{route('pdf.aplicada')}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i>Aplicada</a>
+                    </li>
+                    <li>
+                    <a href="{{route('pdf.docente')}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i>Docente</a>
+                    </li>   
+                    <li>
+                    <a href="{{route('pdf.investigacion')}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i>Investigación</a>
+                    </li>        
+                </ul>         
+          </div>
+
+          <div class="col-12 col-md-12 col-lg-8 order-1 order-md-2">
+            <h3>Requisitos</h3>
+            <h5>Por favor subir todos los documentos en formato PDF</h5>
+              <div class="row mt-3"> <!-- Constancia de inscripción -->
+                <div class="col-8 col-md-10">
+                <small class="">Constancia de inscripción en PDF</small>
+                  <form method="POST" action="{{route('solicitud.requisito')}}" enctype="multipart/form-data">
+                  @csrf 
+                    <div class="input-group">
+                      <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="file">
+                        <label class="custom-file-label" for="inputGroupFile04">Elija un archivo</label>
+                      </div>
+                      <input type="hidden" name="tipo" value=1>
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-warning" type="submit">Guardar</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="col-4 col-md-2 mt-3">
+                  <div class="input-group">
+                    @empty($solicitud->ruta_constancia)
+                      <small>No hay archivo en la base de datos.</small>
+                    @else
+                    <a href="{{route('pdf.ver', ['ruta'=>$solicitud->ruta_constancia])}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i></a>
+                    @endempty
+                  </div>
+                </div>
+                <hr>
+              </div> <!-- FIN constancia de inscripción -->
+
+              <div class="row mt-3"> <!-- Certificación de cursos -->
+                <div class="col-8 col-md-10">
+                <small class="my-2">Certificación de cursos en PDF</small>
+                  <form method="POST" action="{{route('solicitud.requisito')}}" enctype="multipart/form-data">
+                  @csrf 
+                    <div class="input-group">
+                      <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="file">
+                        <label class="custom-file-label" for="inputGroupFile04">Elija un archivo</label>
+                      </div>
+                      <input type="hidden" name="tipo" value=2>
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-warning" type="submit">Guardar</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="col-4 col-md-2 mt-3">
+                  <div class="input-group">
+                    @empty($solicitud->ruta_certificacion)
+                      <small>No hay archivo en la base de datos.</small>
+                    @else
+                    <a href="{{route('pdf.ver', ['ruta'=>$solicitud->ruta_certificacion])}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i></a>
+                    @endempty
+                  </div>
+                </div>
+                <hr>
+              </div> <!-- FIN certificación de cursos -->
+
+              <div class="row mt-3"> <!-- Cronograma de actividades -->
+                <div class="col-8 col-md-10">
+                <small class="my-2">Cronograma de actividades en PDF</small>
+                  <form method="POST" action="{{route('solicitud.requisito')}}" enctype="multipart/form-data">
+                  @csrf 
+                    <div class="input-group">
+                      <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="file">
+                        <label class="custom-file-label" for="inputGroupFile04">Elija un archivo</label>
+                      </div>
+                      <input type="hidden" name="tipo" value=3>
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-warning" type="submit">Guardar</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="col-4 col-md-2 mt-3">
+                  <div class="input-group">
+                    @empty($solicitud->ruta_cronograma)
+                      <small>No hay archivo en la base de datos.</small>
+                    @else
+                    <a href="{{route('pdf.ver', ['ruta'=>$solicitud->ruta_cronograma])}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i></a>
+                    @endempty
+                  </div>
+                </div>
+                <hr>
+              </div> <!-- FIN cronograma de actividades -->
+
+              <div class="row mt-3"> <!-- Carta solicitud y compromiso -->
+                <div class="col-8 col-md-10">
+                <small class="my-2">Carta de solicitud y compromiso firmada en PDF</small>
+                  <form method="POST" action="{{route('solicitud.requisito')}}" enctype="multipart/form-data">
+                  @csrf 
+                    <div class="input-group">
+                      <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="file">
+                        <label class="custom-file-label" for="inputGroupFile04">Elija un archivo</label>
+                      </div>
+                      <input type="hidden" name="tipo" value=4>
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-warning" type="submit">Guardar</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="col-4 col-md-2 mt-3">
+                  <div class="input-group">
+                    @empty($solicitud->ruta_carta)
+                      <small>No hay archivo en la base de datos.</small>
+                    @else
+                    <a href="{{route('pdf.ver', ['ruta'=>$solicitud->ruta_carta])}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i></a>
+                    @endempty
+                  </div>
+                </div>
+                <hr>
+              </div> <!-- FIN carta solicitud y compromiso -->
+          </div>
+        </div>
+      </div>
+      <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+
     @empty($bitacora)<!-- ESTUDIANTE SIN BITACORA -->
       @empty($oficio) <!-- ESTUDIANTE SIN BITACORA NI OFICIO -->
       <div class="row">
@@ -355,7 +519,7 @@
                   </div>
               </div>
           </div>
-      </div>
+        </div>
       </div>
       <!-- /.card-body -->
     </div>

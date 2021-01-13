@@ -34,7 +34,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h3>Prácticas finales Semestre final @php echo $semestre; @endphp - Año @php echo $year; @endphp</h3> 
+        <h3>Prácticas finales final Semestre @php echo $semestre; @endphp - Año @php echo $year; @endphp</h3> 
     </div>
 
     <div class="card-body">
@@ -44,6 +44,85 @@
             <h5> <i class="icon fas fa-exclamation-triangle"></i> No hay estudiantes agregados para su usuario.</h5>
         </div>
     @else
+    <div class="row">
+            <div class="col-12">
+                <div class="card card-outline card-primary">
+                <div class="card-header">
+                    <h2 class="card-title">Cartas de solicitud y compromiso de prácticas finales</h2>
+                    <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                    </button>
+                    </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">        
+                @empty($solicitudes)<!-- NO HAY CARTAS EN EL SISTEMA -->
+                <h5 class="col-sm-6 "><b>No hay solicitudes en el sistema</b></h5>
+                @else<!--BITACORAS EN EL SISTEMA -->  
+                <table class="table">
+                    <thead class="thead-light">
+                        <th>Estudiante</th>
+                        <th>Carne</th>
+                        <th>Registro</th>
+                        <th>Constancia</th>
+                        <th>Certificación</th>
+                        <th>Cronograma</th>
+                        <th>Carta solicitud</th>
+                    </thead>
+                    @foreach($solicitudes as $s) <!-- CICLO SOLICITUDES -->
+                        @foreach($estudiantes as $e)<!-- CICLO ESTUDIANTES -->
+                            @if($s->usuario_id == $e->usuario_id)
+                            <tr>
+                                <td>{{$e->nombre}} {{$e->apellido}}</td>
+                                <td>{{$e->carne}} </td>
+                                <td>{{$e->registro}}</td>
+
+                                <td>
+                                    @empty($s->ruta_constancia)
+                                    <small>No hay archivo en la base de datos.</small>
+                                    @else
+                                    <a href="{{route('pdf.ver', ['ruta'=>$s->ruta_constancia])}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i></a>
+                                    @endempty
+                                </td>
+
+                                <td>
+                                    @empty($s->ruta_certificacion)
+                                    <small>No hay archivo en la base de datos.</small>
+                                    @else
+                                    <a href="{{route('pdf.ver', ['ruta'=>$s->ruta_certificacion])}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i></a>
+                                    @endempty
+                                </td>
+
+                                <td>
+                                    @empty($s->ruta_cronograma)
+                                    <small>No hay archivo en la base de datos.</small>
+                                    @else
+                                    <a href="{{route('pdf.ver', ['ruta'=>$s->ruta_cronograma])}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i></a>
+                                    @endempty
+                                </td>
+
+                                <td>
+                                    @empty($s->ruta_carta)
+                                    <small>No hay archivo en la base de datos.</small>
+                                    @else
+                                    <a href="{{route('pdf.ver', ['ruta'=>$s->ruta_carta])}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i></a>
+                                    @endempty
+                                </td>
+                            </tr>
+                            @endif
+                        @endforeach<!-- FIN CICLO ESTUDIANTES -->
+                    @endforeach<!-- FIN CICLO BITACORAS -->
+                </table>  
+                @endempty <!-- BITACORAS -->  
+                </div>
+                <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>    
+
+
         <div class="row">
             <div class="col-12">
                 <div class="card card-outline card-primary">

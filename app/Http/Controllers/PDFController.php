@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\Gate;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
+
 class PDFController extends Controller
 {
     private $roles_gate = '{"roles":[ 1, 2, 3, 4, 5, 6, 7 ]}';
@@ -202,6 +205,90 @@ class PDFController extends Controller
         $pdf = \PDF::loadView('pdf/individual', compact('folio', 'folios'));
 
         return $pdf->stream('individual.pdf');
+    }
+
+    public function aplicada()
+    {
+        Gate::authorize('haveaccess', $this->roles_gate );
+        
+        $ruta = "public/static/plantilla_aplicada.pdf";
+        // file not found
+        if(!Storage::exists($ruta) ) {
+            abort(404);
+        }
+    
+        $pdfContent = Storage::get($ruta);
+
+        // for pdf, it will be 'application/pdf'
+        $type       = Storage::mimeType($ruta);
+    
+        return Response::make($pdfContent, 200, [
+            'Content-Type'        => $type,
+            'Content-Disposition' => 'inline; filename="plantilla_aplicada"'
+        ]);
+    }
+
+    public function docente()
+    {
+        Gate::authorize('haveaccess', $this->roles_gate );
+        
+        $ruta = "public/static/plantilla_docencia.pdf";
+        // file not found
+        if(!Storage::exists($ruta) ) {
+            abort(404);
+        }
+    
+        $pdfContent = Storage::get($ruta);
+
+        // for pdf, it will be 'application/pdf'
+        $type       = Storage::mimeType($ruta);
+    
+        return Response::make($pdfContent, 200, [
+            'Content-Type'        => $type,
+            'Content-Disposition' => 'inline; filename="plantilla_docencia"'
+        ]);
+    }
+
+    public function investigacion()
+    {
+        Gate::authorize('haveaccess', $this->roles_gate );
+        
+        $ruta = "public/static/plantilla_investigacion.pdf";
+        // file not found
+        if(!Storage::exists($ruta) ) {
+            abort(404);
+        }
+    
+        $pdfContent = Storage::get($ruta);
+
+        // for pdf, it will be 'application/pdf'
+        $type       = Storage::mimeType($ruta);
+    
+        return Response::make($pdfContent, 200, [
+            'Content-Type'        => $type,
+            'Content-Disposition' => 'inline; filename="plantilla_investigacion"'
+        ]);
+    }
+
+    public function ver_archivo(Request $request)
+    {
+        Gate::authorize('haveaccess', $this->roles_gate );
+        
+        $ruta = $request->ruta;
+        // file not found
+        if(!Storage::exists($ruta) ) {
+            abort(404);
+        }
+    
+        $pdfContent = Storage::get($ruta);
+
+        // for pdf, it will be 'application/pdf'
+        $type       = Storage::mimeType($ruta);
+    
+        return Response::make($pdfContent, 200, [
+            'Content-Type'        => $type,
+            'Content-Disposition' => 'inline; filename="plantilla_investigacion"'
+        ]);
     }
 
 }

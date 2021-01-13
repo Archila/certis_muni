@@ -163,6 +163,10 @@ Route::get('pdf/oficio/{id}', 'PDFController@oficio')->name('pdf.oficio');
 Route::get('pdf/folios/{id}', 'PDFController@folios')->name('pdf.folios');
 Route::get('pdf/vacios/{id}', 'PDFController@vacios')->name('pdf.vacios');
 Route::get('pdf/individual/{id}', 'PDFController@individual')->name('pdf.individual');
+Route::get('pdf/docente', 'PDFController@docente')->name('pdf.docente');
+Route::get('pdf/aplicada', 'PDFController@aplicada')->name('pdf.aplicada');
+Route::get('pdf/investigacion', 'PDFController@investigacion')->name('pdf.investigacion');
+Route::get('pdf/ver', 'PDFController@ver_archivo')->name('pdf.ver');
 Route::get('pdf/prueba/{id}', 'PDFController@prueba')->name('pdf.prueba');
 
 //API
@@ -172,6 +176,9 @@ Route::post('api/encargados_area', 'ApiController@encargados_area')->name('api.e
 Route::post('api/encargados', 'ApiController@encargados')->name('api.encargados');
 Route::post('api/crear_area', 'ApiController@crear_area')->name('api.crear_area');
 Route::post('api/crear_encargado', 'ApiController@crear_encargado')->name('api.crear_encargado');
+
+//Solicitud
+Route::post('solicitud/requisito', 'SolicitudController@actualizar_requisito')->name('solicitud.requisito');
 
 //Usuario
 Route::get('user/cambiar', 'UsuarioController@cambiar')->name('usuario.cambiar');
