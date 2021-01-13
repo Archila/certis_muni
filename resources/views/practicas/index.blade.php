@@ -24,16 +24,9 @@
     Semestre - Año
     </a>
     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <form id="form_1" method="get" action="{{route('practica.periodo')}}">
-        @csrf
-            <a href="javascript:{}" onclick="document.getElementById('form_1').submit();" class="dropdown-item">Semestre 2 - 2020</a>
-            <input type="hidden" name="year" value=2020>
-            <input type="hidden" name="semestre" value=2>
-        </form>
-        
+        <a href="{{route('practica.index', ['year'=>2020, 'semestre'=>2])}}" class="dropdown-item">Semestre 2 - 2020</a>
         <a href="{{route('practica.index', ['year'=>2021, 'semestre'=>1])}}" class="dropdown-item">Semestre 1 - 2021</a>
-        <a href="{{route('practica.periodo', ['year'=>2021, 'semestre'=>2])}}" class="dropdown-item">Semestre 2 - 2021</a>
-        <a href="{{route('practica.periodo', ['year'=>2020, 'semestre'=>2])}}" class="dropdown-item">Semestre 2 - 2020</a>
+        <a href="{{route('practica.index', ['year'=>2021, 'semestre'=>2])}}" class="dropdown-item">Semestre 2 - 2021</a>
     </div>
   </li>
 </ul>
