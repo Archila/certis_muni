@@ -158,7 +158,7 @@ class EstudianteController extends Controller
     {  
         Gate::authorize('haveaccess', $this->roles_gate );
 
-        $year = date('yy');
+        $year = date('Y');
         /* 
         $request->validate([
             'carne' => 'required|unique:estudiante,carne',
