@@ -49,6 +49,8 @@ class InicioController extends Controller
             if($request->has('year')) $year=$request->year;
             if($request->has('semestre'))  $semestre=$request->semestre;
 
+            return dd($request);
+
             $oficios = Oficio::select('oficio.*', 'estudiante.usuario_supervisor as usuario_supervisor');
             $oficios->join('users', 'oficio.usuario_id', '=', 'users.id');
             $oficios->join('persona', 'users.persona_id', '=', 'persona.id');
