@@ -24,9 +24,9 @@
     Semestre - Año
     </a>
     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-      <a href="{{route('practica.index', ['year'=>2020, 'semestre'=>2])}}" class="dropdown-item">Semestre 2 - 2020</a>
-      <a href="{{route('practica.index', ['year'=>2021, 'semestre'=>1])}}" class="dropdown-item">Semestre 1 - 2021</a>
-      <a href="{{route('practica.index', ['year'=>2021, 'semestre'=>2])}}" class="dropdown-item">Semestre 2 - 2021</a>
+        <a href="{{route('practica.index', ['year'=>2020, 'semestre'=>2])}}" class="dropdown-item">Semestre 2 - 2020</a>
+        <a href="{{route('practica.index', ['year'=>2021, 'semestre'=>1])}}" class="dropdown-item">Semestre 1 - 2021</a>
+        <a href="{{route('practica.index', ['year'=>2021, 'semestre'=>2])}}" class="dropdown-item">Semestre 2 - 2021</a>
     </div>
   </li>
 </ul>
