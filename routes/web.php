@@ -36,7 +36,7 @@ Route::put('carrera/{id}', 'CarreraController@actualizar')->name('carrera.actual
 Route::delete('carrera', 'CarreraController@eliminar')->name('carrera.eliminar');
 
 //Estudiantes
-Route::get('estudiante', 'EstudianteController@index')->name('estudiante.index');
+Route::get('estudiante/', 'EstudianteController@index')->name('estudiante.index');
 Route::get('estudiante/crear', 'EstudianteController@crear')->name('estudiante.crear');
 Route::get('estudiante/{id}/editar', 'EstudianteController@editar')->name('estudiante.editar');
 Route::get('estudiante/{id}/ver', 'EstudianteController@ver')->name('estudiante.ver');
@@ -100,7 +100,7 @@ Route::put('area/{id}', 'AreaController@actualizar')->name('area.actualizar');
 Route::delete('area', 'AreaController@eliminar')->name('area.eliminar');
 
 //Practica
-Route::get('practica', 'PracticaController@index')->name('practica.index');
+Route::get('practica/', 'PracticaController@index')->name('practica.index');
 Route::get('solicitud', 'PracticaController@solicitud')->name('practica.solicitud');
 Route::post('respuesta', 'PracticaController@respuesta')->name('practica.respuesta');
 
