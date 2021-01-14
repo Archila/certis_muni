@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 
+use Illuminate\Support\Facades\Session;
+
 class PracticaController extends Controller
 {
     private $roles_gate = '{"roles":[ 1, 2 ]}';
@@ -64,11 +66,18 @@ class PracticaController extends Controller
         }
         else{
 
-            $year = date('Y');
-            $semestre = 1;
-            if(date('M')>6){$semestre = 2;}
-            if($request->has('year')) {$year=$request->year;}
-            if($request->has('semestre')) {$semestre=$request->semestre;}
+            if($request->has('year')) {
+                $year=$request->year;
+                Session::put('year', $year);
+            } else {
+                $year = Session::get('year');
+            }
+            if($request->has('semestre')) {
+                $semestre=$request->semestre;
+                Session::put('semestre', $semestre);
+            } else {
+                $semestre = Session::get('semestre');
+            }
 
             $estudiantes = Estudiante::select('estudiante.*', 'carrera.nombre as carrera', 'persona.*', 'estudiante.id as estudiante_id',
             'users.id as usuario_id');

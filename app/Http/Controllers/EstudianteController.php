@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\Gate;
 
+use Illuminate\Support\Facades\Session;
+
 class EstudianteController extends Controller
 {
     private $roles_gate = '{"roles":[ 1, 3, 4, 5, 6, 7 ]}';
@@ -43,11 +45,18 @@ class EstudianteController extends Controller
             'carrera_id' => 'nullable|string',
         ]);
 
-        $year = date('Y');
-        $semestre = 1;
-        if(date('M')>6){$semestre = 2;}
-        if($request->has('year')) $year=$request->year;
-        if($request->has('semestre'))  $semestre=$request->semestre;
+        if($request->has('year')) {
+            $year=$request->year;
+            Session::put('year', $year);
+        } else {
+            $year = Session::get('year');
+        }
+        if($request->has('semestre')) {
+            $semestre=$request->semestre;
+            Session::put('semestre', $semestre);
+        } else {
+            $semestre = Session::get('semestre');
+        }
   
         $many = 5;
         if($request->has('many')) $many = $request->many;

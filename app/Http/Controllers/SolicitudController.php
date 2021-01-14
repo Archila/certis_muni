@@ -129,21 +129,25 @@ class SolicitudController extends Controller
 
         switch ($request->tipo) {
             case 1:
+                if(!empty($solicitud->ruta_constancia)) {Storage::delete($solicitud->ruta_constancia);}
                 $solicitud->ruta_constancia = $path;
                 $solicitud->save();
                 break;
             
             case 2:
+                if(!empty($solicitud->ruta_certificacion)) {Storage::delete($solicitud->ruta_certificacion);}
                 $solicitud->ruta_certificacion = $path;
                 $solicitud->save();
                 break;
 
             case 3:
+                if(!empty($solicitud->ruta_cronograma)) {Storage::delete($solicitud->ruta_cronograma);}
                 $solicitud->ruta_cronograma = $path;
                 $solicitud->save();
                 break;
 
             case 4:
+                if(!empty($solicitud->ruta_carta)) {Storage::delete($solicitud->ruta_carta);}
                 $solicitud->ruta_carta = $path;
                 $solicitud->save();
                 break;

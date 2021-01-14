@@ -110,7 +110,8 @@
     
     <div class="form-row mb-3">
       <div class="col-md-7">
-        <label for="destinatario">Destinatario carta solicitud</label>
+        <label for="destinatario">Destinatario carta solicitud</label> <br>
+        <small style="color:rgb(224,70,50)">** Se debe agregar el título de tratamiento al destinatario. Ejemplo: Ing. Lic. Sr. Sra. **</small>
         <input type="text" class="form-control encargado" id="destinatario" name="destinatario" required > 
         <div class="invalid-feedback">
         Ingrese el destinatario.

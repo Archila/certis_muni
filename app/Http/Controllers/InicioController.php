@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\Gate;
 
+use Illuminate\Support\Facades\Session;
+
 class InicioController extends Controller
 {
     private $roles_gate = '{"roles":[ 1, 2 ]}';
@@ -27,6 +29,16 @@ class InicioController extends Controller
     public function index(Request $request)
     {
         Gate::authorize('haveaccess', '{"roles":[ 1, 2, 3, 4, 5, 6, 7 ]}' );
+
+        $year = date('Y');
+        $semestre = 1;
+        if(date('M')>6){$semestre = 2;}
+        if(empty(Session::get('year'))) {
+            Session::put('year',$year);
+        }
+        if(empty(Session::get('semestre'))) {
+            Session::put('semestre',$semestre);
+        }
 
         if(Auth::user()->rol->id == 2){ 
 
@@ -42,12 +54,18 @@ class InicioController extends Controller
             return redirect()->route('practica.index');            
         }
         else{
-
-            $year = date('Y');
-            $semestre = 1;
-            if(date('M')>6){$semestre = 2;}
-            if($request->has('year')) $year=$request->year;
-            if($request->has('semestre'))  $semestre=$request->semestre;
+            if($request->has('year')) {
+                $year=$request->year;
+                Session::put('year', $year);
+            } else {
+                $year = Session::get('year');
+            }
+            if($request->has('semestre')) {
+                $semestre=$request->semestre;
+                Session::put('semestre', $semestre);
+            } else {
+                $semestre = Session::get('semestre');
+            }
 
             $oficios = Oficio::select('oficio.*', 'estudiante.usuario_supervisor as usuario_supervisor');
             $oficios->join('users', 'oficio.usuario_id', '=', 'users.id');

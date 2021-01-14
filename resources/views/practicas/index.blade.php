@@ -21,7 +21,7 @@
 <ul class="navbar-nav ml-auto">
   <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Semestre - Año
+    Semestre @php echo $semestre; @endphp - Año @php echo $year; @endphp
     </a>
     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
         <a href="{{route('practica.index', ['year'=>2020, 'semestre'=>2])}}" class="dropdown-item">Semestre 2 - 2020</a>

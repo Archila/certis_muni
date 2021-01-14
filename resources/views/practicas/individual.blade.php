@@ -72,6 +72,7 @@
           <div class="col-12 col-md-12 col-lg-8 order-1 order-md-2">
             <h3>Requisitos</h3>
             <h5>Por favor subir todos los documentos en formato PDF</h5>
+            <small style="color:red">** Cada archivo no puede ser mayor a 2 MB **</small>
               <div class="row mt-3"> <!-- Constancia de inscripción -->
                 <div class="col-8 col-md-10">
                 <small class="">Constancia de inscripción en PDF</small>
