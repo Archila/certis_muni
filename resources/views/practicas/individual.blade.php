@@ -133,7 +133,7 @@
 
               <div class="row mt-3"> <!-- Cronograma de actividades -->
                 <div class="col-8 col-md-10">
-                <small class="my-2">Cronograma de actividades en PDF</small>
+                <small class="my-2">Planificación de actividades en PDF</small>
                   <form method="POST" action="{{route('solicitud.requisito')}}" enctype="multipart/form-data">
                   @csrf 
                     <div class="input-group">
