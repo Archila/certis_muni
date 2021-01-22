@@ -131,8 +131,8 @@
             <b>{{ mb_strtoupper($oficio->estudiante, 'utf-8')}}</b>,  Número de Registro Académico <b>{{$oficio->registro}} </b> 
             y Número de Carné <b>{{$oficio->carne}}</b>, de la  CARRERA DE <b>{{mb_strtoupper($carrera, 'utf-8')}}</b> pueda realizar su 
             PRÁCTICA FINAL EN INVESTIGACIÓN con una duración de 400 horas, en el proyecto de investigación "{{$oficio->curso}}",
-            de acuerdo a la solicitud que realizó con fecha {{$fecha_solicitud}}. Agradeciendo se me informe por escrito si 
-            es aceptado o no, indicando la fecha de inicio y el horario en el que él apoyará como Auxiliar de Investigación.</p>
+            de acuerdo a la solicitud que realizó con fecha {{$fecha_solicitud}}. Agradeciendo pueda indicar en este oficio si es 
+            aceptado o no, la fecha de inicio y el horario en el que él apoyará como Auxiliar de Investigación.</p>
 
             <p>En espera de una respuesta favorable, me suscribo de usted.</p>
             <p>Atentamente,</p>
