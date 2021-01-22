@@ -370,10 +370,14 @@
                         <p class="parrafo_cuerpo"> De la manera más atenta me dirijo a usted para Solicitarle: que el estudiante 
                         <b>{{ mb_strtoupper($oficio->estudiante, 'utf-8')}}</b>,  Número de Registro Académico <b>{{$oficio->registro}} </b> 
                         y Número de Carné <b>{{$oficio->carne}}</b>, de la  CARRERA DE <b>{{mb_strtoupper($carrera, 'utf-8')}}</b> pueda realizar su 
-                        PRÁCTICA FINAL <span style="color:red;"> APLICADA </span> con una duración de 400 horas, en la empresa que usted dignamente dirige. 
-                        Agradeciendo se me informe por escrito si es aceptado o no, indicando el nombre de la persona 
-                        ({{$oficio->cargo_encargado ?? "**Profesión encargado**"}}) que tendrá a su cargo supervisar las actividades que desarrollará el
-                        estudiante mencionando, fecha de inicio y el horario.</p>
+                        PRÁCTICA FINAL <span style="color:red;"> APLICADA </span> con una duración de 400 horas, en la empresa que usted dirige. 
+                        Le agradeceré la confirmación por escrito, si es aceptado, indicando el nombre de la persona 
+                        ({{$oficio->cargo_encargado ?? "**Profesión encargado**"}}) que tendrá a su cargo supervisar 
+                        las actividades que desarrollará el estudiante mencionando, fecha de inicio y el 
+                        horario. Además, le solicito indicarme si en el área de trabajo, donde se 
+                        encontrará el estudiante, se cumple con lo establecido en el acuerdo Gubernativo 
+                        79-2020 y sus modificaciones, con respecto a la pandemia del COVID 19.  En el caso de no ser aceptado,
+                        por favor, notificarme por escrito.</p>
 
                         <p>En espera de una respuesta favorable, me suscribo de usted.</p>
                         <p>Atentamente,</p>
