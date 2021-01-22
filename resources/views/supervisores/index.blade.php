@@ -42,6 +42,8 @@
             <th>Apellido</th>
             <th>Colegiado</th>
             <th>Profesión</th>
+            <th>Cargo</th>
+            <th>usuario</th>
             <th></th>
         </tr>
     </thead>
@@ -52,6 +54,8 @@
             <td>{{$s->apellido}}</td>    
             <td>{{$s->colegiado}}</td>    
             <td>{{$s->profesion}}</td>  
+            <td>{{$s->rol_descripcion}}</td>  
+            <td>{{$s->username}}</td>  
             <td>
                 <div class="btn-group">
                     <a href="{{route('supervisor.editar', $s->supervisor_id)}}" type="button" class="btn btn-success btn-xs"><i class="fas fa-edit"></i></a>

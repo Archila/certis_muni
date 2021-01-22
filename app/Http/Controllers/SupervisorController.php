@@ -49,8 +49,11 @@ class SupervisorController extends Controller
         $direction = 'desc';
         if($request->has('direction')) $direction = $request->direction;
   
-        $supervisores = Supervisor::select('supervisor.*', 'persona.*', 'supervisor.id as supervisor_id');
+        $supervisores = Supervisor::select('supervisor.*', 'persona.*', 'supervisor.id as supervisor_id',
+            'rol.id as rol_id', 'rol.descripcion as rol_descripcion', 'users.carne as username');
         $supervisores ->join('persona', 'persona_id', '=', 'persona.id');
+        $supervisores ->join('users', 'persona.id', '=', 'users.persona_id');
+        $supervisores ->join('rol', 'users.rol_id', '=', 'rol.id');
   
         if ($request->has('nombre')) {
           $supervisores->orWhere('nombre', 'LIKE', '%' . $request->nombre . '%');

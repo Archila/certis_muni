@@ -55,10 +55,6 @@
             <td>
                 <div class="btn-group">
                     <a href="{{route('carrera.editar', $c->id)}}" type="button" class="btn btn-success btn-xs"><i class="fas fa-edit"></i></a>
-                    <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" 
-                    data-target="#modal-eliminar" data-id="{{$c->id}}">
-                        <i class="fas fa-trash"></i>
-                    </button>
                 </div>
             </td>    
         </tr>
