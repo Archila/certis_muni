@@ -173,12 +173,18 @@ class OficioController extends Controller
         elseif($carrera_id == 4){$no_oficio .= 'IMI No. ';}
         elseif($carrera_id == 5 ){$no_oficio .= 'IS No. ';}
 
+        $year = date('Y');
+        $semestre = 1;
+        if(date('M')>6){$semestre = 2;}
+
         $oficios_existentes = Oficio::select('oficio.*', 'carrera.id as carrera_id');
         $oficios_existentes = $oficios_existentes->join('users', 'oficio.usuario_id', '=', 'users.id');
         $oficios_existentes = $oficios_existentes->join('persona', 'users.persona_id', '=', 'persona.id');
         $oficios_existentes = $oficios_existentes->join('estudiante', 'persona.id', '=', 'estudiante.persona_id');
         $oficios_existentes = $oficios_existentes->join('carrera', 'estudiante.carrera_id', '=', 'carrera.id');
         $oficios_existentes =  $oficios_existentes->where('carrera.id', $carrera_id);
+        $oficios_existentes =  $oficios_existentes->where('oficio.semestre', $semestre);
+        $oficios_existentes =  $oficios_existentes->where('oficio.year', $year);
         $oficios_existentes =  $oficios_existentes->whereNotNull('oficio.no_oficio')->count();
 
         if($oficios_existentes<9){$no_oficio .= '00'; $no_oficio .= (string)($oficios_existentes+1);}

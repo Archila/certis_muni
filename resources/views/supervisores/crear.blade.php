@@ -10,7 +10,7 @@
 
 @section('alerta')
   @if (session('error')=='ERROR')
-  <script> alerta_error('Ya existe supervisor con ese número de colegiado')</script>
+  <script> alerta_error('Ya existe supervisor con ese número de registro')</script>
   @endif
 @endsection
 

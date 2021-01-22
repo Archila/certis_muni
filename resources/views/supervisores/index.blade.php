@@ -40,7 +40,7 @@
         <tr>
             <th>Nombre</th>
             <th>Apellido</th>
-            <th>Colegiado</th>
+            <th>Registro</th>
             <th>Profesión</th>
             <th>Cargo</th>
             <th>usuario</th>

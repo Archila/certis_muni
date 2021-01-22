@@ -41,9 +41,9 @@
       </div>
       <div class="col-md-2 mb-3">
         <label for="validationCustom06">Prefijo</label>
-        <input type="text" class="form-control" id="validationCustom06" minlength="4" required name="prefijo" value="{{$carrera->prefijo}}">
+        <input type="text" class="form-control" id="validationCustom06" minlength="3" required name="prefijo" value="{{$carrera->prefijo}}">
         <div class="invalid-feedback">
-          Ingrese un prefijo de al menos 4 caracteres.
+          Ingrese un prefijo de al menos 3 caracteres.
         </div>
       </div>
     </div>

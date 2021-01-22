@@ -96,6 +96,7 @@
           @endIf
 
           @if(Auth::user()->mostrarTabla('notificacion'))
+            <!-- 
             <li class="nav-item">
               <a href="pages/calendar.html" class="nav-link">
                 <i class="nav-icon fas fa-calendar-alt"></i>
@@ -104,7 +105,8 @@
                   <span class="badge badge-info right">2</span>
                 </p>
               </a>
-            </li>          
+            </li>    
+            -->      
           @endIf
 
           @if(Auth::user()->mostrarTabla('carrera'))

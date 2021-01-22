@@ -10,7 +10,7 @@
 
 @section('alerta')  
   @if (session('error')=='ERROR')
-  <script> alerta_error('Ya existe supervisor con ese número de colegiado')</script>
+  <script> alerta_error('Ya existe supervisor con ese número de registro')</script>
   @endif   
 @endsection
 
@@ -55,7 +55,7 @@
             </div>
         </div>      
         <div class="col-md-2 col-sm-12 mb-3">
-            <label for="validationCustom03">No. Colegiado</label>
+            <label for="validationCustom03">No. Registro</label>
             <input type="number" min=1 class="form-control" id="validationCustom03" minlength="6"  required name="colegiado" value="{{$supervisor->colegiado}}">
             <div class="invalid-feedback">
             Ingrese un valor numérido de al menos 6 dígitos.
