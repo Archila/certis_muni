@@ -190,7 +190,7 @@ class OficioController extends Controller
         if($oficios_existentes<9){$no_oficio .= '00'; $no_oficio .= (string)($oficios_existentes+1);}
         else {$no_oficio .= '0'; $no_oficio .= (string)($oficios_existentes+1);}
 
-        $year = date('yy');
+        $year = date('Y');
         $no_oficio .= '-'.(string)$year ;
 
         return view('oficios.ver',compact(['oficio', 'punto', 'supervisor', 'carrera', 'no_oficio', 'fecha', 'fecha_solicitud']));    
