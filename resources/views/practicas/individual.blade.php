@@ -79,12 +79,11 @@
                   <form method="POST" action="{{route('solicitud.requisito')}}" enctype="multipart/form-data">
                   @csrf 
                     <div class="input-group">
-                      <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="file">
-                        <label class="custom-file-label" for="inputGroupFile04">Elija un archivo</label>
+                      <div class="">
+                        <input type="file" name="file">
                       </div>
                       <input type="hidden" name="tipo" value=1>
-                      <div class="input-group-append">
+                      <div class="input-group-append ml-3">
                         <button class="btn btn-outline-warning" type="submit">Guardar</button>
                       </div>
                     </div>
@@ -108,12 +107,11 @@
                   <form method="POST" action="{{route('solicitud.requisito')}}" enctype="multipart/form-data">
                   @csrf 
                     <div class="input-group">
-                      <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="file">
-                        <label class="custom-file-label" for="inputGroupFile04">Elija un archivo</label>
+                      <div class="">
+                        <input type="file" name="file">
                       </div>
                       <input type="hidden" name="tipo" value=2>
-                      <div class="input-group-append">
+                      <div class="input-group-append ml-3">
                         <button class="btn btn-outline-warning" type="submit">Guardar</button>
                       </div>
                     </div>
@@ -137,12 +135,11 @@
                   <form method="POST" action="{{route('solicitud.requisito')}}" enctype="multipart/form-data">
                   @csrf 
                     <div class="input-group">
-                      <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="file">
-                        <label class="custom-file-label" for="inputGroupFile04">Elija un archivo</label>
+                      <div class="">
+                        <input type="file" name="file">
                       </div>
                       <input type="hidden" name="tipo" value=3>
-                      <div class="input-group-append">
+                      <div class="input-group-append ml-3">
                         <button class="btn btn-outline-warning" type="submit">Guardar</button>
                       </div>
                     </div>
@@ -166,12 +163,11 @@
                   <form method="POST" action="{{route('solicitud.requisito')}}" enctype="multipart/form-data">
                   @csrf 
                     <div class="input-group">
-                      <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="file">
-                        <label class="custom-file-label" for="inputGroupFile04">Elija un archivo</label>
+                      <div class="">
+                        <input type="file" name="file">
                       </div>
                       <input type="hidden" name="tipo" value=4>
-                      <div class="input-group-append">
+                      <div class="input-group-append ml-3">
                         <button class="btn btn-outline-warning" type="submit">Guardar</button>
                       </div>
                     </div>

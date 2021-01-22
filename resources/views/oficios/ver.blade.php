@@ -294,7 +294,7 @@
                         <p><b>"Id Y Enseñad A Todos"</b></p>
                         <br><br><br><br>
                         <p><b>{{$supervisor}}</b></p>
-                        <p><b>Supervisor de Prácticas Finales</b></p>
+                        <p><b>Docente de Prácticas Finales</b></p>
                         <p><b>{{$carrera}}</b></p>
                     </div>
 
@@ -338,7 +338,7 @@
                         <p><b>"Id Y Enseñad A Todos"</b></p>
                         <br><br><br><br>
                         <p><b>{{$supervisor}}</b></p>
-                        <p><b>Supervisor de Prácticas Finales</b></p>
+                        <p><b>Docente de Prácticas Finales</b></p>
                         <p><b>{{$carrera}}</b></p>
                     </div>
 
@@ -387,7 +387,7 @@
                         <p><b>"Id Y Enseñad A Todos"</b></p>
                         <br><br><br><br>
                         <p><b>{{$supervisor}}</b></p>
-                        <p><b>Supervisor de Prácticas Finales</b></p>
+                        <p><b>Docente de Prácticas Finales</b></p>
                         <p><b>{{$carrera}}</b></p>
                     </div>
 
