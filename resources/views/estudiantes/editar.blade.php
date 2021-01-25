@@ -132,7 +132,7 @@
                     </div>
                 </div>   
                 <div class="col-md-4 col-sm-12 mb-3">
-                    @php $hoy = date('yy-m-d');
+                    @php $hoy = date('Y-m-d');
                     @endphp
                     <label for="validationCustom09">Fecha prácticas intermedias</label>
                     <input type="date" max="{{$hoy}}" class="form-control" id="validationCustom09" required name="practicas" value="{{$estudiante->practicas}}">

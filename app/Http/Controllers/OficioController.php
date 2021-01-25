@@ -294,12 +294,14 @@ class OficioController extends Controller
         $oficios_existentes = $oficios_existentes->join('estudiante', 'persona.id', '=', 'estudiante.persona_id');
         $oficios_existentes = $oficios_existentes->join('carrera', 'estudiante.carrera_id', '=', 'carrera.id');
         $oficios_existentes =  $oficios_existentes->where('carrera.id', $carrera_id);
+        $oficios_existentes =  $oficios_existentes->where('oficio.semestre', $semestre);
+        $oficios_existentes =  $oficios_existentes->where('oficio.year', $year);
         $oficios_existentes =  $oficios_existentes->whereNotNull('oficio.no_oficio')->count();
 
         if($oficios_existentes<9){$no_oficio .= '00'; $no_oficio .= (string)($oficios_existentes+1);}
         else {$no_oficio .= '0'; $no_oficio .= (string)($oficios_existentes+1);}
 
-        $year = date('yy');
+        $year = date('Y');
         $no_oficio .= '-'.(string)$year ;
 
         if(!$oficio->no_oficio){

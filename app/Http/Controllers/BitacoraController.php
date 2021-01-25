@@ -188,6 +188,10 @@ class BitacoraController extends Controller
         Gate::authorize('haveaccess', $this->roles_gate );
         $oficio = Oficio::findOrFail($request->oficio_id);
 
+        $year = date('Y');
+        $semestre = 1;
+        if(date('M')>6){$semestre = 2;}
+
         if(!$oficio->revisado || $oficio->rechazado){
             abort(403);
         }
@@ -212,7 +216,7 @@ class BitacoraController extends Controller
         if($oficio->semestre == 1){$nombre .= " - Primer semestre ".(string)$oficio->year;}
         else{$nombre .= " - Segundo semestre ".(string)$oficio->year;}
 
-        $fecha = date('yy-m-d');
+        $fecha = date('Y-m-d');
         
         $estudiante = Estudiante::select('estudiante.*', 'persona.*', 'carrera.nombre as carrera', 'carrera.id as carrera_id');
         $estudiante = $estudiante->join('persona', 'persona_id', '=', 'persona.id');
@@ -234,13 +238,15 @@ class BitacoraController extends Controller
         $bitacoras_validas = $bitacoras_validas->join('persona', 'users.persona_id', '=', 'persona.id');
         $bitacoras_validas = $bitacoras_validas->join('estudiante', 'persona.id', '=', 'estudiante.persona_id');
         $bitacoras_validas = $bitacoras_validas->join('carrera', 'estudiante.carrera_id', '=', 'carrera.id');
+        $bitacoras_validas =  $bitacoras_validas->where('oficio.semestre', $semestre);
+        $bitacoras_validas =  $bitacoras_validas->where('oficio.year', $year);
         $bitacoras_validas =  $bitacoras_validas->where('carrera.id', $estudiante->carrera_id)->count();
 
         $mes = date('m');
-        $year= date('yy');
+        $year= date('Y');
         if($bitacoras_validas<9){$codigo.='0'; $codigo.=(string)($bitacoras_validas+1);}
         else{$codigo.=(string)($bitacoras_validas+1);}
-        $codigo .= (string)$mes; $codigo.=(string)$year;
+        $codigo.=(string)$year;
 
         $bitacora = new Bitacora();
         $bitacora->nombre = $nombre;   
@@ -387,7 +393,7 @@ class BitacoraController extends Controller
         Gate::authorize('haveaccess', '{"roles":[ 1, 3, 4, 5, 6, 7 ]}' );
 
         $bitacora = Bitacora::findOrFail($id);
-        $fecha = date('yy-m-d');
+        $fecha = date('Y-m-d');
         
         $estudiante = Estudiante::select('estudiante.*', 'persona.*', 'carrera.nombre as carrera', 'carrera.id as carrera_id');
         $estudiante = $estudiante->join('persona', 'persona_id', '=', 'persona.id');
@@ -413,12 +419,13 @@ class BitacoraController extends Controller
         $oficios_existentes = $oficios_existentes->join('estudiante', 'persona.id', '=', 'estudiante.persona_id');
         $oficios_existentes = $oficios_existentes->join('carrera', 'estudiante.carrera_id', '=', 'carrera.id');
         $oficios_existentes =  $oficios_existentes->where('carrera.id', $estudiante->carrera_id);
+        
         $oficios_existentes =  $oficios_existentes->where('bitacora.oficio', 1)->count();
 
         if($oficios_existentes<9){$oficio .= '00'; $oficio .= (string)($oficios_existentes+1);}
         else {$oficio .= '0'; $oficio .= (string)($oficios_existentes+1);}
 
-        $year = date('yy');
+        $year = date('Y');
 
         $oficio .= '-'.(string)$year ;
 
@@ -433,8 +440,12 @@ class BitacoraController extends Controller
     public function validar($id)
     {
         Gate::authorize('haveaccess', '{"roles":[ 1, 3, 4, 5, 6, 7 ]}' );
-        $fecha = date('yy-m-d');
+        $fecha = date('Y-m-d');
         $bitacora = Bitacora::findOrFail($id);
+
+        $year = date('Y');
+        $semestre = 1;
+        if(date('M')>6){$semestre = 2;}
 
         $estudiante = Estudiante::select('estudiante.*', 'persona.*', 'carrera.nombre as carrera', 'carrera.id as carrera_id');
         $estudiante = $estudiante->join('persona', 'persona_id', '=', 'persona.id');
@@ -459,10 +470,12 @@ class BitacoraController extends Controller
         $bitacoras_validas = $bitacoras_validas->join('estudiante', 'persona.id', '=', 'estudiante.persona_id');
         $bitacoras_validas = $bitacoras_validas->join('carrera', 'estudiante.carrera_id', '=', 'carrera.id');
         $bitacoras_validas =  $bitacoras_validas->where('carrera.id', $estudiante->carrera_id);
+        $bitacoras_validas =  $bitacoras_validas->where('oficio.semestre', $semestre);
+        $bitacoras_validas =  $bitacoras_validas->where('oficio.year', $year);
         $bitacoras_validas =  $bitacoras_validas->where('bitacora.valida', 1)->count();
 
         $mes = date('m');
-        $year= date('yy');
+        $year= date('Y');
         if($bitacoras_validas<9){$codigo.='0'; $codigo.=(string)($bitacoras_validas+1);}
         else{$codigo.=(string)($bitacoras_validas+1);}
         $codigo .= (string)$mes; $codigo.=(string)$year;
@@ -498,6 +511,10 @@ class BitacoraController extends Controller
 
     public function revision(Request $request, $id)
     {
+        $year = date('Y');
+        $semestre = 1;
+        if(date('M')>6){$semestre = 2;}
+
         Gate::authorize('haveaccess', '{"roles":[ 1, 3, 4, 5, 6, 7 ]}' );
 
         $bitacora = Bitacora::findOrFail($id);
@@ -521,7 +538,7 @@ class BitacoraController extends Controller
         $revision->folio_final = $request->folio_final;
         $revision->horas = $horas;
         $revision->observaciones = $request->observaciones;
-        $revision->fecha = date('yy-m-d');
+        $revision->fecha = date('Y-m-d');
         $revision->ponderacion = $request->ponderacion;
         $revision->bitacora_id = $bitacora->id;
         $revision->save();
