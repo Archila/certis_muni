@@ -23,10 +23,10 @@ class CreateEmpresaTable extends Migration
 
         Schema::create('empresa', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nombre', 120);
+            $table->string('nombre', 200);
             $table->string('ubicacion', 100);
             $table->string('direccion', 100);
-            $table->string('alias', 60)->nullable();
+            $table->string('alias', 150)->nullable();
             $table->string('correo', 60);
             $table->string('telefono', 10);
             $table->string('contacto', 80)->nullable();

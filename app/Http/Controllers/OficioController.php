@@ -269,6 +269,10 @@ class OficioController extends Controller
     {
         Gate::authorize('haveaccess', '{"roles":[ 1, 3, 4, 5, 6, 7 ]}' );
         
+        $year = date('Y');
+        $semestre = 1;
+        if(date('M')>6){$semestre = 2;}
+
         $id = $request->id;
         $oficio = Oficio::findOrFail($id);
         $datos = Carrera::select('carrera.nombre as carrera', 'carrera.id as carrera_id', 'estudiante.*');
