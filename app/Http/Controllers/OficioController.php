@@ -147,7 +147,7 @@ class OficioController extends Controller
         $usr_sup = $usr_sup->join('users', 'persona.id', '=', 'users.persona_id');
         $usr_sup = $usr_sup->where('users.id', $id_sup)->first();
 
-        $supervisor = "Ing. ".$usr_sup->nombre." ".$usr_sup->apellido;
+        $supervisor = $usr_sup->nombre." ".$usr_sup->apellido;
 
         //Uso de fecha en espanol
         $meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
@@ -350,7 +350,7 @@ class OficioController extends Controller
         $usr_sup = $usr_sup->join('users', 'persona.id', '=', 'users.persona_id');
         $usr_sup = $usr_sup->where('users.id', $id_sup)->first();
 
-        $supervisor = "Ing. ".$usr_sup->nombre." ".$usr_sup->apellido;
+        $supervisor = $usr_sup->nombre." ".$usr_sup->apellido;
 
         //Uso de fecha en espanol
         $meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
