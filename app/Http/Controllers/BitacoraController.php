@@ -226,11 +226,11 @@ class BitacoraController extends Controller
 
         //Codigo de bitacora
         $codigo="";
-        if($estudiante->carrera_id == 1){$codigo .= 'BPFIC';}
-        elseif($estudiante->carrera_id == 2){$codigo .= 'BPFIM';}
-        elseif($estudiante->carrera_id == 3){$codigo .= 'BPFII';}
-        elseif($estudiante->carrera_id == 4){$codigo .= 'BPFIMI';}
-        elseif($estudiante->carrera_id == 5 ){$codigo .= 'BPFIS';}
+        if($estudiante->carrera_id == 1){$codigo .= 'BPFIC-';}
+        elseif($estudiante->carrera_id == 2){$codigo .= 'BPFIM-';}
+        elseif($estudiante->carrera_id == 3){$codigo .= 'BPFII-';}
+        elseif($estudiante->carrera_id == 4){$codigo .= 'BPFIMI-';}
+        elseif($estudiante->carrera_id == 5 ){$codigo .= 'BPFIS-';}
 
         $bitacoras_validas = Bitacora::select('bitacora.*', 'carrera.id as carrera_id');
         $bitacoras_validas = $bitacoras_validas->join('oficio', 'bitacora.oficio_id', '=', 'oficio.id');
@@ -246,7 +246,7 @@ class BitacoraController extends Controller
         $year= date('Y');
         if($bitacoras_validas<9){$codigo.='0'; $codigo.=(string)($bitacoras_validas+1);}
         else{$codigo.=(string)($bitacoras_validas+1);}
-        $codigo.=(string)$year;
+        $codigo.= '-'.(string)$year;
 
         $bitacora = new Bitacora();
         $bitacora->nombre = $nombre;   
@@ -458,11 +458,11 @@ class BitacoraController extends Controller
         }
 
         $codigo="";
-        if($estudiante->carrera_id == 1){$codigo .= 'BPFIC';}
-        elseif($estudiante->carrera_id == 2){$codigo .= 'BPFIM';}
-        elseif($estudiante->carrera_id == 3){$codigo .= 'BPFII';}
-        elseif($estudiante->carrera_id == 4){$codigo .= 'BPFIMI';}
-        elseif($estudiante->carrera_id == 5 ){$codigo .= 'BPFIS';}
+        if($estudiante->carrera_id == 1){$codigo .= 'BPFIC-';}
+        elseif($estudiante->carrera_id == 2){$codigo .= 'BPFIM-';}
+        elseif($estudiante->carrera_id == 3){$codigo .= 'BPFII-';}
+        elseif($estudiante->carrera_id == 4){$codigo .= 'BPFIMI-';}
+        elseif($estudiante->carrera_id == 5 ){$codigo .= 'BPFIS-';}
 
         $bitacoras_validas = Bitacora::select('bitacora.*', 'carrera.id as carrera_id');
         $bitacoras_validas = $bitacoras_validas->join('users', 'bitacora.usuario_id', '=', 'users.id');
@@ -478,7 +478,7 @@ class BitacoraController extends Controller
         $year= date('Y');
         if($bitacoras_validas<9){$codigo.='0'; $codigo.=(string)($bitacoras_validas+1);}
         else{$codigo.=(string)($bitacoras_validas+1);}
-        $codigo .= (string)$mes; $codigo.=(string)$year;
+        $codigo.= '-'.(string)$year;
         $bitacora = Bitacora::findOrFail($id);
         $bitacora->valida = true;
         $bitacora->f_aprobacion = $fecha;  
