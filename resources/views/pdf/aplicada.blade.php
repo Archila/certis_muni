@@ -60,11 +60,11 @@
         .firma{
             display: block;
             font-size: 14px;
-            margin: 0cm 1cm 0cm 0.8cm;            
+            margin: -0.5cm 1cm 0cm 0.8cm;            
             text-align: center;
         }   
         .firma p{
-            padding: -0.5cm 1cm 0cm 0.8cm; 
+            padding: -1cm 1cm 0cm 0.8cm; 
         }
         .fin{
             display: block;
@@ -93,6 +93,36 @@
         max-width: 10px; 
         min-width: 5px; 
         float: right; /* [3] */
+    }
+
+    .firmas{
+        display: block;           
+        margin: 1.4cm 0cm 0 0cm;
+        font-size: 9;  
+        width: 100%;
+        overflow: auto;
+    }
+    .firmas p{
+        padding-top: -0.3cm;
+    }
+    .c1{
+        width: 40%;
+        float:left;
+        text-align: center;
+    }
+    .c2{
+        width: 20%;
+        float:left;
+        text-align: center;
+        padding-left:1cm;            
+    }
+    .c3{
+        width: 25%;
+        float:left;
+        text-align: right;     
+    }
+    .fin{
+        margin-top: 1.5cm;
     }
     </style>
     </head>

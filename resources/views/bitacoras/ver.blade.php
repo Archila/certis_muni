@@ -131,7 +131,7 @@
                     <a href="{{route('oficio.respuesta', $oficio->id)}}" class="dropdown-item">Respuesta pdf</a>     
                     @else
                     <a href="{{route('bitacora.revisar', $bitacora->id)}}" class="dropdown-item">Revisar folios</a>
-                    <a href="{{route('pdf.oficio', $bitacora->id)}}" class="dropdown-item">Ver oficio</a>
+                    <a href="{{route('oficio.pdf', $oficio->id)}}" class="dropdown-item">Ver oficio</a>
                     <a href="{{route('oficio.respuesta', $oficio->id)}}" class="dropdown-item">Respuesta pdf</a>  
                     @endif
                     <a class="dropdown-divider"></a>

@@ -287,7 +287,7 @@ class PDFController extends Controller
     
         return Response::make($pdfContent, 200, [
             'Content-Type'        => $type,
-            'Content-Disposition' => 'inline; filename="plantilla_investigacion"'
+            'Content-Disposition' => 'inline; filename="documento_practicas"'
         ]);
     }
 

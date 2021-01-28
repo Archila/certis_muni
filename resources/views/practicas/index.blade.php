@@ -62,7 +62,7 @@
                 <table class="table">
                     <thead class="thead-light">
                         <th>Estudiante</th>
-                        <th>Carne</th>
+                        <th>Correo</th>
                         <th>Registro</th>
                         <th>Constancia</th>
                         <th>Certificación</th>
@@ -74,12 +74,12 @@
                             @if($s->usuario_id == $e->usuario_id)
                             <tr>
                                 <td>{{$e->nombre}} {{$e->apellido}}</td>
-                                <td>{{$e->carne}} </td>
+                                <td>{{$e->correo}} </td>
                                 <td>{{$e->registro}}</td>
 
                                 <td>
                                     @empty($s->ruta_constancia)
-                                    <small>No hay archivo en la base de datos.</small>
+                                    <small><i class="fas fa-window-close"></i></small>
                                     @else
                                     <a href="{{route('pdf.ver', ['ruta'=>$s->ruta_constancia])}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i></a>
                                     @endempty
@@ -87,7 +87,7 @@
 
                                 <td>
                                     @empty($s->ruta_certificacion)
-                                    <small>No hay archivo en la base de datos.</small>
+                                    <small><i class="fas fa-window-close"></i></small>
                                     @else
                                     <a href="{{route('pdf.ver', ['ruta'=>$s->ruta_certificacion])}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i></a>
                                     @endempty
@@ -95,7 +95,7 @@
 
                                 <td>
                                     @empty($s->ruta_cronograma)
-                                    <small>No hay archivo en la base de datos.</small>
+                                    <small><i class="fas fa-window-close"></i></small>
                                     @else
                                     <a href="{{route('pdf.ver', ['ruta'=>$s->ruta_cronograma])}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i></a>
                                     @endempty
@@ -103,7 +103,7 @@
 
                                 <td>
                                     @empty($s->ruta_carta)
-                                    <small>No hay archivo en la base de datos.</small>
+                                    <small><i class="fas fa-window-close"></i></small>
                                     @else
                                     <a href="{{route('pdf.ver', ['ruta'=>$s->ruta_carta])}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i></a>
                                     @endempty
@@ -142,7 +142,7 @@
                     <thead class="thead-light">
                         <th></th>
                         <th>Estudiante</th>
-                        <th>Carne</th>
+                        <th>Correo</th>
                         <th>Registro</th>
                         <th>No. Bitácora</th>
                         <th>Tipo</th>
@@ -164,7 +164,7 @@
                                 </div>  
                                 </td>
                                 <td>{{$e->nombre}} {{$e->apellido}}</td>
-                                <td>{{$e->carne}} </td>
+                                <td>{{$e->correo}} </td>
                                 <td>{{$e->registro}}</td>
                                 <td>
                                 @if($b->codigo)
@@ -216,7 +216,7 @@
                     <thead class="thead-light">
                         <th></th>
                         <th>Estudiante</th>
-                        <th>Carne</th>
+                        <th>Correo</th>
                         <th>Registro</th>                        
                         <th>No. Oficio</th>
                         <th>Tipo</th>
@@ -255,7 +255,7 @@
                             </td>
                             @endif
                             <td>{{$e->nombre}} {{$e->apellido}}</td>
-                            <td>{{$e->carne}} </td>
+                            <td>{{$e->correo}} </td>
                             <td>{{$e->registro}}</td>
                             <td>
                             @if($o->no_oficio)

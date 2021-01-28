@@ -60,7 +60,7 @@
         .firma{
             display: block;
             font-size: 14px;
-            margin: 0cm 1cm 0cm 0.8cm;            
+            margin: -1cm 1cm 0cm 0.8cm;            
             text-align: center;
         }   
         .firma p{
@@ -93,6 +93,36 @@
         max-width: 10px; 
         min-width: 5px; 
         float: right; /* [3] */
+    }
+
+    .firmas{
+        display: block;           
+        margin: 1.4cm 0cm 0 0cm;
+        font-size: 9;  
+        width: 100%;
+        overflow: auto;
+    }
+    .firmas p{
+        padding-top: -0.3cm;
+    }
+    .c1{
+        width: 40%;
+        float:left;
+        text-align: center;
+    }
+    .c2{
+        width: 20%;
+        float:left;
+        text-align: center;
+        padding-left:1cm;            
+    }
+    .c3{
+        width: 25%;
+        float:left;
+        text-align: right;     
+    }
+    .fin{
+        margin-top: 2cm;
     }
     </style>
     </head>
@@ -141,12 +171,30 @@
         
         <div class="firma">
             <p><b>"Id Y Enseñad A Todos"</b></p>
-            <br><br><br><br><br><br>
+            <br><br><br><br><br>
             <p><b>{{$supervisor}}</b></p>
             <p><b>Supervisor de Prácticas Finales</b></p>
             <p><b>{{$carrera}}</b></p>
         </div>
 
+        <div class="firmas">
+            <div class="c1">
+                <p style="">________________________________</p>
+                <p>Firma y sello</p>
+                <p>{{$oficio->destinatario}}</p>
+            </div>            
+            <div class="c2">
+                <p>SI____&nbsp;&nbsp;&nbsp;&nbsp;NO____</p>
+                <p style="font-size:6px;">&nbsp;</p>
+                <p>ACEPTADO</p>
+            </div>     
+            <div class="c3">
+                <p>Fecha inicio ____/____/______</p>
+                <p style="font-size:6px;">&nbsp;</p>
+                <p>Horario: _______________</p>
+            </div>             
+        </div>
+        <br>
         <div class="fin">
             <p>Re/archivo</p>
         </div>
