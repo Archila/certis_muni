@@ -60,11 +60,11 @@
         .firma{
             display: block;
             font-size: 14px;
-            margin: -0.5cm 1cm 0cm 0.8cm;            
+            margin: 0cm 1cm 0cm 0.8cm;            
             text-align: center;
         }   
         .firma p{
-            padding: -1cm 1cm 0cm 0.8cm; 
+            padding: -0.5cm 1cm 0cm 0.8cm; 
         }
         .fin{
             display: block;
@@ -102,28 +102,6 @@
         width: 100%;
         overflow: auto;
     }
-    .firmas p{
-        padding-top: -0.3cm;
-    }
-    .c1{
-        width: 40%;
-        float:left;
-        text-align: center;
-    }
-    .c2{
-        width: 20%;
-        float:left;
-        text-align: center;
-        padding-left:1cm;            
-    }
-    .c3{
-        width: 25%;
-        float:left;
-        text-align: right;     
-    }
-    .fin{
-        margin-top: 1.5cm;
-    }
     </style>
     </head>
     <body>
@@ -160,7 +138,7 @@
             <p class="parrafo_cuerpo"> De la manera más atenta me dirijo a usted para Solicitarle: que el estudiante 
             <b>{{ mb_strtoupper($oficio->estudiante, 'utf-8')}}</b>,  Número de Registro Académico <b>{{$oficio->registro}} </b> 
             y Número de Carné <b>{{$oficio->carne}}</b>, de la  CARRERA DE <b>{{mb_strtoupper($carrera, 'utf-8')}}</b> pueda realizar su 
-            PRÁCTICA FINAL APLICADA con una duración de 400 horas, en la empresa que usted dirige. 
+            PRÁCTICA FINAL APLICADA con una duración de {{$oficio->horas}} horas, {{$oficio->institucion}}. 
             Le agradeceré la confirmación por escrito, si es aceptado, indicando el nombre de la persona 
             ({{$oficio->cargo_encargado}}) que tendrá a su cargo supervisar las actividades que desarrollará el 
             estudiante mencionando, fecha de inicio y el horario. Además, le solicito indicarme si en el área de 

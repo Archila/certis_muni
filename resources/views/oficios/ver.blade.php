@@ -198,6 +198,10 @@
                             <label for="saludo">Destinatario</label>
                             <input type="text" class="form-control form-control-sm" id="destinatario" name="destinatario" required value="{{$oficio->destinatario}}">                          
                         </div>   
+                        <div class="col-md-12 ">
+                            <label for="saludo">Horas</label>
+                            <input type="text" class="form-control form-control-sm" id="horas" name="horas" required value="{{$oficio->horas}}">                          
+                        </div>   
                     </div>
                     
                     <div id="div_docencia" class="my-3" style="display:none;">
@@ -237,6 +241,10 @@
                         <div class="col-md-12 ">
                             <label for="profesion">Profesión del futuro encargado</label>
                             <input type="text" class="form-control form-control-sm" id="profesion" name="cargo_encargado" required value="{{$oficio->cargo_encargado}}" >                             
+                        </div>   
+                        <div class="col-md-12 ">
+                            <label for="profesion">Relación de la institución con el encargado</label>
+                            <input type="text" class="form-control form-control-sm" id="institucion" name="institucion" required value="{{$oficio->institucion}}" >                             
                         </div>   
                     </div>   
                     
@@ -281,8 +289,9 @@
                         <p class="parrafo_cuerpo"> De la manera más atenta me dirijo a usted para Solicitarle: que el estudiante 
                         <b>{{ mb_strtoupper($oficio->estudiante, 'utf-8')}}</b>,  Número de Registro Académico <b>{{$oficio->registro}} </b> 
                         y Número de Carné <b>{{$oficio->carne}}</b>, de la  CARRERA DE <b>{{mb_strtoupper($carrera,'utf-8')}}</b> pueda realizar su 
-                        PRÁCTICA FINAL <span style="color:red;">EN DOCENCIA </span>con una duración de 400 horas, en el curso de {{$oficio->curso ?? "**Agregue curso en el formulario a la izquierda**"}}
-                        con código {{$oficio->codigo_curso ?? '000'}}, el cual usted imparte, de acuerdo a la solicitud que realizó con fecha 
+                        PRÁCTICA FINAL <span style="color:red;">EN DOCENCIA </span>con una duración de <span style="color:red;">{{$oficio->horas}}</span> horas, 
+                        en el curso de <span style="color:red;">{{$oficio->curso ?? "**Agregue curso en el formulario a la izquierda**"}}</span>
+                        con código <span style="color:red;">{{$oficio->codigo_curso ?? '000'}}</span>, el cual usted imparte, de acuerdo a la solicitud que realizó con fecha 
                         {{$fecha_solicitud ?? "**Ingrese fecha de solicitud**"}}. Agradeciendo pueda indicar en este oficio si es aceptado o no,
                         la fecha de inicio y el horario en el que él apoyará como Auxiliar Docente.</p>
 
@@ -326,8 +335,10 @@
                         <p class="parrafo_cuerpo"> De la manera más atenta me dirijo a usted para Solicitarle: que el estudiante 
                         <b>{{ mb_strtoupper($oficio->estudiante, 'utf-8')}}</b>,  Número de Registro Académico <b>{{$oficio->registro}} </b> 
                         y Número de Carné <b>{{$oficio->carne}}</b>, de la  CARRERA DE <b>{{mb_strtoupper($carrera, 'utf-8')}}</b> pueda realizar su 
-                        PRÁCTICA FINAL <span style="color:red;">EN INVESTIGACIÓN </span>con una duración de 400 horas, en el proyecto de investigación "{{$oficio->curso ?? "**Agregue tema en el formulario a la izquierda**"}}",
-                        de acuerdo a la solicitud que realizó con fecha {{$fecha_solicitud ?? "**Ingrese fecha de solicitud**"}}. Agradeciendo se me informe por escrito si 
+                        PRÁCTICA FINAL <span style="color:red;">EN INVESTIGACIÓN </span>con una duración de <span style="color:red;">{{$oficio->horas}}</span> horas,
+                         en el proyecto de investigación <span style="color:red;"> "{{$oficio->curso ?? "**Agregue tema en el formulario a la izquierda**"}}"</span>,
+                        de acuerdo a la solicitud que realizó con fecha <span style="color:red;">{{$fecha_solicitud ?? "**Ingrese fecha de solicitud**"}}</span>. 
+                        Agradeciendo se me informe por escrito si 
                         es aceptado o no, indicando la fecha de inicio y el horario en el que él apoyará como Auxiliar de Investigación.</p>
 
                         <p>En espera de una respuesta favorable, me suscribo de usted.</p>
@@ -370,9 +381,10 @@
                         <p class="parrafo_cuerpo"> De la manera más atenta me dirijo a usted para Solicitarle: que el estudiante 
                         <b>{{ mb_strtoupper($oficio->estudiante, 'utf-8')}}</b>,  Número de Registro Académico <b>{{$oficio->registro}} </b> 
                         y Número de Carné <b>{{$oficio->carne}}</b>, de la  CARRERA DE <b>{{mb_strtoupper($carrera, 'utf-8')}}</b> pueda realizar su 
-                        PRÁCTICA FINAL <span style="color:red;"> APLICADA </span> con una duración de 400 horas, en la empresa que usted dirige. 
+                        PRÁCTICA FINAL <span style="color:red;"> APLICADA </span> con una duración de <span style="color:red;">{{$oficio->horas}}</span> horas, 
+                        <span style="color:red;">{{$oficio->institucion}}</span>. 
                         Le agradeceré la confirmación por escrito, si es aceptado, indicando el nombre de la persona 
-                        ({{$oficio->cargo_encargado ?? "**Profesión encargado**"}}) que tendrá a su cargo supervisar 
+                        <span style="color:red;">({{$oficio->cargo_encargado ?? "**Profesión encargado**"}})</span> que tendrá a su cargo supervisar 
                         las actividades que desarrollará el estudiante mencionando, fecha de inicio y el 
                         horario. Además, le solicito indicarme si en el área de trabajo, donde se 
                         encontrará el estudiante, se cumple con lo establecido en el acuerdo Gubernativo 

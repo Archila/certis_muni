@@ -14,8 +14,8 @@ class AlterOficioTable extends Migration
     public function up()
     {
         Schema::table('oficio', function (Blueprint $table) {
-            $table->string('horas',50)->nullable();
-            $table->string('institucion', 200)->nullable();            
+            $table->integer('horas')->default(400);
+            $table->string('institucion', 200)->default("en la empresa que usted dirige");            
         });
     }
 

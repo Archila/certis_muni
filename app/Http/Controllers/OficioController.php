@@ -222,6 +222,7 @@ class OficioController extends Controller
         $oficio->semestre = $request->semestre;
         $oficio->year = $request->year;
         $oficio->tipo = $request->tipo;
+        $oficio->horas = $request->horas;
         $oficio->destinatario = $request->destinatario;
         $encabezado = (string)$request->encabezado;
         if($encabezado[-1] == ':'){ $encabezado = substr($encabezado, 0 , -1); }
@@ -247,6 +248,7 @@ class OficioController extends Controller
         else{ // Práctica aplicada 
             $oficio->puesto = $request->puesto;
             $oficio->cargo_encargado = $request->cargo_encargado;
+            $oficio->institucion = $request->institucion;
         }        
 
         $oficio->save();
