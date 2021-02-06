@@ -71,9 +71,61 @@
 
           <div class="col-12 col-md-12 col-lg-8 order-1 order-md-2">
             <h3>Requisitos</h3>
-            <h5>Por favor subir todos los documentos en formato PDF</h5>
+
+            @php $vencido=true; @endphp
+            @if($vencido) <!-- Fecha de recepción vencida -->
+            <div class="alert alert-danger" role="alert">
+              Último día de recepción de papelería: 05/02/2021 según 
+              <a href="http://www.ingenieria.cunoc.usac.edu.gt/portal/carpetas/calendarios/Calendario%20Acad%C3%A9mico%201er%20Semestre%202021.pdf" class="alert-link">calendario académico</a>.
+              del primer semestre de la División de Ciencias de la Ingeniería de CUNOC.
+            </div>
+            <table class="table table-sm table-striped">
+              <thead>
+                <tr>
+                  <th>Constancia Inscripción</th>
+                  <th>Certificación de cursos</th>
+                  <th>Planificación de actividades</th>
+                  <th>Carta solicitud y compromiso</th>
+                </tr>                
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    @empty($solicitud->ruta_constancia)
+                      <small>No hay archivo subido.</small>
+                    @else
+                    <a href="{{route('pdf.ver', ['ruta'=>$solicitud->ruta_constancia])}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i></a>
+                    @endempty
+                  </td>        
+                  <td>
+                  @empty($solicitud->ruta_certificacion)
+                    <small>No hay archivo subido.</small>
+                  @else
+                  <a href="{{route('pdf.ver', ['ruta'=>$solicitud->ruta_certificacion])}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i></a>
+                  @endempty
+                  </td> 
+                  <td>
+                    @empty($solicitud->ruta_cronograma)
+                      <small>No hay archivo subido.</small>
+                    @else
+                    <a href="{{route('pdf.ver', ['ruta'=>$solicitud->ruta_cronograma])}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i></a>
+                    @endempty
+                  </td>
+                  <td>
+                    @empty($solicitud->ruta_carta)
+                      <small>No hay archivo subido.</small>
+                    @else
+                    <a href="{{route('pdf.ver', ['ruta'=>$solicitud->ruta_carta])}}" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i></a>
+                    @endempty
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            @else <!-- Fecha de recepción NO vencida -->
+            <h5>Por favor subir todos los documentos en formato PDF.</h5>
             <small style="color:red">** Cada archivo no puede ser mayor a 2 MB **</small>
-              <div class="row mt-3"> <!-- Constancia de inscripción -->
+            <div class="row mt-3"> <!-- Constancia de inscripción -->
                 <div class="col-8 col-md-10">
                 <small class="">Constancia de inscripción en PDF</small>
                   <form method="POST" action="{{route('solicitud.requisito')}}" enctype="multipart/form-data">
@@ -98,7 +150,6 @@
                     @endempty
                   </div>
                 </div>
-                <hr>
               </div> <!-- FIN constancia de inscripción -->
 
               <div class="row mt-3"> <!-- Certificación de cursos -->
@@ -126,7 +177,6 @@
                     @endempty
                   </div>
                 </div>
-                <hr>
               </div> <!-- FIN certificación de cursos -->
 
               <div class="row mt-3"> <!-- Cronograma de actividades -->
@@ -154,7 +204,6 @@
                     @endempty
                   </div>
                 </div>
-                <hr>
               </div> <!-- FIN cronograma de actividades -->
 
               <div class="row mt-3"> <!-- Carta solicitud y compromiso -->
@@ -182,8 +231,8 @@
                     @endempty
                   </div>
                 </div>
-                <hr>
               </div> <!-- FIN carta solicitud y compromiso -->
+            @endif
           </div>
         </div>
       </div>
