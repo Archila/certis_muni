@@ -72,7 +72,7 @@
           <div class="col-12 col-md-12 col-lg-8 order-1 order-md-2">
             <h3>Requisitos</h3>
 
-            @php $vencido=true; @endphp
+            @php $vencido=false; @endphp
             @if($vencido) <!-- Fecha de recepción vencida -->
             <div class="alert alert-danger" role="alert">
               Último día de recepción de papelería: 05/02/2021 según 
