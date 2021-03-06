@@ -69,8 +69,9 @@
                         <th>Cronograma</th>
                         <th>Carta solicitud</th>
                     </thead>
-                    @foreach($solicitudes as $s) <!-- CICLO SOLICITUDES -->
-                        @foreach($estudiantes as $e)<!-- CICLO ESTUDIANTES -->
+                    <!-- 
+                    @foreach($solicitudes as $s)  CICLO SOLICITUDES 
+                        @foreach($estudiantes as $e)  CICLO ESTUDIANTES 
                             @if($s->usuario_id == $e->usuario_id)
                             <tr>
                                 <td>{{$e->nombre}} {{$e->apellido}}</td>
@@ -110,8 +111,8 @@
                                 </td>
                             </tr>
                             @endif
-                        @endforeach<!-- FIN CICLO ESTUDIANTES -->
-                    @endforeach<!-- FIN CICLO BITACORAS -->
+                        @endforeach FIN CICLO ESTUDIANTES 
+                    @endforeach FIN CICLO BITACORAS -->
                 </table>  
                 @endempty <!-- BITACORAS -->  
                 </div>
