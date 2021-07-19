@@ -56,6 +56,13 @@ class EmpresaController extends Controller
         $empresas = Empresa::select('empresa.*', 'tipo_empresa.nombre as tipo', 'empresa.id as empresa_id');
 
         $empresas ->join('tipo_empresa', 'tipo_empresa_id', '=', 'tipo_empresa.id');
+
+        $busqueda = $request->has('search')?$request->search:'';
+  
+        if ($request->has('search')) {
+          $empresas->orWhere('empresa.nombre', 'LIKE', '%' . $request->search . '%');
+          $empresas->orWhere('empresa.alias', 'LIKE', '%' . $request->search . '%');
+        }  
   
         if ($request->has('nombre')) {
           $empresas->orWhere('nombre', 'LIKE', '%' . $request->nombre . '%');
@@ -96,7 +103,7 @@ class EmpresaController extends Controller
         
   
         //return response()->json($carreras);
-        return view('empresas.index',compact(['empresas', 'btn_nuevo']));
+        return view('empresas.index',compact(['empresas', 'btn_nuevo','busqueda']));
     }
 
     /**

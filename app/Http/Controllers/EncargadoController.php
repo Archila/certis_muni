@@ -55,7 +55,19 @@ class EncargadoController extends Controller
         $encargados ->leftJoin('area_encargado', 'encargado.id', '=', 'area_encargado.encargado_id');
         $encargados ->leftJoin('area', 'area_encargado.area_id', '=', 'area.id');
         $encargados ->leftJoin('empresa', 'area.empresa_id', '=', 'empresa.id');
+
+        $busqueda = $request->has('search')?$request->search:'';
   
+        if ($request->has('search')) {
+            $encargados->orWhere('persona.nombre', 'LIKE', '%' . $request->search . '%');
+            $encargados->orWhere('persona.apellido', 'LIKE', '%' . $request->search . '%');
+            $encargados->orWhere('encargado.colegiado', 'LIKE', '%' . $request->search . '%');
+            $encargados->orWhere('encargado.profesion', 'LIKE', '%' . $request->search . '%');
+            $encargados->orWhere('area.nombre', 'LIKE', '%' . $request->search . '%');
+            $encargados->orWhere('empresa.nombre', 'LIKE', '%' . $request->search . '%');
+            $encargados->orWhere('area_encargado.puesto', 'LIKE', '%' . $request->search . '%');
+        }  
+    
         if ($request->has('nombre')) {
           $encargados->orWhere('nombre', 'LIKE', '%' . $request->nombre . '%');
         }  
@@ -84,7 +96,7 @@ class EncargadoController extends Controller
         }
   
         //return response()->json($carreras);
-        return view('encargados.index',compact(['encargados','btn_nuevo']));
+        return view('encargados.index',compact(['encargados','btn_nuevo','busqueda']));
     }
 
     /**

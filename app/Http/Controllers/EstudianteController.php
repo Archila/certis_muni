@@ -72,6 +72,8 @@ class EstudianteController extends Controller
         $estudiantes ->join('carrera', 'carrera_id', '=', 'carrera.id');
 
         $estudiantes ->join('persona', 'persona_id', '=', 'persona.id');
+
+        $busqueda = $request->has('search')?$request->search:'';
   
         if ($request->has('search')) {
           $estudiantes->orWhere('persona.nombre', 'LIKE', '%' . $request->search . '%');
@@ -128,7 +130,7 @@ class EstudianteController extends Controller
         $usuarios = User::all();
   
         //return response()->json($carreras);
-        return view('estudiantes.index',compact(['estudiantes', 'year', 'semestre','usuarios']));
+        return view('estudiantes.index',compact(['estudiantes', 'year', 'semestre','usuarios','busqueda']));
     }
 
     /**

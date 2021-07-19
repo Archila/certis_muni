@@ -34,6 +34,17 @@
         </div>
         @endIf
     </div>
+
+    <div class="row">
+        <div class="col-12">
+            <nav class="navbar navbar-light float-right">
+                <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search" name="search" value="{{$busqueda}}">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search-plus"></i></button>
+                </form>
+            </nav>
+        </div>   
+    </div>  
     
   </div>
   <div class="card-body">
