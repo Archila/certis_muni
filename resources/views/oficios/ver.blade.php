@@ -109,7 +109,17 @@
 
         <div class="row">
             
+
+
             <div class="col-md-4 pr-3"><!--Formulario-->
+
+                <div class="row">
+                    <div class="col-md-4 offset-md-8">
+                        <button type="button" class="btn btn-primary btn-sm btn-block" data-toggle="modal" data-target="#exampleModal">
+                        Cambiar empresa
+                        </button>
+                    </div>
+                </div>
                 <form class="needs-validation" method="POST" action="{{route('oficio.actualizar', $oficio->id)}}" novalidate>    
                 @method('PUT') 
                 @csrf 
@@ -414,6 +424,38 @@
             <!--Vista previa-->
         </div>
     
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cambio de empresa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="needs-validation" method="GET" action="{{route('oficio.cambiar_empresa', $oficio->id)}}">    
+                @csrf
+                <div class="modal-body">
+                    Empresa actual: {{$oficio->empresa}}
+                    <div class="row">
+                        <label for="validationCustom03">Seleccione nueva empresa</label>
+                        <select id="validationCustom07" class="form-control form-control-sm" required name="empresa_id">
+                           @foreach($empresas as $e)
+                            <option value="{{$e->id}}">{{$e->nombre}}</option>
+                            @endforeach
+                        </select>
+                    </div>      
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                </div>
+            </form>
+            </div>
+        </div>
     </div>
 
 </div>

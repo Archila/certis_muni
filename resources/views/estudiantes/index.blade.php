@@ -7,18 +7,21 @@
     <li class="breadcrumb-item active">Estudiantes</li>
 @endsection
 
-@section('alerta')
-    @if(session('creado')>0)
-    <script> alerta_create('Nuevo estudiante agregado exitosamente.')</script>
-    @endif
+@section('alerta')    
+        @if(session('creado')>0)
+        <script> alerta_create('Nuevo estudiante agregado exitosamente.')</script>
+        @endif
 
-    @if(session('eliminado')>0)
-    <script> alerta_delete('Estudiante eliminado exitosamente.')</script>
-    @endif
+        @if(session('eliminado')>0)
+        <script> alerta_delete('Estudiante eliminado exitosamente.')</script>
+        @endif
 
-    @if(session('editado')>0)
-    <script> alerta_edit('Estudiante editado exitosamente.')</script>
-    @endif
+        @if(session('editado')>0)
+        <script> alerta_edit('Estudiante editado exitosamente.')</script>
+        @endif
+        @if(session('duplicado'))
+        <script> alerta_edit('Estudiante creado exitosamente. El estudiante es duplicado')</script>
+        @endif
 @endsection
 
 @section('contenido')
@@ -67,6 +70,7 @@
             <th>Registro</th>
             <th>Carne</th>
             <th>Carrera</th>
+            <th>Usuario</th>
             <th></th>
         </tr>
     </thead>
@@ -78,6 +82,13 @@
             <td>{{$e->registro}}</td>    
             <td>{{$e->carne}}</td>    
             <td>{{$e->carrera}}</td>    
+            <td>
+            @foreach($usuarios as $u)
+                @if($e->persona_id==$u->persona_id)
+                <p>{{$u->carne}}</p>
+                @endif
+            @endforeach
+            </td>
             <td>
                 <div class="btn-group">
                     <a href="{{route('estudiante.editar', $e->estudiante_id)}}" type="button" class="btn btn-success btn-xs"><i class="fas fa-edit"></i></a>

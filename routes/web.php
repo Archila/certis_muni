@@ -116,6 +116,7 @@ Route::post('oficio/validar', 'OficioController@validar')->name('oficio.validar'
 Route::post('oficio/rechazar', 'OficioController@rechazar')->name('oficio.rechazar');
 Route::put('oficio/{id}', 'OficioController@actualizar')->name('oficio.actualizar');
 Route::delete('oficio', 'OficioController@eliminar')->name('oficio.eliminar');
+Route::get('oficio/{id}/cambiar_empresa', 'OficioController@cambiar_empresa')->name('oficio.cambiar_empresa');
 
 //Bitacora
 Route::get('bitacora', 'BitacoraController@index')->name('bitacora.index');

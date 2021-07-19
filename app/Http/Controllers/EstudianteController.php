@@ -67,7 +67,7 @@ class EstudianteController extends Controller
         $direction = 'desc';
         if($request->has('direction')) $direction = $request->direction;
   
-        $estudiantes = Estudiante::select('estudiante.*', 'carrera.nombre as carrera', 'persona.*', 'estudiante.id as estudiante_id');
+        $estudiantes = Estudiante::select('estudiante.*', 'carrera.nombre as carrera', 'persona.*', 'estudiante.id as estudiante_id', 'persona.id as persona_id');
 
         $estudiantes ->join('carrera', 'carrera_id', '=', 'carrera.id');
 
@@ -124,9 +124,11 @@ class EstudianteController extends Controller
         else {
           $estudiantes = $estudiantes->orderBy($sort_by, $direction)->get();
         }
+
+        $usuarios = User::all();
   
         //return response()->json($carreras);
-        return view('estudiantes.index',compact(['estudiantes', 'year', 'semestre']));
+        return view('estudiantes.index',compact(['estudiantes', 'year', 'semestre','usuarios']));
     }
 
     /**
@@ -175,9 +177,11 @@ class EstudianteController extends Controller
         ]);*/
 
         $estudiante = Estudiante::where('carne', '=',$request->carne)->orWhere('registro', '=',$request->registro)->first();
+        $duplicado=false;
 
-        if ($estudiante) {          
-            return redirect()->route('estudiante.crear')->with('error', 'ERROR');             
+        if ($estudiante) {  
+            $duplicado =true;        
+            //return redirect()->route('estudiante.crear')->with('error', 'ERROR');             
         }        
 
         if(Auth::user()->rol->id == 1){
@@ -198,6 +202,7 @@ class EstudianteController extends Controller
 
         $username = $solonombre . ' ' . $soloapellido;
         $ultimos_digitos=substr($request->registro, -3);
+
         $clave = strtolower($solonombre).strtolower($soloapellido).$ultimos_digitos;
         
         $persona = new Persona();
@@ -219,6 +224,7 @@ class EstudianteController extends Controller
         $estudiante->persona_id = $persona->id;
         $estudiante->carrera_id = $request->carrera_id;
         $estudiante->usuario_supervisor = $usuario_supervisor;
+        $estudiante->duplicado = $duplicado;
         $estudiante->save();
         
         //usuario con rol de estudiante
@@ -226,12 +232,16 @@ class EstudianteController extends Controller
         $usuario->name=$username;
         $usuario->email=$request->correo;
         $usuario->password=bcrypt($clave);
-        $usuario->carne = $request->registro;
+        if($duplicado){
+            $usuario->carne = $request->registro.'_2';
+        } else {
+            $usuario->carne = $request->registro;
+        }        
         $usuario->persona_id = $persona->id;
         $usuario->rol_id = 2;
         $usuario->save();
 
-        return redirect()->route('estudiante.index')->with('creado', $estudiante->id);   
+        return redirect()->route('estudiante.index')->with(['creado'=>$estudiante->id, 'duplicado'=>$duplicado]);   
     }
 
     /**

@@ -193,7 +193,9 @@ class OficioController extends Controller
         $year = date('Y');
         $no_oficio .= '-'.(string)$year ;
 
-        return view('oficios.ver',compact(['oficio', 'punto', 'supervisor', 'carrera', 'no_oficio', 'fecha', 'fecha_solicitud']));    
+        $empresas = Empresa::all();
+
+        return view('oficios.ver',compact(['oficio', 'punto', 'supervisor', 'carrera', 'no_oficio', 'fecha', 'fecha_solicitud','empresas']));    
     }
 
     /**
@@ -433,5 +435,27 @@ class OficioController extends Controller
         $oficio->save();
         
         return redirect()->route('practica.index');
+    }
+
+    public function cambiar_empresa($id, Request $request)
+    {
+        Gate::authorize('haveaccess', '{"roles":[ 1, 3, 4, 5, 6, 7 ]}' );
+        
+        $oficio = Oficio::findOrFail($id);
+
+        if(Auth::user()->rol->id == 2){        
+            if(Auth::user()->id != $oficio->usuario_id){abort(403);}
+        }
+
+        if($oficio->aprobado == 1){abort(403);}
+
+        $empresa = Empresa::findOrFail($request->empresa_id);
+
+        $oficio->empresa = $empresa->nombre;
+        $oficio->direccion = $empresa->direccion;
+        $oficio->ubicacion = $empresa->ubicacion;
+        $oficio->save();
+
+        return redirect()->route('oficio.ver', $oficio->id);   
     }
 }
