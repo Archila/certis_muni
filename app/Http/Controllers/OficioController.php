@@ -200,9 +200,6 @@ class OficioController extends Controller
         $year = date('Y');
         $no_oficio .= '-'.(string)$year ;
 
-        $configuracion->valor = $configuracion->valor+1;
-        $configuracion->save();
-
         $empresas = Empresa::all();
 
         return view('oficios.ver',compact(['oficio', 'punto', 'supervisor', 'carrera', 'no_oficio', 'fecha', 'fecha_solicitud','empresas']));    
@@ -306,7 +303,7 @@ class OficioController extends Controller
         elseif($carrera_id == 4){$no_oficio .= 'IMI No. ';}
         elseif($carrera_id == 5 ){$no_oficio .= 'IS No. ';}
 
-        $oficios_existentes = Oficio::select('oficio.*', 'carrera.id as carrera_id');
+        /*$oficios_existentes = Oficio::select('oficio.*', 'carrera.id as carrera_id');
         $oficios_existentes = $oficios_existentes->join('users', 'oficio.usuario_id', '=', 'users.id');
         $oficios_existentes = $oficios_existentes->join('persona', 'users.persona_id', '=', 'persona.id');
         $oficios_existentes = $oficios_existentes->join('estudiante', 'persona.id', '=', 'estudiante.persona_id');
@@ -314,7 +311,12 @@ class OficioController extends Controller
         $oficios_existentes =  $oficios_existentes->where('carrera.id', $carrera_id);
         $oficios_existentes =  $oficios_existentes->where('oficio.semestre', $semestre);
         $oficios_existentes =  $oficios_existentes->where('oficio.year', $year);
-        $oficios_existentes =  $oficios_existentes->whereNotNull('oficio.no_oficio')->count();
+        $oficios_existentes =  $oficios_existentes->whereNotNull('oficio.no_oficio')->count();*/
+
+        $configuracion = Configuracion::where('nombre','=','correlativo_oficio');
+        $configuracion = $configuracion->where('tipo','=',$carrera_id)->get()->first();
+
+        $oficios_existentes = $configuracion->valor;
 
         if($oficios_existentes<9){$no_oficio .= '00'; $no_oficio .= (string)($oficios_existentes+1);}
         else {$no_oficio .= '0'; $no_oficio .= (string)($oficios_existentes+1);}
@@ -330,6 +332,9 @@ class OficioController extends Controller
         }                
         $oficio->aprobado = 1;
         $oficio->save();
+        
+        $configuracion->valor = $configuracion->valor+1;
+        $configuracion->save();
 
         return redirect()->route('practica.index');  
 
