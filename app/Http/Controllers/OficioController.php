@@ -7,6 +7,7 @@ use App\Models\Empresa;
 use App\Models\Estudiante;
 use App\Models\Carrera;
 use App\Models\Supervisor;
+use App\Models\Configuracion;
 use Illuminate\Http\Request;
 
 use Carbon\Carbon;
@@ -177,6 +178,7 @@ class OficioController extends Controller
         $semestre = 1;
         if(date('M')>6){$semestre = 2;}
 
+        /*
         $oficios_existentes = Oficio::select('oficio.*', 'carrera.id as carrera_id');
         $oficios_existentes = $oficios_existentes->join('users', 'oficio.usuario_id', '=', 'users.id');
         $oficios_existentes = $oficios_existentes->join('persona', 'users.persona_id', '=', 'persona.id');
@@ -185,13 +187,21 @@ class OficioController extends Controller
         $oficios_existentes =  $oficios_existentes->where('carrera.id', $carrera_id);
         $oficios_existentes =  $oficios_existentes->where('oficio.semestre', $semestre);
         $oficios_existentes =  $oficios_existentes->where('oficio.year', $year);
-        $oficios_existentes =  $oficios_existentes->whereNotNull('oficio.no_oficio')->count();
+        $oficios_existentes =  $oficios_existentes->whereNotNull('oficio.no_oficio')->count();  */
+
+        $configuracion = Configuracion::where('nombre','=','correlativo_oficio');
+        $configuracion = $configuracion->where('tipo','=',$carrera_id)->get()->first();
+
+        $oficios_existentes = $configuracion->valor;
 
         if($oficios_existentes<9){$no_oficio .= '00'; $no_oficio .= (string)($oficios_existentes+1);}
         else {$no_oficio .= '0'; $no_oficio .= (string)($oficios_existentes+1);}
 
         $year = date('Y');
         $no_oficio .= '-'.(string)$year ;
+
+        $configuracion->valor = $configuracion->valor+1;
+        $configuracion->save();
 
         $empresas = Empresa::all();
 

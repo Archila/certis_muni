@@ -4,7 +4,7 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-    <li class="breadcrumb-item active">Empresas</li>
+    <li class="breadcrumb-item active">Encargados</li>
 @endsection
 
 @section('alerta')

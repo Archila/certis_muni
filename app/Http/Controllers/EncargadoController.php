@@ -139,6 +139,7 @@ class EncargadoController extends Controller
             $encargado = new Encargado();
             $encargado->colegiado = $request->colegiado;
             $encargado->profesion = $request->profesion;
+            $encargado->encabezado = $request->encabezado;
             $encargado->persona_id = $persona->id;
             $encargado->usuario_id = Auth::user()->id;
             $encargado->save();
@@ -217,9 +218,19 @@ class EncargadoController extends Controller
      * @param  \App\Encargado  $encargado
      * @return \Illuminate\Http\Response
      */
-    public function editar(Encargado $encargado)
+    public function editar($id, Request $request)
     {
         Gate::authorize('haveaccess', $this->roles_gate );
+
+        $encargado = Encargado::select('encargado.*', 'encargado.id as encargado_id', 'persona.*', 'persona.id as persona_id');
+        $encargado ->join('persona', 'persona_id', '=', 'persona.id');
+
+        $encargado = $encargado->where('encargado.id','=',$id);
+
+        $encargado = $encargado->get()->first();
+
+        return view('encargados.modificar', compact(['encargado']));
+
     }
 
     /**
@@ -229,9 +240,24 @@ class EncargadoController extends Controller
      * @param  \App\Encargado  $encargado
      * @return \Illuminate\Http\Response
      */
-    public function actualizar(Request $request)
+    public function actualizar($id, Request $request)
     {
         Gate::authorize('haveaccess', $this->roles_gate );
+
+        $persona = Persona::findOrFail($request->persona_id);
+        $persona->nombre = $request->nombre;
+        $persona->apellido = $request->apellido;
+        $persona->telefono = $request->telefono;
+        $persona->correo = $request->correo;
+        $persona->save();
+
+        $encargado = Encargado::findOrFail($id);;
+        $encargado->colegiado = $request->colegiado;
+        $encargado->profesion = $request->profesion;
+        $encargado->encabezado = $request->encabezado;
+        $encargado->save();
+
+        return redirect()->route('encargado.index')->with('editado', $id);   
     }
 
     /**
