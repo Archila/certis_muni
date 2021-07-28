@@ -14,6 +14,8 @@ use App\Models\AreaEncargado;
 use App\Models\Estudiante;
 use Illuminate\Http\Request;
 
+use App\Models\Configuracion;
+
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\Gate;
@@ -232,15 +234,10 @@ class BitacoraController extends Controller
         elseif($estudiante->carrera_id == 4){$codigo .= 'BPFIMI-';}
         elseif($estudiante->carrera_id == 5 ){$codigo .= 'BPFIS-';}
 
-        $bitacoras_validas = Bitacora::select('bitacora.*', 'carrera.id as carrera_id');
-        $bitacoras_validas = $bitacoras_validas->join('oficio', 'bitacora.oficio_id', '=', 'oficio.id');
-        $bitacoras_validas = $bitacoras_validas->join('users', 'oficio.usuario_id', '=', 'users.id');
-        $bitacoras_validas = $bitacoras_validas->join('persona', 'users.persona_id', '=', 'persona.id');
-        $bitacoras_validas = $bitacoras_validas->join('estudiante', 'persona.id', '=', 'estudiante.persona_id');
-        $bitacoras_validas = $bitacoras_validas->join('carrera', 'estudiante.carrera_id', '=', 'carrera.id');
-        $bitacoras_validas =  $bitacoras_validas->where('oficio.semestre', $semestre);
-        $bitacoras_validas =  $bitacoras_validas->where('oficio.year', $year);
-        $bitacoras_validas =  $bitacoras_validas->where('carrera.id', $estudiante->carrera_id)->count();
+        $configuracion = Configuracion::where('nombre','=','correlativo_bitacora');
+        $configuracion = $configuracion->where('tipo','=',$estudiante->carrera_id)->get()->first();
+
+        $bitacoras_validas = $configuracion->valor;
 
         $mes = date('m');
         $year= date('Y');
@@ -254,6 +251,9 @@ class BitacoraController extends Controller
         $bitacora->encargado_id = $encargado_id;
         $bitacora->oficio_id = $oficio->id;
         $bitacora->save();
+
+        $configuracion->valor = $configuracion->valor+1;
+        $configuracion->save();
 
         return redirect()->route('practica.index')->with('creado', $bitacora->id);  
 
@@ -388,55 +388,6 @@ class BitacoraController extends Controller
 
     }
 
-    public function oficio($id)
-    {
-        Gate::authorize('haveaccess', '{"roles":[ 1, 3, 4, 5, 6, 7 ]}' );
-
-        $bitacora = Bitacora::findOrFail($id);
-        $fecha = date('Y-m-d');
-        
-        $estudiante = Estudiante::select('estudiante.*', 'persona.*', 'carrera.nombre as carrera', 'carrera.id as carrera_id');
-        $estudiante = $estudiante->join('persona', 'persona_id', '=', 'persona.id');
-        $estudiante = $estudiante->join('carrera', 'carrera_id', '=', 'carrera.id');
-        $estudiante = $estudiante->join('users', 'persona.id', '=', 'users.persona_id');
-        $estudiante = $estudiante->where('users.id',$bitacora->usuario_id)->first();
-        
-        if(Auth::user()->rol->id != 1){        
-            if(Auth::user()->id != $estudiante->usuario_supervisor){abort(403);}
-        }
-        
-        $oficio = 'EPS-';
-
-        if($estudiante->carrera_id == 1){$oficio .= 'IC No. ';}
-        elseif($estudiante->carrera_id == 2){$oficio .= 'IM No. ';}
-        elseif($estudiante->carrera_id == 3){$oficio .= 'II No. ';}
-        elseif($estudiante->carrera_id == 4){$oficio .= 'IMI No. ';}
-        elseif($estudiante->carrera_id == 5 ){$oficio .= 'IS No. ';}
-
-        $oficios_existentes = Bitacora::select('bitacora.*', 'carrera.id as carrera_id');
-        $oficios_existentes = $oficios_existentes->join('users', 'bitacora.usuario_id', '=', 'users.id');
-        $oficios_existentes = $oficios_existentes->join('persona', 'users.persona_id', '=', 'persona.id');
-        $oficios_existentes = $oficios_existentes->join('estudiante', 'persona.id', '=', 'estudiante.persona_id');
-        $oficios_existentes = $oficios_existentes->join('carrera', 'estudiante.carrera_id', '=', 'carrera.id');
-        $oficios_existentes =  $oficios_existentes->where('carrera.id', $estudiante->carrera_id);
-        
-        $oficios_existentes =  $oficios_existentes->where('bitacora.oficio', 1)->count();
-
-        if($oficios_existentes<9){$oficio .= '00'; $oficio .= (string)($oficios_existentes+1);}
-        else {$oficio .= '0'; $oficio .= (string)($oficios_existentes+1);}
-
-        $year = date('Y');
-
-        $oficio .= '-'.(string)$year ;
-
-        $bitacora->oficio = true;
-        $bitacora->no_oficio = $oficio;
-        $bitacora->f_oficio = $fecha;  
-        $bitacora->save();
-
-        return redirect()->route('bitacora.ver', $id)->with('oficio', true);    
-    }
-
     public function validar($id)
     {
         Gate::authorize('haveaccess', '{"roles":[ 1, 3, 4, 5, 6, 7 ]}' );
@@ -464,15 +415,10 @@ class BitacoraController extends Controller
         elseif($estudiante->carrera_id == 4){$codigo .= 'BPFIMI-';}
         elseif($estudiante->carrera_id == 5 ){$codigo .= 'BPFIS-';}
 
-        $bitacoras_validas = Bitacora::select('bitacora.*', 'carrera.id as carrera_id');
-        $bitacoras_validas = $bitacoras_validas->join('users', 'bitacora.usuario_id', '=', 'users.id');
-        $bitacoras_validas = $bitacoras_validas->join('persona', 'users.persona_id', '=', 'persona.id');
-        $bitacoras_validas = $bitacoras_validas->join('estudiante', 'persona.id', '=', 'estudiante.persona_id');
-        $bitacoras_validas = $bitacoras_validas->join('carrera', 'estudiante.carrera_id', '=', 'carrera.id');
-        $bitacoras_validas =  $bitacoras_validas->where('carrera.id', $estudiante->carrera_id);
-        $bitacoras_validas =  $bitacoras_validas->where('oficio.semestre', $semestre);
-        $bitacoras_validas =  $bitacoras_validas->where('oficio.year', $year);
-        $bitacoras_validas =  $bitacoras_validas->where('bitacora.valida', 1)->count();
+        $configuracion = Configuracion::where('nombre','=','correlativo_bitacora');
+        $configuracion = $configuracion->where('tipo','=',$estudiante->carrera_id)->get()->first();
+
+        $bitacoras_validas = $configuracion->valor;
 
         $mes = date('m');
         $year= date('Y');
@@ -484,6 +430,9 @@ class BitacoraController extends Controller
         $bitacora->f_aprobacion = $fecha;  
         $bitacora->codigo = $codigo;      
         $bitacora->save();        
+
+        $configuracion->valor = $configuracion->valor+1;
+        $configuracion->save();
         
         return redirect()->route('bitacora.ver', $id)->with('valido', true);    
     }

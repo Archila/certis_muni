@@ -134,7 +134,6 @@ Route::put('bitacora/puesto/{id}', 'BitacoraController@puesto')->name('bitacora.
 Route::delete('bitacora', 'BitacoraController@eliminar')->name('bitacora.eliminar');
 Route::get('bitacora/{id}/folio/crear', 'BitacoraController@crear_folio')->name('bitacora.crear_folio');
 Route::get('bitacora/{id}/pdf', 'BitacoraController@pdf')->name('bitacora.pdf');
-Route::post('bitacora/oficio/{id}', 'BitacoraController@oficio')->name('bitacora.oficio');
 Route::post('bitacora/validar/{id}', 'BitacoraController@validar')->name('bitacora.validar');
 Route::get('bitacora/{id}/revisar', 'BitacoraController@revisar')->name('bitacora.revisar');
 Route::post('bitacora/{id}/revision', 'BitacoraController@revision')->name('bitacora.revision');
