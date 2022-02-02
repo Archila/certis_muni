@@ -77,28 +77,50 @@ class PracticaController extends Controller
                 Session::put('semestre', $semestre);
             } else {
                 $semestre = Session::get('semestre');
-            }
-
-            $estudiantes = Estudiante::select('estudiante.*', 'carrera.nombre as carrera', 'persona.*', 'estudiante.id as estudiante_id',
-            'users.id as usuario_id');
-            $estudiantes ->join('carrera', 'carrera_id', '=', 'carrera.id');
-            $estudiantes ->join('persona', 'persona_id', '=', 'persona.id');
-            $estudiantes ->join('users', 'persona.id', '=', 'users.persona_id');
+            }        
+            
+            $oficios = Oficio::select('oficio.*','persona.nombre', 'persona.apellido','persona.correo', 'estudiante.registro');
+            $oficios ->join('users', 'oficio.usuario_id', '=', 'users.id');
+            $oficios ->join('persona', 'users.persona_id', '=', 'persona.id');
+            $oficios ->join('estudiante', 'persona.id', '=', 'estudiante.persona_id');
             if(Auth::user()->rol->id != 1){
-                $estudiantes = $estudiantes->where('usuario_supervisor',Auth::user()->id);
+                $oficios = $oficios->where('estudiante.usuario_supervisor',Auth::user()->id);
             }
-            $estudiantes = $estudiantes->where('estudiante.year',$year);
-            $estudiantes = $estudiantes->where('estudiante.semestre',$semestre);
-            $estudiantes = $estudiantes->orderBy('estudiante.created_at', 'asc')->get();
+            $oficios = $oficios->where('estudiante.year',$year);
+            $oficios = $oficios->where('estudiante.semestre',$semestre);
+            $oficios = $oficios->orderBy('estudiante.registro', 'asc')->get();
 
-            $bitacoras = Bitacora::all();
-            $oficios = Oficio::orderBy('updated_at','desc')->get();
-            $solicitudes = Solicitud::all();
+            $bitacoras = Bitacora::select('bitacora.codigo','persona.nombre', 'persona.apellido','persona.correo', 'estudiante.registro',
+                'bitacora.id as bitacora_id', 'oficio.id as oficio_id', 'oficio.tipo');
+            $bitacoras ->join('oficio', 'bitacora.oficio_id', '=', 'oficio.id');
+            $bitacoras ->join('users', 'oficio.usuario_id', '=', 'users.id');
+            $bitacoras ->join('persona', 'users.persona_id', '=', 'persona.id');
+            $bitacoras ->join('estudiante', 'persona.id', '=', 'estudiante.persona_id');
+            if(Auth::user()->rol->id != 1){
+                $bitacoras = $bitacoras->where('estudiante.usuario_supervisor',Auth::user()->id);
+            }
+            $bitacoras = $bitacoras->where('estudiante.year',$year);
+            $bitacoras = $bitacoras->where('estudiante.semestre',$semestre);
+            $bitacoras = $bitacoras->orderBy('estudiante.registro', 'asc')->get();
+
+
+            $solicitudes = Solicitud::select('solicitud.*','persona.nombre', 'persona.apellido','persona.correo', 'estudiante.registro');
+            $solicitudes ->join('users', 'solicitud.usuario_id', '=', 'users.id');
+            $solicitudes ->join('persona', 'users.persona_id', '=', 'persona.id');
+            $solicitudes ->join('estudiante', 'persona.id', '=', 'estudiante.persona_id');
+            if(Auth::user()->rol->id != 1){
+                $solicitudes = $solicitudes->where('estudiante.usuario_supervisor',Auth::user()->id);
+            }
+            $solicitudes = $solicitudes->where('estudiante.year',$year);
+            $solicitudes = $solicitudes->where('estudiante.semestre',$semestre);
+            $solicitudes = $solicitudes->orderBy('estudiante.registro', 'asc')->get();
+
+            //return dd($solicitudes);
             if($bitacoras->count()== 0){$bitacoras = null;}
             if($oficios->count()== 0){$oficios = null;}
             if($solicitudes->count()== 0){$solicitudes = null;}
 
-            return view('practicas.index',compact(['solicitudes','bitacoras','oficios', 'estudiantes', 'year', 'semestre']));    
+            return view('practicas.index',compact(['solicitudes','bitacoras','oficios','year', 'semestre']));    
         }
     }
 
