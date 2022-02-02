@@ -289,7 +289,9 @@
             <!-- /.col -->
         </div> 
     </div>
-@endsection
+
+</div>
+    @endsection
 
 @section('page_script')
 <!-- page script -->
