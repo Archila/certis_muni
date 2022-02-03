@@ -190,6 +190,8 @@ class OficioController extends Controller
         $oficios_existentes =  $oficios_existentes->whereNotNull('oficio.no_oficio')->count();  */
 
         $configuracion = Configuracion::where('nombre','=','correlativo_oficio');
+        $configuracion = $configuracion->where('semestre','=',$semestre);
+        $configuracion = $configuracion->where('year','=',$year);
         $configuracion = $configuracion->where('tipo','=',$carrera_id)->get()->first();
 
         $oficios_existentes = $configuracion->valor;
@@ -314,6 +316,8 @@ class OficioController extends Controller
         $oficios_existentes =  $oficios_existentes->whereNotNull('oficio.no_oficio')->count();*/
 
         $configuracion = Configuracion::where('nombre','=','correlativo_oficio');
+        $configuracion = $configuracion->where('semestre','=',$semestre);
+        $configuracion = $configuracion->where('year','=',$year);
         $configuracion = $configuracion->where('tipo','=',$carrera_id)->get()->first();
 
         $oficios_existentes = $configuracion->valor;

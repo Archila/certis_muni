@@ -235,6 +235,8 @@ class BitacoraController extends Controller
         elseif($estudiante->carrera_id == 5 ){$codigo .= 'BPFIS-';}
 
         $configuracion = Configuracion::where('nombre','=','correlativo_bitacora');
+        $configuracion = $configuracion->where('semestre','=',$semestre);
+        $configuracion = $configuracion->where('year','=',$year);
         $configuracion = $configuracion->where('tipo','=',$estudiante->carrera_id)->get()->first();
 
         $bitacoras_validas = $configuracion->valor;
@@ -416,6 +418,8 @@ class BitacoraController extends Controller
         elseif($estudiante->carrera_id == 5 ){$codigo .= 'BPFIS-';}
 
         $configuracion = Configuracion::where('nombre','=','correlativo_bitacora');
+        $configuracion = $configuracion->where('semestre','=',$semestre);
+        $configuracion = $configuracion->where('year','=',$year);
         $configuracion = $configuracion->where('tipo','=',$estudiante->carrera_id)->get()->first();
 
         $bitacoras_validas = $configuracion->valor;
