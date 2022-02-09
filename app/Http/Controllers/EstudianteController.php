@@ -178,11 +178,15 @@ class EstudianteController extends Controller
             'registro' => 'required|unique:estudiante,registro',
         ]);*/
 
-        $estudiante = Estudiante::where('carne', '=',$request->carne)->orWhere('registro', '=',$request->registro)->first();
+        $estudiante = Estudiante::where('carne', '=',$request->carne)->orWhere('registro', '=',$request->registro)->get();
         $duplicado=false;
+        $cantidad_duplicado = '_2';
 
-        if ($estudiante) {  
-            $duplicado =true;        
+        if (count($estudiante)>0) {  
+            //return dd(count($estudiante));
+            $duplicado =true; 
+            $temp = count($estudiante)+1;
+            $cantidad_duplicado = '_'.$temp;                   
             //return redirect()->route('estudiante.crear')->with('error', 'ERROR');             
         }        
 
@@ -235,7 +239,7 @@ class EstudianteController extends Controller
         $usuario->email=$request->correo;
         $usuario->password=bcrypt($clave);
         if($duplicado){
-            $usuario->carne = $request->registro.'_2';
+            $usuario->carne = $request->registro.$cantidad_duplicado;
         } else {
             $usuario->carne = $request->registro;
         }        
