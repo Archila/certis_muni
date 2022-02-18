@@ -473,6 +473,7 @@ class OficioController extends Controller
         $oficio->empresa = $empresa->nombre;
         $oficio->direccion = $empresa->direccion;
         $oficio->ubicacion = $empresa->ubicacion;
+        $oficio->empresa_id = $empresa->id;
         $oficio->save();
 
         return redirect()->route('oficio.ver', $oficio->id);   
