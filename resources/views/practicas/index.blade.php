@@ -29,8 +29,7 @@
         <a href="{{route('practica.index', ['year'=>2021, 'semestre'=>2])}}" class="dropdown-item">Semestre 2 - 2021</a>        
         <a href="{{route('practica.index', ['year'=>2022, 'semestre'=>1])}}" class="dropdown-item">Semestre 1 - 2022</a>      
         <a href="{{route('practica.index', ['year'=>2022, 'semestre'=>2])}}" class="dropdown-item">Semestre 2 - 2022</a>      
-        <a href="{{route('practica.index', ['year'=>2023, 'semestre'=>1])}}" class="dropdown-item">Semestre 1 - 2023</a>      
-        <a href="{{route('practica.index', ['year'=>2023, 'semestre'=>2])}}" class="dropdown-item">Semestre 2 - 2023</a>
+        <a href="{{route('practica.index', ['year'=>2023, 'semestre'=>1])}}" class="dropdown-item">Semestre 1 - 2023</a>   
     </div>
   </li>
 </ul>
