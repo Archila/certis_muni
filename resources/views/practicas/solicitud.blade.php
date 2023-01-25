@@ -45,7 +45,6 @@
                   <option value="2021">2021</option>
                   <option value="2022">2022</option>
                   <option value="2023">2023</option>
-                  <option value="2024">2024</option>
               </select>             
             </div>
             <div class="invalid-feedback">
@@ -91,17 +90,27 @@
     <div class="form-row mb-3">
       <div class="col-md-12">
         <label for="empresa_id">Empresa o institución</label>
-        <div class="input-group input-group">
-          <select id="empresa_id" class="form-control" required name="empresa_id"  >
-              @forelse ($empresas as $em)
-                <option value="{{$em->id}}">{{$em->nombre}} ({{$em->alias}}) {{$em->ubicacion}}</option>
-              @empty
-                <option disabled>No hay datos disponibles, por favor cree una empresa o institución -></option>
-              @endforelse                
-          </select>
-          <span class="input-group-append">
-            <a href="{{route('empresa.crear')}}"><button type="button" class="btn btn-success"><i class="fas fa-plus"></i></button></a> 
-          </span>
+        <div class="">
+          <div class="row">
+            <div class="col-2 input-group input-group">
+              <input class="form-control" type="text" id="buscador_empresa" placeholder="Buscador...">
+              <span class="input-group-append">
+                <a><button onclick="buscarEmpresas()" type="button" class="btn btn-success"><i class="fas fa-search"></i></button></a> 
+              </span>
+            </div>
+            <div class="col-10 input-group input-group">
+              <select id="empresa_id" class="form-control" required name="empresa_id"  >
+                @forelse ($empresas as $em)
+                  <option value="{{$em->id}}">{{$em->nombre}} ({{$em->alias}}) {{$em->ubicacion}}</option>
+                @empty
+                  <option disabled>No hay datos disponibles, por favor cree una empresa o institución -></option>
+                @endforelse                
+              </select>      
+              <span class="input-group-append">
+                <a href="{{route('empresa.crear')}}"><button type="button" class="btn btn-success"><i class="fas fa-plus"></i></button></a> 
+              </span>
+            </div>
+          </div>    
         </div>
         <div class="invalid-feedback">
         Por favor seleccione una empresa/institución o cree una.
@@ -246,6 +255,24 @@ $( document ).ready(function() {
     tipoPractica();
 
 });
+
+function buscarEmpresas(){  
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+        }
+    });
+    jQuery.ajax({
+        url: "{{ route('api.empresas') }}",
+        method: 'post',
+        data: {
+            _token: "{{ csrf_token() }}",
+            buscador: jQuery('#buscador_empresa').val(),            
+        },
+        success: function(result){
+            $('#empresa_id').html(result['msg']);
+        }});    
+}
 
 </script>
 @endsection

@@ -47,7 +47,7 @@ class EmpresaController extends Controller
         $many = 5;
         if($request->has('many')) $many = $request->many;
   
-        $sort_by = 'empresa.created_at';
+        $sort_by = 'empresa.nombre';
         if($request->has('sort_by')) $sort_by = 'empresa.'.$request->sort_by;
   
         $direction = 'desc';

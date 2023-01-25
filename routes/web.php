@@ -176,6 +176,7 @@ Route::post('api/encargados_area', 'ApiController@encargados_area')->name('api.e
 Route::post('api/encargados', 'ApiController@encargados')->name('api.encargados');
 Route::post('api/crear_area', 'ApiController@crear_area')->name('api.crear_area');
 Route::post('api/crear_encargado', 'ApiController@crear_encargado')->name('api.crear_encargado');
+Route::post('api/empresas', 'ApiController@empresas')->name('api.empresas');
 
 //Solicitud
 Route::post('solicitud/requisito', 'SolicitudController@actualizar_requisito')->name('solicitud.requisito');

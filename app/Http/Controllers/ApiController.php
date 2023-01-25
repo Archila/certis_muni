@@ -8,6 +8,7 @@ use App\Models\Persona;
 use App\Models\Encargado;
 use App\Models\Area;
 use App\Models\AreaEncargado;
+use App\Models\Empresa;
 
 use Illuminate\Http\Request;
 
@@ -53,6 +54,21 @@ class ApiController extends Controller
         
         return response()->json(['success'=>true, 'msg'=>$msg]);
     }
+
+    public function empresas(Request $request)
+    {
+        //Gate::authorize('haveaccess', '{"roles":[ 1, 3, 4, 5, 6, 7 ]}' );
+        $empresas = Empresa::where('empresa.nombre','like','%'.$request->buscador.'%');
+        $empresas = $empresas->orderBy('nombre','asc')->get();
+
+        $msg = '';
+        foreach ($empresas as $e){
+            $msg .= '<option value="'.$e->id.'">'.$e->nombre.'</option>';
+        }
+        
+        return response()->json(['success'=>true, 'msg'=>$msg, 'empresas'=>$empresas]);
+    }
+
 
     public function areas_empresa(Request $request)
     {
