@@ -63,7 +63,7 @@ class UsuarioController extends Controller
         if($request->clave1 == $request->clave2){
             $usuario = User::where('id','=',Auth::user()->id)->first();
             $clave=bcrypt($request->clave);
-            $usuario->password = $clave1;
+            $usuario->password = $clave;
             $usuario->save();
             return view('usuarios.exito');
         }

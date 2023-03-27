@@ -21,26 +21,28 @@
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
-  <div class="login-logo">
-    <a href="../../index2.html"><b>Prácticas CUNOC</b></a>
+  <div class="row">
+    <div class="col-md-12" >
+      <img class="img-fluid" style="height: 9em" src="{{URL::asset('dist/img/logo_muni.png')}}" />
+    </div>
   </div>
+  <br>
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
-      <p class="login-box-msg">Por favor inicie sesión.</p>
 
       <form method="POST" action="{{ route('login') }}">
       @csrf
         <div class="input-group mb-3">
-        <input id="carne" type="text" placeholder="Registro (201700000)" class="form-control @error('carne') is-invalid @enderror" name="carne" value="{{ old('email') }}" required autocomplete="email" autofocus>
+        <input id="username" type="text" placeholder="Usuario" class="form-control @error('username') is-invalid @enderror" name="username" required autofocus>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
             </div>
           </div>
-            @error('carne')
+            @error('username')
                 <span class="invalid-feedback" role="alert">
-                    <strong>Error en correo o contraseña</strong>
+                    <strong>Error en usuario o contraseña</strong>
                 </span>
             @enderror
         </div>
@@ -88,3 +90,4 @@
 
 </body>
 </html>
+

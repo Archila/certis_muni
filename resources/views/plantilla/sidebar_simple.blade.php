@@ -43,7 +43,7 @@
             </a>
           </li>
 
-          @if(Auth::user()->mostrarTabla('practica'))
+          <!-- @if(Auth::user()->mostrarTabla('practica'))
             @if($sidebar<=69 && $sidebar>=60) @php $bit='active'; $menu6='menu-open' @endphp  @endif            
             <li class="nav-item">            
               <a href="{{route('practica.index')}}" class="nav-link {{$bit ?? ''}}">
@@ -53,9 +53,9 @@
                 </p>
               </a>            
             </li>    
-          @endIf
+          @endIf -->
           
-          @if(Auth::user()->mostrarTabla('estudiante'))
+          <!-- @if(Auth::user()->mostrarTabla('estudiante'))
             @if($sidebar<=39 && $sidebar>=30) @php $est='active'; $menu3='menu-open' @endphp  @endif
             <li class="nav-item">            
               <a href="{{route('estudiante.index')}}" class="nav-link {{$est ?? ''}}">
@@ -65,9 +65,9 @@
                 </p>
               </a>            
             </li>   
-          @endIf  
+          @endIf   -->
 
-          @if(Auth::user()->mostrarTabla('empresa'))
+          <!-- @if(Auth::user()->mostrarTabla('empresa'))
             @if($sidebar<=49 && $sidebar>=40) @php $emp='active'; $menu4='menu-open' @endphp  @endif
             <li class="nav-item">            
               <a href="{{route('empresa.index')}}" class="nav-link {{$emp ?? ''}}">
@@ -77,9 +77,9 @@
                 </p>
               </a>            
             </li>       
-          @endIf 
+          @endIf  -->
           
-          @if(Auth::user()->mostrarTabla('encargado'))
+          <!-- @if(Auth::user()->mostrarTabla('encargado'))
             @if($sidebar<=59 && $sidebar>=50) @php $enc='active'; $menu5='menu-open' @endphp  @endif
             <li class="nav-item">            
               <a href="{{route('encargado.index')}}" class="nav-link {{$enc ?? ''}}">
@@ -89,11 +89,11 @@
                 </p>
               </a>            
             </li>     
-          @endIf
+          @endIf -->
           
-          @if(Auth::user()->mostrarTabla('admin'))
+          <!-- @if(Auth::user()->mostrarTabla('admin'))
           <li class="nav-header">Administración</li>
-          @endIf
+          @endIf -->
 
           @if(Auth::user()->mostrarTabla('notificacion'))
             <!-- 
@@ -108,7 +108,7 @@
             </li>    
             -->      
           @endIf
-
+<!-- 
           @if(Auth::user()->mostrarTabla('carrera'))
             @if($sidebar<=79 && $sidebar>=70) @php $car='active'; $menu7='menu-open' @endphp  @endif
             <li class="nav-item">            
@@ -119,9 +119,9 @@
                 </p>
               </a>            
             </li>       
-          @endIf  
+          @endIf   -->
 
-          @if(Auth::user()->mostrarTabla('supervisor'))
+          <!-- @if(Auth::user()->mostrarTabla('supervisor'))
             @if($sidebar<=89 && $sidebar>=80) @php $sup='active'; $menu8='menu-open' @endphp  @endif
             <li class="nav-item">            
               <a href="{{route('supervisor.index')}}" class="nav-link {{$sup ?? ''}}">
@@ -131,9 +131,9 @@
                 </p>
               </a>            
             </li>
-          @endIf
+          @endIf -->
 
-          @if(Auth::user()->mostrarTabla('rol'))
+          <!-- @if(Auth::user()->mostrarTabla('rol'))
             @if($sidebar<=99 && $sidebar>=90) @php $rol='active'; $menu9='menu-open' @endphp  @endif
             <li class="nav-item">            
               <a href="{{route('rol.index')}}" class="nav-link {{$rol ?? ''}}">
@@ -143,9 +143,9 @@
                 </p>
               </a>            
             </li>
-          @endIf
+          @endIf -->
 
-          @if(Auth::user()->mostrarTabla('users'))
+          <!-- @if(Auth::user()->mostrarTabla('users'))
             @if($sidebar<=29 && $sidebar>=20) @php $usuario='active'; $menu2='menu-open' @endphp  @endif
             <li class="nav-item">            
               <a href="{{route('rol.index')}}" class="nav-link {{$usuario ?? ''}}">
@@ -155,7 +155,7 @@
                 </p>
               </a>            
             </li>
-          @endIf
+          @endIf -->
           
         </ul>
       </nav>

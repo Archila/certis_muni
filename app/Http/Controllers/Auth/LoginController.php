@@ -39,6 +39,6 @@ class LoginController extends Controller
     }
 
     public function username(){
-        return 'carne'; // this string is column of accounts table which we are going use for login
+        return 'username'; // this string is column of accounts table which we are going use for login
     }
 }

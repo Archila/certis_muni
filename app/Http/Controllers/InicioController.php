@@ -40,84 +40,23 @@ class InicioController extends Controller
             Session::put('semestre',$semestre);
         }
 
-        if(Auth::user()->rol->id == 2){ 
+        $data = [];
 
-            /*$oficio = Auth::user()->oficios()->first();      
-            $oficio = Oficio::where('usuario_id',Auth::user()->id)->orderBy('created_at', 'desc')->first();      
-            if($oficio){ 
-                $bitacoras = Bitacora::where('oficio_id',$oficio->id)->get(); 
-                if($bitacoras->count() == 0){$bitacora = null;}
-                else { $bitacora = $bitacoras->first();}
-            }
-            else{ $bitacora = null;}*/
+        switch(Auth::user()->rol->id){
+            Case 1:  return view('inicio.administrador',compact(['data']));    
+                        break; 
+            
+            Case 2:  return view('inicio.operador',compact(['data']));    
+                        break; 
+            
+            Case 3:  return view('inicio.cliente',compact(['data']));    
+                        break; 
 
-            return redirect()->route('practica.index');            
-        }
-        else{
-            if($request->has('year')) {
-                $year=$request->year;
-                Session::put('year', $year);
-            } else {
-                $year = Session::get('year');
-            }
-            if($request->has('semestre')) {
-                $semestre=$request->semestre;
-                Session::put('semestre', $semestre);
-            } else {
-                $semestre = Session::get('semestre');
-            }
+            Case 4:  return view('inicio.informatica',compact(['data']));    
+                        break; 
 
-            $oficios = Oficio::select('oficio.*', 'estudiante.usuario_supervisor as usuario_supervisor');
-            $oficios->join('users', 'oficio.usuario_id', '=', 'users.id');
-            $oficios->join('persona', 'users.persona_id', '=', 'persona.id');
-            $oficios->join('estudiante', 'persona.id', '=', 'estudiante.persona_id');
-            $oficios = $oficios->where('estudiante.year',$year);
-            $oficios = $oficios->where('estudiante.semestre',$semestre);
-            if(Auth::user()->rol->id != 1){                
-                $oficios = $oficios->where('estudiante.usuario_supervisor',Auth::user()->id)->get();
-            }
-            else{
-                $oficios = $oficios->get();
-            }
-
-            $aprobados = $oficios->where('aprobado', 1)->count();
-            $no_aprobados=$oficios->where('aprobado', 0)->count();
-
-            $no_revisados = $oficios->where('aprobado', 1)->where('revisado',0)->count();
-            $rechazados = $oficios->where('aprobado', 1)->where('revisado',1)->where('rechazado',1)->count();
-            $revisados = $oficios->where('aprobado', 1)->where('revisado',1)->where('rechazado',0)->count();
-
-            $estudiantes = Oficio::select('oficio.tipo', 'persona.nombre', 'persona.apellido','estudiante.registro', 'bitacora.id as bitacora_id');
-            $estudiantes->join('users', 'oficio.usuario_id', '=', 'users.id');
-            $estudiantes->join('persona', 'users.persona_id', '=', 'persona.id');
-            $estudiantes->join('estudiante', 'persona.id', '=', 'estudiante.persona_id');
-            $estudiantes->join('bitacora', 'oficio.id', '=', 'bitacora.oficio_id');
-            $estudiantes = $estudiantes->where('oficio.aprobado',1);
-            $estudiantes = $estudiantes->where('estudiante.year',$year);
-            $estudiantes = $estudiantes->where('estudiante.semestre',$semestre);
-            if(Auth::user()->rol->id != 1){                
-                $estudiantes = $estudiantes->where('estudiante.usuario_supervisor',Auth::user()->id)->get();
-            }
-            else{
-                $estudiantes = $estudiantes->get();
-            }            
-
-            $revisiones = Oficio::select('revision.horas', 'revision.fecha', 'bitacora.id as bitacora_id');
-            $revisiones->join('users', 'oficio.usuario_id', '=', 'users.id');
-            $revisiones->join('persona', 'users.persona_id', '=', 'persona.id');
-            $revisiones->join('estudiante', 'persona.id', '=', 'estudiante.persona_id');
-            $revisiones->join('bitacora', 'oficio.id', '=', 'bitacora.oficio_id');
-            $revisiones->join('revision', 'bitacora.id', '=', 'revision.bitacora_id');
-            $revisiones = $revisiones->where('oficio.aprobado',1);
-            if(Auth::user()->rol->id != 1){                
-                $revisiones = $revisiones->where('estudiante.usuario_supervisor',Auth::user()->id)->get();
-            }
-            else{
-                $revisiones = $revisiones->get();
-            }     
-
-
-            return view('inicio.index',compact(['aprobados', 'no_aprobados', 'no_revisados', 'rechazados', 'revisados','estudiantes','revisiones','year','semestre']));    
+            default:  return view('inicio.cliente',compact(['data']));    
+            break;             
         }
     }
 }
