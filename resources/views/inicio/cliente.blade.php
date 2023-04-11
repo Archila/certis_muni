@@ -33,20 +33,75 @@
 <div class="row">
     <h2 class="m-2">VISTA DE CLIENTE</h2>
     <div class="col-md-12">
-        <div class="card card-primary card-outline"> <!-- Donut chart -->
+        <div class="card card-success card-outline"> <!-- Donut chart -->
             <div class="card-header">
-            <h3 class="card-title">
-                <i class="far fa-chart-bar"></i>
-                Tabla
-            </h3>
+              <h3 class="card-title">
+                  <i class="far fa-chart-bar"></i>
+                  Tabla
+              </h3>
 
-            <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-                </button>
-            </div>
+              <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                  </button>
+              </div>
             </div>
             <div class="card-body">
-            <div id="donut-chart1" style="height: 300px;"></div>
+
+            <div class="row">
+              <form class="form-inline" method="GET" action="{{route('inicio.index')}}" enctype="multipart/form-data">
+              @csrf 
+                <div class="form-group mx-sm-3 mb-2">
+                  <label for="inputPassword2" class="sr-only">Licencia</label>
+                  <input type="text" class="form-control" name="licencia" placeholder="Licencia">
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                  <label for="inputPassword2" class="sr-only">Expediente</label>
+                  <input type="text" class="form-control" name="expediente" placeholder="Expediente">
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                  <label for="inputPassword2" class="sr-only">Propietario</label>
+                  <input type="text" class="form-control" name="propietario" placeholder="Propietario">
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                  <label for="inputPassword2" class="sr-only">Inmueble</label>
+                  <input type="text" class="form-control" name="inmueble" placeholder="Inmueble">
+                </div>
+                <div class="input-group">                  
+                  <div class="input-group-append ml-3">
+                    <button class="btn btn-success" type="submit">Buscar</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+              <table class="table table-sm table-bordered table-striped">
+                <thead>
+                  <th>Número</th>
+                  <th>Fecha Ext.</th>
+                  <th>Fecha Pago Lice.</th>
+                  <th>No. Licencia.</th>
+                  <th>No. Exp.</th>
+                  <th>Propietario</th>
+                  <th>Código Inmueble</th>
+                  <th>Opciones</th>
+                </thead>
+                @foreach($tabla as $f)
+                <tr>
+                  <td>{{$f->numero}}</td>
+                  <td>{{$f->fecha_extension}}</td>
+                  <td>{{$f->fecha_pago_licencia}}</td>
+                  <td>{{$f->no_licencia}}</td>
+                  <td>{{$f->no_expediente}}</td>
+                  <td>{{$f->nombre_propietario}}</td>
+                  <td>{{$f->direccion_inmueble}}</td>
+                  <td>
+                    <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Pendiente de implementar">
+                      Ver
+                    </button>
+                  </td>
+                </tr>
+                @endforeach
+              </table>
             </div>
         </div>
         <!-- /.donut chart -->
@@ -62,7 +117,9 @@
 @section('page_script')
 <!-- page script -->
 <script>
-   
+  $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
 // Example starter JavaScript for disabling form submissions if there are invalid fields
 (function() {
   'use strict';
@@ -82,110 +139,5 @@
   }, false);
 })();
 </script>
-
-<script>
-     /*
-     * DONUT CHART
-     * -----------
-     */
-
-    var donutData1 = [
-      {
-        label: 'Aprobados',
-        data : $('#aprobados').val(),
-        color: '#b36af7'
-      },
-      {
-        label: 'No aprobados',
-        data : $('#no_aprobados').val(),
-        color: '#f5ee67'
-      }
-    ]
-
-    var donutData2 = [
-      {
-        label: 'Revisados',
-        data : $('#revisados').val(),
-        color: '#53ed58'
-      },
-      {
-        label: 'No revisados',
-        data : $('#no_revisados').val(),
-        color: '#88cfc5'
-      },
-      {
-        label: 'Rechazados',
-        data : $('#rechazados').val(),
-        color: '#f28f74'
-      }
-    ]
-
-    $.plot('#donut-chart1', donutData1, {
-      series: {
-        pie: {
-          show       : true,
-          radius     : 1,
-          innerRadius: 0.4,
-          label      : {
-            show     : true,
-            radius   : 2 / 3,
-            formatter: labelFormatter,
-            threshold: 0.1
-          }
-
-        }
-      },
-      legend: {
-        show: false
-      }
-    })
-
-    /*
-     * END DONUT CHART
-     */
-
-    /*
-   * Custom Label formatter
-   * ----------------------
-   */
-  function labelFormatter(label, series) {
-    return '<div style="font-size:13px; text-align:center; padding:2px; color: #000; font-weight: 600;">'
-      + label
-      + '<br>'
-      + Math.round(series.percent) + '%</div>'
-  }
-
-  //-------------
-    //- DONUT CHART -
-    //-------------
-    // Get context with jQuery - using jQuery's .get() method.
-    var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
-    var donutData        = {
-      labels: [
-          'Revisados', 
-          'No revisados',
-          'Rechazados', 
-      ],
-      datasets: [
-        {
-          data: [$('#revisados').val(),$('#no_revisados').val(),$('#rechazados').val()],
-          backgroundColor : ['#53ed58', '#88cfc5', '#f28f74'],
-        }
-      ]
-    }
-    var donutOptions     = {
-      maintainAspectRatio : false,
-      responsive : true,
-    }
-    //Create pie or douhnut chart
-    // You can switch between pie and douhnut using the method below.
-    var donutChart = new Chart(donutChartCanvas, {
-      type: 'doughnut',
-      data: donutData,
-      options: donutOptions      
-    })
-
-</script>
-
 @endsection
 

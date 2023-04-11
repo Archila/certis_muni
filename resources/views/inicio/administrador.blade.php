@@ -47,8 +47,8 @@
                 </button>
                 </div>
               </div>             
-
-              <table class="table table-sm">
+                
+              <table class="table table-sm table-bordered table-striped">
                 <thead>
                   <th>Número</th>
                   <th>Fecha Ext.</th>
@@ -68,7 +68,14 @@
                   <td>{{$f->no_expediente}}</td>
                   <td>{{$f->nombre_propietario}}</td>
                   <td>{{$f->direccion_inmueble}}</td>
-                  <td>{{$f->id}}</td>
+                  <td>
+                    <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Pendiente de implementar">
+                      Ver
+                    </button>
+                    <button type="button" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Pendiente de implementar">
+                      Aprobar
+                    </button>
+                  </td>
                 </tr>
                 @endforeach
               </table>
@@ -122,7 +129,9 @@
 @section('page_script')
 <!-- page script -->
 <script>
-   
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
 // Example starter JavaScript for disabling form submissions if there are invalid fields
 (function() {
   'use strict';

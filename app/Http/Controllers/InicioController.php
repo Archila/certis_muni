@@ -48,10 +48,39 @@ class InicioController extends Controller
                         return view('inicio.administrador',compact(['data','tabla']));    
                         break; 
             
-            Case 2:  return view('inicio.operador',compact(['data','tabla']));    
+            Case 2:     
+                        $tabla = Certi::select('*');
+                        if ($request->has('licencia') && trim($request->licencia)!= '') {
+                            $tabla->where('no_licencia', 'like', '%' . $request->licencia . '%');
+                        }
+                        if ($request->has('expediente') && trim($request->expediente)!= '') {
+                            $tabla->where('no_expediente', 'like', '%' . $request->expediente . '%');
+                        }
+                        if ($request->has('propietario') && trim($request->propietario)!= '') {
+                            $tabla->where('nombre_propietario', 'like', '%' . $request->propietario . '%');
+                        }
+                        if ($request->has('inmueble') && trim($request->inmueble)!= '') {
+                            $tabla->where('direccion_inmueble', 'like', '%' . $request->inmueble . '%');
+                        }
+                        $tabla = $tabla->get();
+                        return view('inicio.operador',compact(['data','tabla']));    
                         break; 
             
-            Case 3:  return view('inicio.cliente',compact(['data','tabla']));    
+            Case 3:     $tabla = Certi::select('*');
+                        if ($request->has('licencia') && trim($request->licencia)!= '') {
+                            $tabla->where('no_licencia', 'like', '%' . $request->licencia . '%');
+                        }
+                        if ($request->has('expediente') && trim($request->expediente)!= '') {
+                            $tabla->where('no_expediente', 'like', '%' . $request->expediente . '%');
+                        }
+                        if ($request->has('propietario') && trim($request->propietario)!= '') {
+                            $tabla->where('nombre_propietario', 'like', '%' . $request->propietario . '%');
+                        }
+                        if ($request->has('inmueble') && trim($request->inmueble)!= '') {
+                            $tabla->where('direccion_inmueble', 'like', '%' . $request->inmueble . '%');
+                        }
+                        $tabla = $tabla->get();
+                        return view('inicio.cliente',compact(['data','tabla']));    
                         break; 
 
             Case 4:  return view('inicio.informatica',compact(['data','tabla']));    
