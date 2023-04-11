@@ -16,17 +16,7 @@
 <div class="container row">
 <ul class="navbar-nav ml-auto">
   <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Semestre @php echo $semestre; @endphp - Año @php echo $year; @endphp
-    </a>
-    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-      <a href="{{route('inicio.index', ['year'=>2020, 'semestre'=>2])}}" class="dropdown-item">Semestre 2 - 2020</a>
-      <a href="{{route('inicio.index', ['year'=>2021, 'semestre'=>1])}}" class="dropdown-item">Semestre 1 - 2021</a>
-      <a href="{{route('inicio.index', ['year'=>2021, 'semestre'=>2])}}" class="dropdown-item">Semestre 2 - 2021</a>
-      <a href="{{route('inicio.index', ['year'=>2022, 'semestre'=>1])}}" class="dropdown-item">Semestre 1 - 2022</a>
-      <a href="{{route('inicio.index', ['year'=>2022, 'semestre'=>2])}}" class="dropdown-item">Semestre 2 - 2022</a>
-      <a href="{{route('inicio.index', ['year'=>2023, 'semestre'=>1])}}" class="dropdown-item">Semestre 1 - 2023</a>
-    </div>
+    
   </li>
 </ul>
 </div>
@@ -48,8 +38,41 @@
             </div>
             </div>
             <div class="card-body">
-            <div id="donut-chart1" style="height: 300px;"></div>
-            </div>
+              <!-- @include('inicio.tabla',['tabla'=>$tabla]) -->
+
+              <div class="row">
+                <div class="col col-md-2 offset-10">
+                <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal">
+                  Subir documento
+                </button>
+                </div>
+              </div>             
+
+              <table class="table table-sm">
+                <thead>
+                  <th>Número</th>
+                  <th>Fecha Ext.</th>
+                  <th>Fecha Pago Lice.</th>
+                  <th>No. Licencia.</th>
+                  <th>No. Exp.</th>
+                  <th>Propietario</th>
+                  <th>Código Inmueble</th>
+                  <th>Opciones</th>
+                </thead>
+                @foreach($tabla as $f)
+                <tr>
+                  <td>{{$f->numero}}</td>
+                  <td>{{$f->fecha_extension}}</td>
+                  <td>{{$f->fecha_pago_licencia}}</td>
+                  <td>{{$f->no_licencia}}</td>
+                  <td>{{$f->no_expediente}}</td>
+                  <td>{{$f->nombre_propietario}}</td>
+                  <td>{{$f->direccion_inmueble}}</td>
+                  <td>{{$f->id}}</td>
+                </tr>
+                @endforeach
+              </table>
+          </div>
         </div>
         <!-- /.donut chart -->
     </div>
@@ -57,6 +80,41 @@
 
 
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Subir documento CSV</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <br>
+      <div class="modal-body">        
+          <div class="form-row">     
+            <form method="POST" action="{{route('certi.subir_archivo')}}" enctype="multipart/form-data">
+            @csrf 
+              <div class="input-group">
+                <div class="">
+                  <input type="file" name="file">
+                </div>
+                <input type="hidden" name="tipo" value=1>
+                <div class="input-group-append ml-3">
+                  <button class="btn btn-outline-warning" type="submit">Guardar</button>
+                </div>
+              </div>
+            </form>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
     
     
 @endsection
@@ -85,109 +143,6 @@
 })();
 </script>
 
-<script>
-     /*
-     * DONUT CHART
-     * -----------
-     */
-
-    var donutData1 = [
-      {
-        label: 'Aprobados',
-        data : $('#aprobados').val(),
-        color: '#b36af7'
-      },
-      {
-        label: 'No aprobados',
-        data : $('#no_aprobados').val(),
-        color: '#f5ee67'
-      }
-    ]
-
-    var donutData2 = [
-      {
-        label: 'Revisados',
-        data : $('#revisados').val(),
-        color: '#53ed58'
-      },
-      {
-        label: 'No revisados',
-        data : $('#no_revisados').val(),
-        color: '#88cfc5'
-      },
-      {
-        label: 'Rechazados',
-        data : $('#rechazados').val(),
-        color: '#f28f74'
-      }
-    ]
-
-    $.plot('#donut-chart1', donutData1, {
-      series: {
-        pie: {
-          show       : true,
-          radius     : 1,
-          innerRadius: 0.4,
-          label      : {
-            show     : true,
-            radius   : 2 / 3,
-            formatter: labelFormatter,
-            threshold: 0.1
-          }
-
-        }
-      },
-      legend: {
-        show: false
-      }
-    })
-
-    /*
-     * END DONUT CHART
-     */
-
-    /*
-   * Custom Label formatter
-   * ----------------------
-   */
-  function labelFormatter(label, series) {
-    return '<div style="font-size:13px; text-align:center; padding:2px; color: #000; font-weight: 600;">'
-      + label
-      + '<br>'
-      + Math.round(series.percent) + '%</div>'
-  }
-
-  //-------------
-    //- DONUT CHART -
-    //-------------
-    // Get context with jQuery - using jQuery's .get() method.
-    var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
-    var donutData        = {
-      labels: [
-          'Revisados', 
-          'No revisados',
-          'Rechazados', 
-      ],
-      datasets: [
-        {
-          data: [$('#revisados').val(),$('#no_revisados').val(),$('#rechazados').val()],
-          backgroundColor : ['#53ed58', '#88cfc5', '#f28f74'],
-        }
-      ]
-    }
-    var donutOptions     = {
-      maintainAspectRatio : false,
-      responsive : true,
-    }
-    //Create pie or douhnut chart
-    // You can switch between pie and douhnut using the method below.
-    var donutChart = new Chart(donutChartCanvas, {
-      type: 'doughnut',
-      data: donutData,
-      options: donutOptions      
-    })
-
-</script>
 
 @endsection
 

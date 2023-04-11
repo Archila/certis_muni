@@ -147,45 +147,18 @@ Route::post('folio', 'FolioController@guardar')->name('folio.guardar');
 Route::put('folio/{id}', 'FolioController@actualizar')->name('folio.actualizar');
 Route::delete('folio', 'FolioController@eliminar')->name('folio.eliminar');
 
-//Revision
-Route::get('revision', 'RevisionController@index')->name('revision.index');
-Route::get('revision/crear', 'RevisionController@crear')->name('revision.crear');
-Route::get('revision/{id}/editar', 'RevisionController@editar')->name('revision.editar');
-Route::get('revision/{id}/ver', 'RevisionController@ver')->name('revision.ver');
-Route::post('revision', 'RevisionController@guardar')->name('revision.guardar');
-Route::put('revision/{id}', 'RevisionController@actualizar')->name('revision.actualizar');
-Route::delete('revision', 'RevisionController@eliminar')->name('revision.eliminar');
 
-//PDF
-Route::get('pdf', 'PDFController@index')->name('pdf.index');
-Route::get('pdf/caratula/{id}', 'PDFController@caratula')->name('pdf.caratula');
-Route::get('pdf/oficio/{id}', 'PDFController@oficio')->name('pdf.oficio');
-Route::get('pdf/folios/{id}', 'PDFController@folios')->name('pdf.folios');
-Route::get('pdf/vacios/{id}', 'PDFController@vacios')->name('pdf.vacios');
-Route::get('pdf/individual/{id}', 'PDFController@individual')->name('pdf.individual');
-Route::get('pdf/docente', 'PDFController@docente')->name('pdf.docente');
-Route::get('pdf/aplicada', 'PDFController@aplicada')->name('pdf.aplicada');
-Route::get('pdf/investigacion', 'PDFController@investigacion')->name('pdf.investigacion');
-Route::get('pdf/ver', 'PDFController@ver_archivo')->name('pdf.ver');
-Route::get('pdf/prueba/{id}', 'PDFController@prueba')->name('pdf.prueba');
-
-//API
-Route::post('api/folios_revisar', 'ApiController@folios_revisar')->name('api.folios_revisar');
-Route::post('api/areas_empresa', 'ApiController@areas_empresa')->name('api.areas_empresa');
-Route::post('api/encargados_area', 'ApiController@encargados_area')->name('api.encargados_area');
-Route::post('api/encargados', 'ApiController@encargados')->name('api.encargados');
-Route::post('api/crear_area', 'ApiController@crear_area')->name('api.crear_area');
-Route::post('api/crear_encargado', 'ApiController@crear_encargado')->name('api.crear_encargado');
-Route::post('api/empresas', 'ApiController@empresas')->name('api.empresas');
-
-//Solicitud
-Route::post('solicitud/requisito', 'SolicitudController@actualizar_requisito')->name('solicitud.requisito');
 
 //Usuario
 Route::get('user/cambiar', 'UsuarioController@cambiar')->name('usuario.cambiar');
 Route::post('user/confirmar', 'UsuarioController@confirmar')->name('usuario.confirmar');
 Route::get('user/nueva', 'UsuarioController@nueva')->name('usuario.nueva');
 Route::post('user/actualizar', 'UsuarioController@actualizar')->name('usuario.actualizar');
+
+
+//CERTIFICACIONES
+Route::post('certi/subir-archivo', 'CertiController@subir_archivo')->name('certi.subir_archivo');
+
 
 Route::get('/test', function () {
     

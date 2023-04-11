@@ -8,7 +8,7 @@ use App\Models\Encargado;
 use App\Models\Carrera;
 use App\Models\Bitacora;
 use App\Models\Oficio;
-use App\Models\Estudiante;
+use App\Models\Certi;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -41,21 +41,23 @@ class InicioController extends Controller
         }
 
         $data = [];
+        $tabla =[];
 
         switch(Auth::user()->rol->id){
-            Case 1:  return view('inicio.administrador',compact(['data']));    
+            Case 1:     $tabla = Certi::all(); 
+                        return view('inicio.administrador',compact(['data','tabla']));    
                         break; 
             
-            Case 2:  return view('inicio.operador',compact(['data']));    
+            Case 2:  return view('inicio.operador',compact(['data','tabla']));    
                         break; 
             
-            Case 3:  return view('inicio.cliente',compact(['data']));    
+            Case 3:  return view('inicio.cliente',compact(['data','tabla']));    
                         break; 
 
-            Case 4:  return view('inicio.informatica',compact(['data']));    
+            Case 4:  return view('inicio.informatica',compact(['data','tabla']));    
                         break; 
 
-            default:  return view('inicio.cliente',compact(['data']));    
+            default:  return view('inicio.cliente',compact(['data','tabla']));    
             break;             
         }
     }
