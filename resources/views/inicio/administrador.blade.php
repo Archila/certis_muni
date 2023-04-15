@@ -67,9 +67,7 @@
                   <td>{{$f->nombre_propietario}}</td>
                   <td>{{$f->direccion_inmueble}}</td>
                   <td>
-                    <button type="button" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Pendiente de implementar">
-                      Ver
-                    </button>
+                    <a href="{{route('certi.ver', $f->id)}}" type="button" class="btn btn-primary btn-xs"><i class="fas fa-eye"></i></a>
                   </td>
                 </tr>
                 @endforeach
