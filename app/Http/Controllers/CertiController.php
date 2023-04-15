@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Folio;
 use App\Models\Bitacora;
 use Illuminate\Http\Request;
+use App\Models\Certi;
 use App\Imports\CertiImport;
 
 use Maatwebsite\Excel\Files\ExcelFile;
@@ -147,5 +148,19 @@ class CertiController extends Controller
     public function destroy(Folio $folio)
     {
            
+    }
+
+    public function ver($id, Request $request)
+    {
+
+        $certi = Certi::select('certi.*');
+        //$certi ->join('persona', 'persona_id', '=', 'persona.id');
+
+        $certi = $certi->where('certi.id','=',$id);
+
+        $certi = $certi->get()->first();
+
+        return view('inicio.ver', compact(['certi']));
+
     }
 }

@@ -29,7 +29,7 @@
             <div class="card-header">
             <h3 class="card-title">
                 <i class="far fa-chart-bar"></i>
-                Tabla
+                Listado de certificaciones
             </h3>
 
             <div class="card-tools">
@@ -41,10 +41,8 @@
               <!-- @include('inicio.tabla',['tabla'=>$tabla]) -->
 
               <div class="row">
-                <div class="col col-md-2 offset-10">
-                <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal">
-                  Subir documento
-                </button>
+                <div class="col col-md-3">
+                  Página: {{$data->pagina}}
                 </div>
               </div>             
                 
@@ -56,7 +54,7 @@
                   <th>No. Licencia.</th>
                   <th>No. Exp.</th>
                   <th>Propietario</th>
-                  <th>Código Inmueble</th>
+                  <th>Ubicación Inmueble</th>
                   <th>Opciones</th>
                 </thead>
                 @foreach($tabla as $f)
@@ -69,11 +67,8 @@
                   <td>{{$f->nombre_propietario}}</td>
                   <td>{{$f->direccion_inmueble}}</td>
                   <td>
-                    <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Pendiente de implementar">
+                    <button type="button" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Pendiente de implementar">
                       Ver
-                    </button>
-                    <button type="button" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Pendiente de implementar">
-                      Aprobar
                     </button>
                   </td>
                 </tr>
@@ -81,6 +76,39 @@
               </table>
           </div>
         </div>
+
+        <nav aria-label="...">
+          <ul class="pagination">
+            <form class="form-inline" method="GET" id="paginationForm" action="{{route('inicio.index')}}" enctype="multipart/form-data">
+            @csrf 
+            <input type="hidden" name="page" id="page" value="{{$data->pagina}}">
+            @if($data->pagina <= 1)
+            <li class="page-item disabled">
+              <button class="page-link">Anterior</button>
+            </li>
+            <li class="page-item active" aria-current="page">
+              <button class="page-link" >{{$data->pagina}}</button>
+            </li>
+            <li class="page-item"><button class="page-link" onClick=siguiente()>{{$data->pagina + 1}}</button></li>
+            <li class="page-item">
+              <button class="page-link" onClick=siguiente()>Siguiente</button>
+            </li>
+            @else 
+            <li class="page-item">
+              <button class="page-link" onClick=anterior()>Anterior</button>
+            </li>
+            <li class="page-item"><button class="page-link" onClick=anterior()>{{$data->pagina - 1}}</button></li>
+            <li class="page-item active" aria-current="page">
+              <button class="page-link" >{{$data->pagina}}</button>
+            </li>
+            <li class="page-item"><button class="page-link" onClick=siguiente()>{{$data->pagina + 1}}</button></li>
+            <li class="page-item">
+              <button class="page-link" onClick=siguiente()>Siguiente</button>
+            </li>
+            @endif
+            </form>            
+          </ul>
+        </nav>
         <!-- /.donut chart -->
     </div>
         
@@ -88,39 +116,7 @@
 
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Subir documento CSV</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <br>
-      <div class="modal-body">        
-          <div class="form-row">     
-            <form method="POST" action="{{route('certi.subir_archivo')}}" enctype="multipart/form-data">
-            @csrf 
-              <div class="input-group">
-                <div class="">
-                  <input type="file" name="file">
-                </div>
-                <input type="hidden" name="tipo" value=1>
-                <div class="input-group-append ml-3">
-                  <button class="btn btn-outline-warning" type="submit">Guardar</button>
-                </div>
-              </div>
-            </form>
-          </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-      </div>
-    </div>
-  </div>
-</div>
+
 
     
     
@@ -129,6 +125,19 @@
 @section('page_script')
 <!-- page script -->
 <script>
+
+function anterior(){
+  var paginaActual = document.getElementById("page").value;
+  document.getElementById("page").value = Number(paginaActual) - 1;
+  document.getElementById("paginationForm").submit(); 
+}
+
+function siguiente(){
+  var paginaActual = document.getElementById("page").value;
+  document.getElementById("page").value = Number(paginaActual) + 1;
+  document.getElementById("paginationForm").submit(); 
+}
+
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()
 })

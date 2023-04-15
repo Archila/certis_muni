@@ -39,12 +39,19 @@ class InicioController extends Controller
         if(empty(Session::get('semestre'))) {
             Session::put('semestre',$semestre);
         }
+        $data = (object) [];
+        $data->licencia = null;
+        $data->expediente = null;
+        $data->propietario = null;
+        $data->inmueble = null;
 
-        $data = [];
+        $pagina = 0;
+        if($request->has('page')) $data->pagina = $request->page;
+        else $data->pagina = 1;
         $tabla =[];
 
         switch(Auth::user()->rol->id){
-            Case 1:     $tabla = Certi::all(); 
+            Case 1:     $tabla = Certi::paginate(15); 
                         return view('inicio.administrador',compact(['data','tabla']));    
                         break; 
             
@@ -52,34 +59,42 @@ class InicioController extends Controller
                         $tabla = Certi::select('*');
                         if ($request->has('licencia') && trim($request->licencia)!= '') {
                             $tabla->where('no_licencia', 'like', '%' . $request->licencia . '%');
+                            $data->licencia = $request->licencia;
                         }
                         if ($request->has('expediente') && trim($request->expediente)!= '') {
                             $tabla->where('no_expediente', 'like', '%' . $request->expediente . '%');
+                            $data->expediente = $request->expediente;
                         }
                         if ($request->has('propietario') && trim($request->propietario)!= '') {
                             $tabla->where('nombre_propietario', 'like', '%' . $request->propietario . '%');
+                            $data->propietario = $request->propietario;
                         }
                         if ($request->has('inmueble') && trim($request->inmueble)!= '') {
                             $tabla->where('direccion_inmueble', 'like', '%' . $request->inmueble . '%');
+                            $data->inmueble = $request->inmueble;
                         }
-                        $tabla = $tabla->get();
+                        $tabla = $tabla->paginate(15);
                         return view('inicio.operador',compact(['data','tabla']));    
                         break; 
             
             Case 3:     $tabla = Certi::select('*');
                         if ($request->has('licencia') && trim($request->licencia)!= '') {
                             $tabla->where('no_licencia', 'like', '%' . $request->licencia . '%');
+                            $data->licencia = $request->licencia;
                         }
                         if ($request->has('expediente') && trim($request->expediente)!= '') {
                             $tabla->where('no_expediente', 'like', '%' . $request->expediente . '%');
+                            $data->expediente = $request->expediente;
                         }
                         if ($request->has('propietario') && trim($request->propietario)!= '') {
                             $tabla->where('nombre_propietario', 'like', '%' . $request->propietario . '%');
+                            $data->propietario = $request->propietario;
                         }
                         if ($request->has('inmueble') && trim($request->inmueble)!= '') {
                             $tabla->where('direccion_inmueble', 'like', '%' . $request->inmueble . '%');
+                            $data->inmueble = $request->inmueble;
                         }
-                        $tabla = $tabla->get();
+                        $tabla = $tabla->paginate(10);
                         return view('inicio.cliente',compact(['data','tabla']));    
                         break; 
 

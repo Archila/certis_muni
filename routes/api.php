@@ -17,3 +17,12 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+//Funciores con usuarios
+Route::prefix('usuario')->name('usuario/')->group(static function() {
+    Route::get('/',                                 'UsuarioController@index')->name('show');
+    Route::post('/',                                'UsuarioController@store')->name('store');
+    Route::delete('/{id}',                          'UsuarioController@destroy')->name('destroy');
+    Route::get('/logout',                           'LoginNewController@logout')->name('logout');
+    Route::post('/login',                           'LoginNewController@authenticate')->name('login');
+});

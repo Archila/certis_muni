@@ -46,6 +46,16 @@
             </div>
             </div>
             <div class="card-body">
+              <div class="row">
+                <div class="col col-md-3">
+                  Página: {{$data->pagina}}
+                </div>
+                <div class="col col-md-2 offset-7">
+                <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal">
+                  Subir documento
+                </button>
+                </div>
+              </div>       
             <div class="row">
               <form class="form-inline" method="GET" action="{{route('inicio.index')}}" enctype="multipart/form-data">
               @csrf 
@@ -81,7 +91,7 @@
                   <th>No. Licencia.</th>
                   <th>No. Exp.</th>
                   <th>Propietario</th>
-                  <th>Código Inmueble</th>
+                  <th>Ubicación Inmueble</th>
                   <th>Opciones</th>
                 </thead>
                 @foreach($tabla as $f)
@@ -104,6 +114,40 @@
         
 
 
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Subir documento CSV</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <br>
+      <div class="modal-body">        
+          <div class="form-row">     
+            <form method="POST" action="{{route('certi.subir_archivo')}}"  enctype="multipart/form-data">
+            @csrf 
+              <div class="input-group">
+                <div class="">
+                  <input type="file" name="file">
+                </div>
+                <input type="hidden" name="tipo" value=1>
+                <div class="input-group-append ml-3">
+                  <button class="btn btn-outline-warning" type="submit">Guardar</button>
+                </div>
+              </div>
+            </form>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
 </div>
     
     

@@ -37,7 +37,7 @@
             <div class="card-header">
               <h3 class="card-title">
                   <i class="far fa-chart-bar"></i>
-                  Tabla
+                  Lista de certificaciones
               </h3>
 
               <div class="card-tools">
@@ -48,27 +48,29 @@
             <div class="card-body">
 
             <div class="row">
-              <form class="form-inline" method="GET" action="{{route('inicio.index')}}" enctype="multipart/form-data">
-              @csrf 
+              <form class="form-inline" method="GET" id="searchForm" action="{{route('inicio.index')}}" enctype="multipart/form-data">
+              @csrf
+              <input type="hidden" name="page" id="page" value="{{$data->pagina}}">
+              <input type="hidden" name="nueva_busqueda" id="nueva_busqueda" value="1">
                 <div class="form-group mx-sm-3 mb-2">
                   <label for="inputPassword2" class="sr-only">Licencia</label>
-                  <input type="text" class="form-control" name="licencia" placeholder="Licencia">
+                  <input type="text" class="form-control" name="licencia" placeholder="Licencia" value="{{$data->licencia}}">
                 </div>
                 <div class="form-group mx-sm-3 mb-2">
                   <label for="inputPassword2" class="sr-only">Expediente</label>
-                  <input type="text" class="form-control" name="expediente" placeholder="Expediente">
+                  <input type="text" class="form-control" name="expediente" placeholder="Expediente" value="{{$data->expediente}}">
                 </div>
                 <div class="form-group mx-sm-3 mb-2">
                   <label for="inputPassword2" class="sr-only">Propietario</label>
-                  <input type="text" class="form-control" name="propietario" placeholder="Propietario">
+                  <input type="text" class="form-control" name="propietario" placeholder="Propietario" value="{{$data->propietario}}">
                 </div>
                 <div class="form-group mx-sm-3 mb-2">
                   <label for="inputPassword2" class="sr-only">Inmueble</label>
-                  <input type="text" class="form-control" name="inmueble" placeholder="Inmueble">
+                  <input type="text" class="form-control" name="inmueble" placeholder="Inmueble" value="{{$data->inmueble}}">
                 </div>
                 <div class="input-group">                  
                   <div class="input-group-append ml-3">
-                    <button class="btn btn-success" type="submit">Buscar</button>
+                    <button class="btn btn-success" onClick=enviarForm()>Buscar</button>
                   </div>
                 </div>
               </form>
@@ -82,7 +84,7 @@
                   <th>No. Licencia.</th>
                   <th>No. Exp.</th>
                   <th>Propietario</th>
-                  <th>Código Inmueble</th>
+                  <th>Ubicación Inmueble</th>
                   <th>Opciones</th>
                 </thead>
                 @foreach($tabla as $f)
@@ -95,15 +97,42 @@
                   <td>{{$f->nombre_propietario}}</td>
                   <td>{{$f->direccion_inmueble}}</td>
                   <td>
-                    <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Pendiente de implementar">
-                      Ver
-                    </button>
+                    <a href="{{route('certi.ver', $f->id)}}" type="button" class="btn btn-primary btn-xs"><i class="fas fa-eye"></i></a>
                   </td>
                 </tr>
                 @endforeach
               </table>
             </div>
         </div>
+
+        <nav aria-label="...">
+          <ul class="pagination">
+            @if($data->pagina <= 1)
+            <li class="page-item disabled">
+              <button class="page-link">Anterior</button>
+            </li>
+            <li class="page-item active" aria-current="page">
+              <button class="page-link" >{{$data->pagina}}</button>
+            </li>
+            <li class="page-item"><button class="page-link" onClick=siguiente()>{{$data->pagina + 1}}</button></li>
+            <li class="page-item">
+              <button class="page-link" onClick=siguiente()>Siguiente</button>
+            </li>
+            @else 
+            <li class="page-item">
+              <button class="page-link" onClick=anterior()>Anterior</button>
+            </li>
+            <li class="page-item"><button class="page-link" onClick=anterior()>{{$data->pagina - 1}}</button></li>
+            <li class="page-item active" aria-current="page">
+              <button class="page-link" >{{$data->pagina}}</button>
+            </li>
+            <li class="page-item"><button class="page-link" onClick=siguiente()>{{$data->pagina + 1}}</button></li>
+            <li class="page-item">
+              <button class="page-link" onClick=siguiente()>Siguiente</button>
+            </li>
+            @endif       
+          </ul>
+        </nav>
         <!-- /.donut chart -->
     </div>
         
@@ -117,6 +146,25 @@
 @section('page_script')
 <!-- page script -->
 <script>
+
+function anterior(){
+  var paginaActual = document.getElementById("page").value;
+  document.getElementById("page").value = Number(paginaActual) - 1;
+  document.getElementById("searchForm").submit(); 
+}
+
+function siguiente(){
+  var paginaActual = document.getElementById("page").value;
+  document.getElementById("page").value = Number(paginaActual) + 1;
+  document.getElementById("searchForm").submit(); 
+}
+
+function enviarForm(){
+  document.getElementById("page").value = 1;
+  document.getElementById("searchForm").submit(); 
+}
+
+
   $(function () {
   $('[data-toggle="tooltip"]').tooltip()
 })

@@ -158,6 +158,7 @@ Route::post('user/actualizar', 'UsuarioController@actualizar')->name('usuario.ac
 
 //CERTIFICACIONES
 Route::post('certi/subir-archivo', 'CertiController@subir_archivo')->name('certi.subir_archivo');
+Route::get('certi/ver/{id}', 'CertiController@ver')->name('certi.ver');
 
 
 Route::get('/test', function () {
