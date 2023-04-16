@@ -6,11 +6,17 @@ use App\Models\Folio;
 use App\Models\Bitacora;
 use Illuminate\Http\Request;
 use App\Models\Certi;
+use App\Models\Paquete;
+use App\Models\Aprobacion;
 use App\Imports\CertiImport;
 
 use Maatwebsite\Excel\Files\ExcelFile;
 
 use Maatwebsite\Excel\Facades\Excel;
+use Config;
+use Carbon\Carbon;
+
+use Illuminate\Support\Facades\Auth;
 
 class CertiController extends Controller
 {
@@ -20,9 +26,19 @@ class CertiController extends Controller
     }
 
     public function subir_archivo(Request $request)
-    {
-        
-        Excel::import(new CertiImport, request()->file('file'));
+    {   
+        $paquete = new Paquete();
+        $paquete->fecha = $request->fecha;
+        $paquete->observaciones = $request->observaciones;
+        $paquete->cantidad = 0;
+        $paquete->usuario_realiza = Auth::user()->id;
+        $paquete->save();
+
+        Config::set('global.paquete.id', $paquete->id);
+        Config::set('global.paquete.cantidad', 0);
+        Excel::import(new CertiImport($paquete->id), request()->file('file'));
+        $paquete->cantidad = Config::get('global.paquete.cantidad');
+        $paquete->save();
         return redirect()->route('inicio.index'); 
         
     }
@@ -32,9 +48,77 @@ class CertiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id, Request $request)
     {
-        //
+
+        $data = (object) [];
+        $data->licencia = null;
+        $data->expediente = null;
+        $data->propietario = null;
+        $data->numero = null;
+
+        $pagina = 0;
+        if($request->has('page')) $data->pagina = $request->page;
+        else $data->pagina = 1;
+        $tabla =[];
+
+        $paquete = Paquete::findOrFail($id);
+
+        $tabla = Certi::select('*');
+        if ($request->has('licencia') && trim($request->licencia)!= '') {
+            $tabla->where('no_licencia', 'like', '%' . $request->licencia . '%');
+            $data->licencia = $request->licencia;
+        }
+        if ($request->has('expediente') && trim($request->expediente)!= '') {
+            $tabla->where('no_expediente', 'like', '%' . $request->expediente . '%');
+            $data->expediente = $request->expediente;
+        }
+        if ($request->has('propietario') && trim($request->propietario)!= '') {
+            $tabla->where('nombre_propietario', 'like', '%' . $request->propietario . '%');
+            $data->propietario = $request->propietario;
+        }
+        if ($request->has('numero') && trim($request->numero)!= '') {
+            $tabla->where('numero', 'like', '%' . $request->numero . '%');
+            $data->numero = $request->numero;
+        }
+        $tabla = $tabla->where('id_paquete','=', $id);
+        $tabla = $tabla->paginate(15);
+        return view('inicio.certificacion',compact(['data','tabla', 'paquete'])); 
+    }
+
+    public function ver($id, Request $request)
+    {
+
+        $certi = Certi::select('certi.*');
+        //$certi ->join('persona', 'persona_id', '=', 'persona.id');
+
+        $certi = $certi->where('certi.id','=',$id);
+
+        $certi = $certi->get()->first();
+
+        $user = Auth::user();
+
+        return view('inicio.ver', compact(['certi', 'user']));
+
+    }
+
+    public function aprobar(Request $request)
+    {
+
+        $certi = Certi::findOrFail($request->id);
+        $certi->aprobada = true;
+        $certi->save();
+
+        $aprobada = new Aprobacion();
+        $aprobada->fecha = Carbon::now();
+        $aprobada->observaciones = $request->observaciones;
+        $aprobada->id_certi = $request->id;
+        $aprobada->id_usuario = Auth::user()->id;
+        $aprobada->save();
+
+
+        return redirect()->route('certi.ver', $certi->id); 
+
     }
 
     /**
@@ -55,28 +139,7 @@ class CertiController extends Controller
      */
     public function guardar(Request $request)
     {
-        $folio = Folio::where('numero', '=',$request->numero)->where('bitacora_id', $request->bitacora_id)->first();
-
-        if ($folio) {            
-            return redirect()->route('bitacora.crear_folio', $request->bitacora_id)->with(['error'=>'ERROR', 'descripcion'=>$request->descripcion]);             
-        }              
-
-        $folio = new Folio();
-        $folio->numero = $request->numero;
-        $folio->fecha_inicial = $request->fecha_inicial;
-        $folio->fecha_final = $request->fecha_final;
-        $folio->horas = $request->horas;
-        $folio->descripcion = $request->descripcion;
-        $folio->observaciones = $request->observaciones;
-        $folio->bitacora_id = $request->bitacora_id;     
-        $folio->save();
-
-        $bitacora = Bitacora::findOrFail($request->bitacora_id);        
-        $horas = Folio::where('bitacora_id',$bitacora->id)->sum('horas');
-        $bitacora->horas = (string)$horas;
-        $bitacora->save();
         
-        return redirect()->route('bitacora.ver', $request->bitacora_id)->with('creado', $folio->id);   
     }
 
     /**
@@ -150,17 +213,5 @@ class CertiController extends Controller
            
     }
 
-    public function ver($id, Request $request)
-    {
-
-        $certi = Certi::select('certi.*');
-        //$certi ->join('persona', 'persona_id', '=', 'persona.id');
-
-        $certi = $certi->where('certi.id','=',$id);
-
-        $certi = $certi->get()->first();
-
-        return view('inicio.ver', compact(['certi']));
-
-    }
+    
 }

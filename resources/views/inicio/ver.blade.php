@@ -40,12 +40,19 @@
             <div class="card-body"> 
               <div class="row mb-3">
                 <div class="col col-md-3">
+                  @if($certi->aprobada)
+                  <h3>ESTADO: <span class="badge badge-success">APROBADA</span></h3>
+                  @else
+                  <h3>ESTADO: <span class="badge badge-warning">NO APROBADA</span></h3>
+                  @endif
                 </div>
+                @if(!$certi->aprobada && $user->rol->id ==1)
                 <div class="col col-md-2 offset-7">
-                <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal">
+                <button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#exampleModal">
                   APROBAR
                 </button>
                 </div>
+                @endif
               </div>  
 
               <div class="row">
@@ -157,21 +164,21 @@
         </button>
       </div>
       <br>
-      <div class="modal-body">        
-          <div class="form-row">     
-            <form method="POST" action="{{route('certi.subir_archivo')}}"  enctype="multipart/form-data">
+      <div class="modal-body">   
+            <form method="POST" action="{{route('certi.aprobar')}}"  enctype="multipart/form-data">
             @csrf 
-              <div class="input-group">
-                <div class="">
-                  <input type="file" name="file">
-                </div>
-                <input type="hidden" name="tipo" value=1>
-                <div class="input-group-append ml-3">
-                  <button class="btn btn-outline-warning" type="submit">Guardar</button>
-                </div>
+            <div class="row">
+            <input type="hidden" name="id" value="{{$certi->id}}">              
+              <div class="col col-sm-12">
+                <label for="exampleFormControlTextarea1">Observaciones</label>
+                <textarea class="form-control" name="observaciones" rows="6"></textarea>
               </div>
+              <div class="col offset-lg-2 col-lg-8 mt-3">
+              <button class="btn btn-success btn-block" type="submit">Aprobar</button>
+              </div>
+            </div>
+              
             </form>
-          </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>

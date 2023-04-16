@@ -6,9 +6,16 @@ use App\Models\Certi;
 use Maatwebsite\Excel\Concerns\ToModel;
 
 use Illuminate\Support\Facades\Auth;
+use Config;
 
 class CertiImport implements ToModel
 {
+
+    public function  __construct($id_paquete)
+    {
+        $this->id_paquete= $id_paquete;
+    }
+
     /**
     * @param array $row
     *
@@ -16,7 +23,10 @@ class CertiImport implements ToModel
     */
     public function model(array $row)
     {
-        if(is_numeric($row[0])){
+        if($row[0]!="no_certi"){
+
+            Config::set('global.paquete.cantidad', Config::get('global.paquete.cantidad')+1);
+            
             return new Certi([
             'numero'  => $row[0],
             'fecha_extension'  => $row[1] ? date('Y-m-d', strtotime($row[1])) : '',
@@ -40,6 +50,7 @@ class CertiImport implements ToModel
             'razonamiento_certificacion'  => $row[19] ? $row[19] : '',
             'autorizacion_uso_suelo'  => $row[20] ? $row[20] : '',
             'id_usuario_subio_certi'  => Auth::user()->id,
+            'id_paquete' => $this->id_paquete
         ]);
         }
     }

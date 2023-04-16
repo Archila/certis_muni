@@ -17,15 +17,22 @@
 <ul class="navbar-nav ml-auto">
   <li class="nav-item dropdown">
     
+    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+      <a href="{{route('inicio.index', ['year'=>2020, 'semestre'=>2])}}" class="dropdown-item">Semestre 2 - 2020</a>
+      <a href="{{route('inicio.index', ['year'=>2021, 'semestre'=>1])}}" class="dropdown-item">Semestre 1 - 2021</a>
+      <a href="{{route('inicio.index', ['year'=>2021, 'semestre'=>2])}}" class="dropdown-item">Semestre 2 - 2021</a>
+      <a href="{{route('inicio.index', ['year'=>2022, 'semestre'=>1])}}" class="dropdown-item">Semestre 1 - 2022</a>
+      <a href="{{route('inicio.index', ['year'=>2022, 'semestre'=>2])}}" class="dropdown-item">Semestre 2 - 2022</a>
+      <a href="{{route('inicio.index', ['year'=>2023, 'semestre'=>1])}}" class="dropdown-item">Semestre 1 - 2023</a>
+    </div>
   </li>
 </ul>
 </div>
 
 
 <div class="row">
-    <h2 class="m-2">VISTA DE JEFATURA - CONTROL DE OBRAS</h2>
     <div class="col-md-12">
-        <div class="card card-primary card-outline"> <!-- Donut chart -->
+        <div class="card card-warning card-outline"> <!-- Donut chart -->
             <div class="card-header">
             <h3 class="card-title">
                 <i class="far fa-chart-bar"></i>
@@ -38,9 +45,8 @@
             </div>
             </div>
             <div class="card-body">
-              
             <div class="row">
-              <form class="form-inline" method="GET" action="{{route('inicio.index')}}" enctype="multipart/form-data">
+              <form class="form-inline" method="GET" id="searchForm" action="{{route('certi.index', $paquete->id)}}" enctype="multipart/form-data">
               @csrf 
               <input type="hidden" name="page" id="page" value="{{$data->pagina}}">
               <input type="hidden" name="nueva_busqueda" id="nueva_busqueda" value="1">
@@ -68,12 +74,9 @@
               </form>
             </div>
 
-              <div class="row">
-                <div class="col col-md-3">
+            <div class="col col-md-3">
                   Página: {{$data->pagina}}
                 </div>
-              </div>             
-                
               <table class="table table-sm table-bordered table-striped">
                 <thead>
                   <th>Número Certi</th>
@@ -100,14 +103,11 @@
                 </tr>
                 @endforeach
               </table>
-          </div>
+            </div>
         </div>
 
         <nav aria-label="...">
           <ul class="pagination">
-            <form class="form-inline" method="GET" id="paginationForm" action="{{route('inicio.index')}}" enctype="multipart/form-data">
-            @csrf 
-            <input type="hidden" name="page" id="page" value="{{$data->pagina}}">
             @if($data->pagina <= 1)
             <li class="page-item disabled">
               <button class="page-link">Anterior</button>
@@ -131,8 +131,7 @@
             <li class="page-item">
               <button class="page-link" onClick=siguiente()>Siguiente</button>
             </li>
-            @endif
-            </form>            
+            @endif       
           </ul>
         </nav>
         <!-- /.donut chart -->
@@ -143,8 +142,6 @@
 </div>
 
 
-
-    
     
 @endsection
 
@@ -155,18 +152,21 @@
 function anterior(){
   var paginaActual = document.getElementById("page").value;
   document.getElementById("page").value = Number(paginaActual) - 1;
-  document.getElementById("paginationForm").submit(); 
+  document.getElementById("searchForm").submit(); 
 }
 
 function siguiente(){
   var paginaActual = document.getElementById("page").value;
   document.getElementById("page").value = Number(paginaActual) + 1;
-  document.getElementById("paginationForm").submit(); 
+  document.getElementById("searchForm").submit(); 
 }
 
-$(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-})
+function enviarForm(){
+  document.getElementById("page").value = 1;
+  document.getElementById("searchForm").submit(); 
+}
+
+
 // Example starter JavaScript for disabling form submissions if there are invalid fields
 (function() {
   'use strict';

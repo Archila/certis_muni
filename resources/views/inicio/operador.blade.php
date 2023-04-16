@@ -57,7 +57,7 @@
                 </div>
               </div>       
             <div class="row">
-              <form class="form-inline" method="GET" action="{{route('inicio.index')}}" enctype="multipart/form-data">
+              <form class="form-inline" method="GET" id="searchForm" action="{{route('inicio.index')}}" enctype="multipart/form-data">
               @csrf 
               <input type="hidden" name="page" id="page" value="{{$data->pagina}}">
               <input type="hidden" name="nueva_busqueda" id="nueva_busqueda" value="1">
@@ -74,8 +74,8 @@
                   <input type="text" class="form-control" name="propietario" placeholder="Propietario" value="{{$data->propietario}}">
                 </div>
                 <div class="form-group mx-sm-3 mb-2">
-                  <label for="inputPassword2" class="sr-only">Inmueble</label>
-                  <input type="text" class="form-control" name="inmueble" placeholder="Inmueble" value="{{$data->inmueble}}">
+                  <label for="inputPassword2" class="sr-only">Numero</label>
+                  <input type="text" class="form-control" name="numero" placeholder="Numero" value="{{$data->numero}}">
                 </div>
                 <div class="input-group">                  
                   <div class="input-group-append ml-3">
@@ -87,7 +87,7 @@
 
               <table class="table table-sm table-bordered table-striped">
                 <thead>
-                  <th>Número</th>
+                  <th>Número Certi</th>
                   <th>Fecha Ext.</th>
                   <th>Fecha Pago Lice.</th>
                   <th>No. Licencia.</th>
@@ -164,6 +164,16 @@
           <div class="form-row">     
             <form method="POST" action="{{route('certi.subir_archivo')}}"  enctype="multipart/form-data">
             @csrf 
+              <div class="form-group">
+                <label for="exampleFormControlInput1">Fecha</label>
+                <input type="date" class="form-control" name="fecha">
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlTextarea1">Observaciones</label>
+                <textarea class="form-control" name="observaciones" rows="3"></textarea>
+              </div>
+
+
               <div class="input-group">
                 <div class="">
                   <input type="file" name="file">

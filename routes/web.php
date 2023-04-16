@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Gate;
 Route::get('/', 'InicioController@index')->name('inicio.index');
 
 Route::get('/home', function () {
-    return view('welcome');
+    return redirect('/');
 })->name('home');
 
 Auth::routes();
@@ -159,6 +159,8 @@ Route::post('user/actualizar', 'UsuarioController@actualizar')->name('usuario.ac
 //CERTIFICACIONES
 Route::post('certi/subir-archivo', 'CertiController@subir_archivo')->name('certi.subir_archivo');
 Route::get('certi/ver/{id}', 'CertiController@ver')->name('certi.ver');
+Route::get('certi/inicio/{id}', 'CertiController@index')->name('certi.index');
+Route::post('certi/aprobar', 'CertiController@aprobar')->name('certi.aprobar');
 
 
 Route::get('/test', function () {
