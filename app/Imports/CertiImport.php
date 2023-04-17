@@ -23,32 +23,28 @@ class CertiImport implements ToModel
     */
     public function model(array $row)
     {
-        if($row[0]!="no_certi"){
+        if($row[0]!="no_certi" || $row[0]!="NO_CERTI_UNIQUE"){
 
             Config::set('global.paquete.cantidad', Config::get('global.paquete.cantidad')+1);
+            $fecha_string = str_replace('/','-',$row[13]);
+            $fecha_ext = $row[13] ? date('Y-m-d', strtotime($fecha_string)) : null;
             
             return new Certi([
             'numero'  => $row[0],
-            'fecha_extension'  => $row[1] ? date('Y-m-d', strtotime($row[1])) : '',
-            'unidades_funcionales_existentes'  => $row[2] ? $row[2] : null,
-            'unidades_funcionales_autorizadas'  => $row[3] ? $row[3] : null,
-            'fecha_pago_licencia'  => $row[4] ? date('Y-m-d', strtotime($row[4])) : null,
-            'no_licencia'  => $row[5] ? $row[5] : null,
-            'no_expediente'  => $row[6] ? $row[6] : null,
-            'nombre_propietario'  => $row[7] ? $row[7] : '',
-            'direccion_inmueble'  => $row[8] ? $row[8] : '',
-            'autorizacion_construccion'  => $row[9] ? $row[9] : '',
-            'area_construccion_autorizada'  => $row[10] ? $row[10] : '',
-            'cantidad_niveles'  => $row[11] ? $row[11] : null,
-            'codigo_inmueble'  => $row[12] ? $row[12] : '',
-            'm_cuadrados_muro_perimetral'  => $row[13] ? $row[13] : null,
-            'costo_obra'  => $row[14] ? $row[14] : '',
-            'tasa_alineacion'  => $row[15] ? $row[15] : '',
-            'factura_tesoreria_licencia'  => $row[16] ? $row[16] : '',
-            'factura_tesoreria_uso_suelo'  => $row[17] ? $row[17] : '',
-            'factura_tesoreria_certificacion'  => $row[18] ? $row[18] : '',
-            'razonamiento_certificacion'  => $row[19] ? $row[19] : '',
-            'autorizacion_uso_suelo'  => $row[20] ? $row[20] : '',
+            'no_expediente'  => $row[1] ? $row[1] : null,
+            'nombre_propietario'  => $row[2] ? $row[2] : '',
+            'direccion_inmueble'  => $row[3] ? $row[3] : '',
+            'zona'  => $row[4] ? $row[4] : null,
+            'destino_autorizado'  => $row[5] ? $row[5] : null,
+            'cantidad_niveles'  => $row[6] ? $row[6] : null,
+            'unidades_funcionales_existentes'  => $row[7] ? $row[7] : null,
+            'unidades_funcionales_autorizadas'  => $row[8] ? $row[8] : null,
+            'area_construccion_autorizada'  => $row[9] ? $row[9] : '',
+            'costo_obra'  => $row[10] ? $row[10] : '',
+            'no_licencia'  => $row[11] ? $row[11] : null,
+            'razonamiento'  => $row[12] ? $row[12] : null,
+            'fecha_extension'  => $fecha_ext,
+            'fecha_vencimiento'  => $fecha_ext ? date('Y-m-d', strtotime("+1 months", strtotime($fecha_ext))) : null,
             'id_usuario_subio_certi'  => Auth::user()->id,
             'id_paquete' => $this->id_paquete
         ]);

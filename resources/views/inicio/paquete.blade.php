@@ -95,15 +95,15 @@
                   <th>Fecha</th>
                   <th>Cantidad</th>
                   <th>Observaciones</th>
-                  <th>Creado</th>
+                  <!-- <th>Creado</th> -->
                   <th>Opciones</th>
                 </thead>
                 @foreach($tabla as $f)
                 <tr>
-                  <td>{{$f->fecha}}</td>
+                  <td>{{date('d/m/Y', strtotime($f->fecha))}}</td>
                   <td>{{$f->cantidad}}</td>
                   <td>{{$f->observaciones}}</td>
-                  <td>{{$f->created_at}}</td>
+                  <!-- <td>{{$f->created_at}}</td> -->
                   <td>
                     <a href="{{route('certi.index', $f->id)}}" type="button" class="btn btn-primary btn-xs"><i class="fas fa-eye"></i></a>
                   </td>

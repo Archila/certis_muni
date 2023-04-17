@@ -81,22 +81,22 @@
                 <thead>
                   <th>Número Certi</th>
                   <th>Fecha Ext.</th>
-                  <th>Fecha Pago Lice.</th>
                   <th>No. Licencia.</th>
                   <th>No. Exp.</th>
                   <th>Propietario</th>
                   <th>Ubicación Inmueble</th>
+                  <th>Niveles</th>
                   <th>Opciones</th>
                 </thead>
                 @foreach($tabla as $f)
                 <tr>
                   <td>{{$f->numero}}</td>
-                  <td>{{$f->fecha_extension}}</td>
-                  <td>{{$f->fecha_pago_licencia}}</td>
+                  <td>{{date('d/m/Y', strtotime($f->fecha_extension))}}</td>
                   <td>{{$f->no_licencia}}</td>
                   <td>{{$f->no_expediente}}</td>
                   <td>{{$f->nombre_propietario}}</td>
                   <td>{{$f->direccion_inmueble}}</td>
+                  <td>{{$f->cantidad_niveles}}</td>
                   <td>
                     <a href="{{route('certi.ver', $f->id)}}" type="button" class="btn btn-primary btn-xs"><i class="fas fa-eye"></i></a>
                   </td>
