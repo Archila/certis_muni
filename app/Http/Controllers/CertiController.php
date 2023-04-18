@@ -82,6 +82,9 @@ class CertiController extends Controller
             $data->numero = $request->numero;
         }
         $tabla = $tabla->where('id_paquete','=', $id);
+        if(Auth::user()->rol->id == 3) {
+            $tabla = $tabla->where('estado','=', 1);
+        }
         $tabla = $tabla->paginate(15);
         return view('inicio.certificacion',compact(['data','tabla', 'paquete'])); 
     }
@@ -106,7 +109,7 @@ class CertiController extends Controller
     {
 
         $certi = Certi::findOrFail($request->id);
-        $certi->aprobada = true;
+        $certi->estado = 1;
         $certi->save();
 
         $aprobada = new Aprobacion();

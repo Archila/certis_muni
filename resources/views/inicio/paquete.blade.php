@@ -33,6 +33,10 @@
 <div class="row">
     @if ($user->rol->id == 1)
     <h2 class="m-2">VISTA DE JEFATURA - CONTROL DE OBRAS</h2>
+    @elseif($user->rol->id == 2)
+    <h2 class="m-2">VISTA DE ADMINISTRADOR</h2>
+    @elseif($user->rol->id == 3)
+    <h2 class="m-2">VISTA DE DEPENDENCIA</h2>
     @else
     <h2 class="m-2">Vista de {{$user->rol->nombre}}</h2>
     @endif

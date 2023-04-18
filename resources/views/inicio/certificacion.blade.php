@@ -99,6 +99,9 @@
                   <td>{{$f->cantidad_niveles}}</td>
                   <td>
                     <a href="{{route('certi.ver', $f->id)}}" type="button" class="btn btn-primary btn-xs"><i class="fas fa-eye"></i></a>
+                    @if($f->estado != 1)
+                    <input type="checkbox" name="check">
+                    @endif
                   </td>
                 </tr>
                 @endforeach

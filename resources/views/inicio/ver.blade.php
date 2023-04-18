@@ -40,13 +40,13 @@
             <div class="card-body"> 
               <div class="row mb-3">
                 <div class="col col-md-3">
-                  @if($certi->aprobada)
+                  @if($certi->estado == 1)
                   <h3>ESTADO: <span class="badge badge-success">APROBADA</span></h3>
                   @else
                   <h3>ESTADO: <span class="badge badge-warning">NO APROBADA</span></h3>
                   @endif
                 </div>
-                @if(!$certi->aprobada && $user->rol->id ==1)
+                @if($certi->estado != 1 && $user->rol->id ==1)
                 <div class="col col-md-2 offset-7">
                 <button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#exampleModal">
                   APROBAR
@@ -83,16 +83,16 @@
                 <div class="col-12 col-sm-3">
                   <div class="info-box bg-light">
                     <div class="info-box-content">
-                      <span class="info-box-text text-center text-muted">Propietario</span>
-                      <span class="info-box-number text-center text-muted mb-0">{{$certi->nombre_propietario}}</span>
+                      <span class="info-box-text text-center text-muted">Razonamiento</span>
+                      <span class="info-box-number text-center text-muted mb-0">{{$certi->razonamiento}}</span>
                     </div>
                   </div>
                 </div>
                 <div class="col-12 col-sm-3">
                   <div class="info-box bg-light">
                     <div class="info-box-content">
-                      <span class="info-box-text text-center text-muted">Fecha Extensión</span>
-                      <span class="info-box-number text-center text-muted mb-0">{{$certi->fecha_extension}}</span>
+                      <span class="info-box-text text-center text-muted">Fecha Vencimiento</span>
+                      <span class="info-box-number text-center mb-0 text-danger">{{date('d/m/Y', strtotime($certi->fecha_vencimiento))}}</span>
                     </div>
                   </div>
                 </div>
@@ -100,48 +100,34 @@
 
             <div class="row m-3" style="font-size: 1.3em;">
               <div class="col col-sm-12">
+                <b>Propietario: </b>{{$certi->nombre_propietario}}
+              </div>
+              <div class="col col-sm-12">
                 <b>Dirección inmueble: </b>{{$certi->direccion_inmueble}}
               </div>
               <div class="col col-sm-4">
-                <b>Fecha extensión: </b>{{$certi->fecha_extension}}
+                <b>Fecha extensión: </b>{{date('d/m/Y', strtotime($certi->fecha_extension))}}
               </div>
               <div class="col col-sm-4">
-                <b>Fecha vencimiento: </b>{{$certi->fecha_vencimiento}}
-              </div>
+                <b>Fecha vencimiento: </b>{{date('d/m/Y', strtotime($certi->fecha_vencimiento))}}
+              </div>           
               <div class="col col-sm-4">
-                <b>Fecha pago: </b>{{$certi->fecha_pago_licencia}}
-              </div>
+                <b>Área autorizada: </b>{{$certi->area_construccion_autorizada}} (m2)
+              </div>            
               <div class="col col-sm-6">
-                <b>Autorización: </b>{{$certi->autorizacion_construccion}}
+                <b>Destino autorizado: </b>{{$certi->destino_autorizado}}
               </div>
-              <div class="col col-sm-6">
-                <b>Area autorizada: </b>{{$certi->area_construccion_autorizada}}
-              </div>
-              <div class="col col-sm-3">
+              <div class="col col-sm-2">
                 <b>Niveles: </b>{{$certi->cantidad_niveles}}
               </div>
-              <div class="col col-sm-6">
-                <b>Código inmueble: </b>{{$certi->codigo_inmueble}}
-              </div>
               <div class="col col-sm-3">
-                <b>Muro perimetral: </b>{{$certi->m_cuadrados_muro_perimetral}} m2
+                <b>Costo obra: </b>{{$certi->costo_obra}}
+              </div>         
+              <div class="col col-sm-6">
+                <b>Unidades funcionales existentes: </b>{{$certi->unidades_funcionales_existentes}}
               </div>
-              <div class="col col-sm-4">
-                <b>Costo obra: </b>Q. {{$certi->costo_obra}}
-              </div>
-              <div class="col col-sm-4">
-                <b>Tasa alineación: </b>{{$certi->tasa_alineacion}}
-              </div>
-              <div class="col col-sm-4">
-              </div>
-              <div class="col col-sm-4">
-                <b>Factura Licencia: </b>{{$certi->factura_tesoreria_licencia}}
-              </div>
-              <div class="col col-sm-4">
-                <b>Factura Uso suelo: </b>{{$certi->factura_tesoreria_uso_suelo}}
-              </div>
-              <div class="col col-sm-4">
-                <b>Factura Certificación: </b>{{$certi->factura_tesoreria_certificacion}}
+              <div class="col col-sm-6">
+                <b>Unidades funcionales autorizadas: </b>{{$certi->unidades_funcionales_autorizadas}}
               </div>
             </div>          
           </div>

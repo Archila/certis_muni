@@ -48,10 +48,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <a href="/" class="nav-link">Inicio</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="{{route('estudiante.index')}}" class="nav-link">Estudiantes</a>
+        <a href="#" class="nav-link">Estudiantes</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="{{route('carrera.index')}}" class="nav-link">Carreras</a>
+        <a href="#" class="nav-link">Carreras</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">Reportes</a>

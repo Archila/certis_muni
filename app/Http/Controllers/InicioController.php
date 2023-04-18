@@ -45,25 +45,29 @@ class InicioController extends Controller
             return view('inicio.informatica',compact(['data','tabla']));    
         }
 
+
         
         
         if ($request->filled('fecha_inicio') && $request->filled('fecha_fin') ) {
             $tabla = Paquete::select('*');
             $tabla->whereBetween('fecha', [$request->fecha_inicio, $request->fecha_fin]);
+            $tabla = $tabla->orderBy('created_at', 'DESC')->paginate(15);
             $data->fecha_inicio = $request->fecha_inicio;
             $data->fecha_fin = $request->fecha_fin;
-            $tabla = $tabla->paginate(15);
         } else if($request->filled('fecha_inicio')) {
             $tabla = Paquete::select('*');
             $tabla->where('fecha','>=',$request->fecha_inicio);
             $data->fecha_inicio = $request->fecha_inicio;
-            $tabla = $tabla->paginate(15);
+            $tabla = $tabla->orderBy('created_at', 'DESC')->paginate(15);
         } else if($request->filled('fecha_fin')) {
             $tabla = Paquete::select('*');
             $tabla->where('fecha','<=',$request->fecha_fin);
             $data->fecha_fin = $request->fecha_fin;
-            $tabla = $tabla->paginate(15);
-        }     
+            $tabla = $tabla->orderBy('created_at', 'DESC')->paginate(15);
+        }  else {
+            $tabla = Paquete::select('*');
+            $tabla = $tabla->orderBy('created_at', 'DESC')->paginate(15);
+        }
 
         return view('inicio.paquete',compact(['data','tabla', 'user', 'rol']));   
         
