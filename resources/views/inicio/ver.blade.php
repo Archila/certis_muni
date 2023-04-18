@@ -3,7 +3,9 @@
 @section('titulo', 'Ver Certificación')
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="/">Inicio</a></li>    
+    <li class="breadcrumb-item"><a href="{{route('inicio.index')}}">Inicio</a></li>
+    <li class="breadcrumb-item"><a href="{{ url()->previous() }}">Certificaciones</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Detalle</li>
 @endsection
 
 @section('alerta')
@@ -13,17 +15,10 @@
 @endsection
 
 @section('contenido')
-<div class="container row">
-<ul class="navbar-nav ml-auto">
-  <li class="nav-item dropdown">
-    
-  </li>
-</ul>
-</div>
 
 
 <div class="row">
-    <h2 class="m-2">Detalle de certifiación</h2>
+    <h2 class="m-2">Detalle de certificación</h2>
     <div class="col-md-12">
         <div class="card card-primary card-outline"> <!-- Donut chart -->
             <div class="card-header">
@@ -42,14 +37,21 @@
                 <div class="col col-md-3">
                   @if($certi->estado == 1)
                   <h3>ESTADO: <span class="badge badge-success">APROBADA</span></h3>
+                  @elseif($certi->estado == 2)
+                  <h3>ESTADO: <span class="badge badge-danger">RECHAZADA</span></h3>
                   @else
                   <h3>ESTADO: <span class="badge badge-warning">NO APROBADA</span></h3>
                   @endif
                 </div>
-                @if($certi->estado != 1 && $user->rol->id ==1)
-                <div class="col col-md-2 offset-7">
+                @if($certi->estado == 0 && $user->rol->id ==1)
+                <div class="col col-md-2 offset-5">
                 <button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#exampleModal">
                   APROBAR
+                </button>
+                </div>
+                <div class="col col-md-2">
+                <button type="button" class="btn btn-danger btn-block" data-toggle="modal" data-target="#rechazarModal">
+                  RECHAZAR
                 </button>
                 </div>
                 @endif
@@ -169,6 +171,35 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="rechazarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Rechazar certificación</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <br>
+      <form method="POST" action="{{route('certi.rechazar')}}"  enctype="multipart/form-data">
+      @csrf 
+        <div class="modal-body">  
+            <div class="row">
+            <input type="hidden" name="id" value="{{$certi->id}}">              
+              <div class="col col-sm-12">
+                <div class="alert alert-danger">Está seguro de rechazar esta certificación? <b>Esta acción no se puede deshacer</b></div>
+              </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-danger" >Rechazar</button>
+        </div>              
+      </form>
     </div>
   </div>
 </div>

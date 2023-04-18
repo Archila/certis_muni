@@ -46,6 +46,7 @@ Route::post('certi/subir-archivo', 'CertiController@subir_archivo')->name('certi
 Route::get('certi/ver/{id}', 'CertiController@ver')->name('certi.ver');
 Route::get('certi/inicio/{id}', 'CertiController@index')->name('certi.index');
 Route::post('certi/aprobar', 'CertiController@aprobar')->name('certi.aprobar');
+Route::post('certi/rechazar', 'CertiController@rechazar')->name('certi.rechazar');
 
 
 Route::get('/test', function () {

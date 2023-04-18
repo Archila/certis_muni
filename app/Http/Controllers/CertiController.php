@@ -124,6 +124,18 @@ class CertiController extends Controller
 
     }
 
+    public function rechazar(Request $request)
+    {
+
+        $certi = Certi::findOrFail($request->id);
+        $certi->estado = 2;
+        $certi->numero = null;
+        $certi->save();
+
+        return redirect()->route('certi.ver', $certi->id); 
+
+    }
+
     /**
      * Show the form for creating a new resource.
      *
