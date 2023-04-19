@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Gate;
 
 use Illuminate\Support\Facades\Session;
 
+use DB;
+
 class InicioController extends Controller
 {
     private $roles_gate = '{"roles":[ 1, 2 ]}';
@@ -43,31 +45,37 @@ class InicioController extends Controller
 
         if(Auth::user()->rol->id == 4){
             return view('inicio.informatica',compact(['data','tabla']));    
-        }
-
-
+        }    
         
+        
+        if(Auth::user()->rol->id == 3){
+            $tabla = Certi::select('paquete.fecha', 'paquete.observaciones', 'paquete.id', DB::raw("COUNT(*) as cantidad")); 
+            $tabla = $tabla->join('paquete', 'certi.id_paquete', '=', 'paquete.id');
+            $tabla->groupBy('paquete.fecha', 'paquete.observaciones', 'paquete.id');
+            $tabla->where("certi.estado", "=", 1); 
+        } else {
+            $tabla = Paquete::select('*');
+        }
         
         if ($request->filled('fecha_inicio') && $request->filled('fecha_fin') ) {
-            $tabla = Paquete::select('*');
+            
             $tabla->whereBetween('fecha', [$request->fecha_inicio, $request->fecha_fin]);
-            $tabla = $tabla->orderBy('created_at', 'DESC')->paginate(15);
+            $tabla = $tabla->orderBy('paquete.created_at', 'DESC')->paginate(15);
             $data->fecha_inicio = $request->fecha_inicio;
             $data->fecha_fin = $request->fecha_fin;
         } else if($request->filled('fecha_inicio')) {
-            $tabla = Paquete::select('*');
-            $tabla->where('fecha','>=',$request->fecha_inicio);
+            $tabla->where('paquete.fecha','>=',$request->fecha_inicio);
             $data->fecha_inicio = $request->fecha_inicio;
-            $tabla = $tabla->orderBy('created_at', 'DESC')->paginate(15);
+            $tabla = $tabla->orderBy('paquete.created_at', 'DESC')->paginate(15);
         } else if($request->filled('fecha_fin')) {
-            $tabla = Paquete::select('*');
-            $tabla->where('fecha','<=',$request->fecha_fin);
+            $tabla->where('paquete.fecha','<=',$request->fecha_fin);
             $data->fecha_fin = $request->fecha_fin;
-            $tabla = $tabla->orderBy('created_at', 'DESC')->paginate(15);
+            $tabla = $tabla->orderBy('paquete.created_at', 'DESC')->paginate(15);
         }  else {
-            $tabla = Paquete::select('*');
-            $tabla = $tabla->orderBy('created_at', 'DESC')->paginate(15);
+            $tabla = $tabla->orderBy('paquete.created_at', 'DESC')->paginate(15);
         }
+
+        
 
         return view('inicio.paquete',compact(['data','tabla', 'user', 'rol']));   
         
