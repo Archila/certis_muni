@@ -23,7 +23,7 @@ class CertiImport implements ToModel
     */
     public function model(array $row)
     {
-        if($row[0]!="no_certi" || $row[0]!="NO_CERTI_UNIQUE"){
+        if(trim($row[0])!="no_certi" || trim($row[0])!="NO_CERTI_UNIQUE"){
 
             Config::set('global.paquete.cantidad', Config::get('global.paquete.cantidad')+1);
             $fecha_string = str_replace('/','-',$row[13]);
@@ -43,6 +43,8 @@ class CertiImport implements ToModel
             'costo_obra'  => $row[10] ? $row[10] : '',
             'no_licencia'  => $row[11] ? $row[11] : null,
             'razonamiento'  => $row[12] ? $row[12] : null,
+            'razonamiento'  => $row[12] ? $row[12] : null,
+            'codigo_inmueble'  => $row[14] ? $row[14] : null,
             'fecha_extension'  => $fecha_ext,
             'fecha_vencimiento'  => $fecha_ext ? date('Y-m-d', strtotime("+1 months", strtotime($fecha_ext))) : null,
             'id_usuario_subio_certi'  => Auth::user()->id,

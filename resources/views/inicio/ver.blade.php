@@ -105,6 +105,9 @@
                 <b>Propietario: </b>{{$certi->nombre_propietario}}
               </div>
               <div class="col col-sm-12">
+                <b>Código inmueble: </b>{{$certi->codigo_inmueble}}
+              </div>
+              <div class="col col-sm-12">
                 <b>Dirección inmueble: </b>{{$certi->direccion_inmueble}}
               </div>
               <div class="col col-sm-4">
