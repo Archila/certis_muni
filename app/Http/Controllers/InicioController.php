@@ -75,9 +75,12 @@ class InicioController extends Controller
             $tabla = $tabla->orderBy('paquete.created_at', 'DESC')->paginate(15);
         }
 
-        
+        $error = '';
+        if($request->filled('error')){
+            $error = $request->error;
+        }
 
-        return view('inicio.paquete',compact(['data','tabla', 'user', 'rol']));   
+        return view('inicio.paquete',compact(['data','tabla', 'user', 'rol', 'error']));   
         
     }
 }

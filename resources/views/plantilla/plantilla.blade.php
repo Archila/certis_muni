@@ -238,7 +238,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     toast: true,
     position: 'top-end',
     showConfirmButton: false,
-    timer: 3500
+    timer: 4500
   });    
 
   function alerta_create(msg){

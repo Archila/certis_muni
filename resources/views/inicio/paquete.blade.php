@@ -7,8 +7,11 @@
 @endsection
 
 @section('alerta')
-  @if (session('error')=='ERROR')
-  <script> alerta_error('Ya existe solicitud en el sistema')</script>
+  @if($error != '')
+  <script> 
+    // var msg = {!! json_encode($error[2]) !!};
+    // alerta_error(msg)
+  </script>
   @endif
 @endsection
 
@@ -46,6 +49,15 @@
             </div>
             </div>
             <div class="card-body">
+
+            @if($error != '')
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>ERROR! </strong>{{$error[2]}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            @endif
               <div class="row">
                 @if ($user->rol->id == 2)
                 <div class="col col-md-2 offset-7">

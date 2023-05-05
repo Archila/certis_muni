@@ -17,6 +17,9 @@ use Config;
 use Carbon\Carbon;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
+use Illuminate\Support\Facades\Session;
 
 class CertiController extends Controller
 {
@@ -27,20 +30,30 @@ class CertiController extends Controller
 
     public function subir_archivo(Request $request)
     {   
-        $paquete = new Paquete();
-        $paquete->fecha = $request->fecha;
-        $paquete->observaciones = $request->observaciones;
-        $paquete->cantidad = 0;
-        $paquete->usuario_realiza = Auth::user()->id;
-        $paquete->save();
+        try {
+            DB::beginTransaction();
+            $paquete = new Paquete();
+            $paquete->fecha = $request->fecha;
+            $paquete->observaciones = $request->observaciones;
+            $paquete->cantidad = 0;
+            $paquete->usuario_realiza = Auth::user()->id;
+            $paquete->save();
 
-        Config::set('global.paquete.id', $paquete->id);
-        Config::set('global.paquete.cantidad', 0);
-        Excel::import(new CertiImport($paquete->id), request()->file('file'));
-        $paquete->cantidad = Config::get('global.paquete.cantidad');
-        $paquete->save();
-        return redirect()->route('inicio.index'); 
-        
+            Config::set('global.paquete.id', $paquete->id);
+            Config::set('global.paquete.cantidad', 0);
+            Excel::import(new CertiImport($paquete->id), request()->file('file'));
+            $paquete->cantidad = Config::get('global.paquete.cantidad');
+            $paquete->save();
+            // database queries here
+            DB::commit();
+            return redirect()->route('inicio.index'); 
+        } catch (\PDOException $e) {
+            // Woopsy
+            DB::rollBack();
+
+            //return $e;
+            return redirect()->route('inicio.index', ['error' => $e->errorInfo]); 
+        }
     }
     
     /**
