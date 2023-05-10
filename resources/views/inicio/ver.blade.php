@@ -52,7 +52,7 @@
                 @endif
                 </div>
                 <div class="col col-md-2">
-                @if($user->rol->id ==1)
+                @if($user->rol->id ==1 && $certi->estado != 2)
                   <button type="button" class="btn btn-danger btn-block" data-toggle="modal" data-target="#rechazarModal">
                     RECHAZAR
                   </button>
