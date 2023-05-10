@@ -4,7 +4,7 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('inicio.index')}}">Inicio</a></li>
-    <li class="breadcrumb-item"><a href="{{ url()->previous() }}">Certificaciones</a></li>
+    <li class="breadcrumb-item"><a href="{{route('certi.index', $certi->id_paquete)}}">Certificaciones</a></li>
     <li class="breadcrumb-item active" aria-current="page">Detalle</li>
 @endsection
 
@@ -43,18 +43,19 @@
                   <h3>ESTADO: <span class="badge badge-warning">NO APROBADA</span></h3>
                   @endif
                 </div>
-                @if($certi->estado == 0 && $user->rol->id ==1)
+                
                 <div class="col col-md-2 offset-5">
-                <button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#exampleModal">
-                  APROBAR
-                </button>
+                @if($certi->estado == 0 && $user->rol->id ==1)
+                  <button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#exampleModal">
+                    APROBAR
+                  </button>
+                @endif
                 </div>
                 <div class="col col-md-2">
-                <button type="button" class="btn btn-danger btn-block" data-toggle="modal" data-target="#rechazarModal">
-                  RECHAZAR
-                </button>
+                  <button type="button" class="btn btn-danger btn-block" data-toggle="modal" data-target="#rechazarModal">
+                    RECHAZAR
+                  </button>
                 </div>
-                @endif
               </div>  
 
               <div class="row">
@@ -110,6 +111,9 @@
               <div class="col col-sm-12">
                 <b>Dirección inmueble: </b>{{$certi->direccion_inmueble}}
               </div>
+              <div class="col col-sm-12">
+                <b>Zona: </b>{{$certi->zona}}
+              </div>
               <div class="col col-sm-4">
                 <b>Fecha extensión: </b>{{date('d/m/Y', strtotime($certi->fecha_extension))}}
               </div>
@@ -137,6 +141,23 @@
             </div>          
           </div>
         </div>
+
+        <p>{{$certi_min}} - {{$certi_max}}</p>
+
+        <div class="row">
+          <div class="col offset-md-10 col-md-2">
+            <nav aria-label="Page navigation example">
+              <ul class="pagination">
+                @if($certi_min < $certi->id)
+                <li class="page-item"><a class="page-link" href="{{route('certi.ver', $certi->id-1)}}">ANTERIOR</a></li>
+                @endif
+                @if($certi_max > $certi->id)
+                <li class="page-item"><a class="page-link" href="{{route('certi.ver', $certi->id+1)}}">SIGUIENTE</a></li>
+                @endif
+              </ul>
+            </nav>
+          </div>
+        </div>        
 
     </div>
         

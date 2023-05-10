@@ -114,7 +114,12 @@ class CertiController extends Controller
 
         $user = Auth::user();
 
-        return view('inicio.ver', compact(['certi', 'user']));
+        $paquete = Paquete::select('certi.id');
+        $paquete = $paquete->join('certi', 'certi.id_paquete', 'paquete.id');
+        $certi_min= $paquete->min('certi.id');
+        $certi_max= $paquete->max('certi.id');
+
+        return view('inicio.ver', compact(['certi', 'user', 'certi_min', 'certi_max']));
 
     }
 

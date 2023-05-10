@@ -73,12 +73,15 @@
                 </div>
               </form>
             </div>
+            @php $contador = ($data->pagina - 1) * 15;
 
+            @endphp
             <div class="col col-md-3">
                   Página: {{$data->pagina}}
                 </div>
               <table class="table table-sm table-bordered table-striped">
                 <thead>
+                  <th></th>
                   <th>Número Certi</th>
                   <th>Fecha Ext.</th>
                   <th>No. Licencia.</th>
@@ -90,6 +93,8 @@
                 </thead>
                 @foreach($tabla as $f)
                 <tr>
+                  @php $contador++; @endphp
+                  <td>{{$contador}}</td>
                   <td>{{$f->numero}}</td>
                   <td>{{date('d/m/Y', strtotime($f->fecha_extension))}}</td>
                   <td>{{$f->no_licencia}}</td>
