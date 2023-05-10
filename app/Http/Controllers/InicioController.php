@@ -10,6 +10,8 @@ use App\Models\Bitacora;
 use App\Models\Oficio;
 use App\Models\Certi;
 use App\Models\Paquete;
+use App\Models\Rol;
+use App\User;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -49,7 +51,11 @@ class InicioController extends Controller
         $tabla =[];
 
         if(Auth::user()->rol->id == 4){
-            return view('inicio.informatica',compact(['data','tabla']));    
+            $usuarios = User::select('users.id', 'users.name', 'users.username', 'rol.nombre as rol', 'users.activo', 'users.created_at');
+            $usuarios = $usuarios->join('rol', 'rol.id', 'users.rol_id');
+            $usuarios = $usuarios->get();
+            $roles = Rol::all();
+            return view('inicio.informatica',compact(['usuarios', 'roles']));    
         }    
         $tabla = Certi::select('paquete.fecha', 'paquete.observaciones', 'paquete.id', DB::raw("COUNT(*) as cantidad")); 
         $tabla = $tabla->join('paquete', 'certi.id_paquete', '=', 'paquete.id');

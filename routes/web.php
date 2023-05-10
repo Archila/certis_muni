@@ -40,6 +40,9 @@ Route::get('user/cambiar', 'UsuarioController@cambiar')->name('usuario.cambiar')
 Route::post('user/confirmar', 'UsuarioController@confirmar')->name('usuario.confirmar');
 Route::get('user/nueva', 'UsuarioController@nueva')->name('usuario.nueva');
 Route::post('user/actualizar', 'UsuarioController@actualizar')->name('usuario.actualizar');
+Route::get('user/habilitar/{id}', 'UsuarioController@habilitar')->name('usuario.habilitar');
+Route::get('user/deshabilitar/{id}', 'UsuarioController@deshabilitar')->name('usuario.deshabilitar');
+Route::post('user/crear', 'UsuarioController@crear')->name('usuario.crear');
 
 //CERTIFICACIONES
 Route::post('certi/subir-archivo', 'CertiController@subir_archivo')->name('certi.subir_archivo');

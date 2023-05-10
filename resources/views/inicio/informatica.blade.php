@@ -17,14 +17,6 @@
 <ul class="navbar-nav ml-auto">
   <li class="nav-item dropdown">
     
-    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-      <a href="{{route('inicio.index', ['year'=>2020, 'semestre'=>2])}}" class="dropdown-item">Semestre 2 - 2020</a>
-      <a href="{{route('inicio.index', ['year'=>2021, 'semestre'=>1])}}" class="dropdown-item">Semestre 1 - 2021</a>
-      <a href="{{route('inicio.index', ['year'=>2021, 'semestre'=>2])}}" class="dropdown-item">Semestre 2 - 2021</a>
-      <a href="{{route('inicio.index', ['year'=>2022, 'semestre'=>1])}}" class="dropdown-item">Semestre 1 - 2022</a>
-      <a href="{{route('inicio.index', ['year'=>2022, 'semestre'=>2])}}" class="dropdown-item">Semestre 2 - 2022</a>
-      <a href="{{route('inicio.index', ['year'=>2023, 'semestre'=>1])}}" class="dropdown-item">Semestre 1 - 2023</a>
-    </div>
   </li>
 </ul>
 </div>
@@ -37,7 +29,7 @@
             <div class="card-header">
             <h3 class="card-title">
                 <i class="far fa-chart-bar"></i>
-                Tabla
+                Listado de usuarios
             </h3>
 
             <div class="card-tools">
@@ -46,12 +38,95 @@
             </div>
             </div>
             <div class="card-body">
-            <div id="donut-chart1" style="height: 300px;"></div>
+              <div class="row my-3">
+              <div class="col col-md-2 offset-10">
+                <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal">
+                  Crear usuario
+                </button>
+                </div>
+              </div>
+            <table class="table table-sm table-bordered table-striped">
+                <thead>
+                  <th>Nombre</th>
+                  <th>Username</th>
+                  <th>Rol</th>
+                  <th>Creado</th>
+                  <th>Estado</th>
+                  <th></th>
+                </thead>
+                @foreach($usuarios as $f)
+                <tr>
+                  <td>{{$f->name}}</td>
+                  <td>{{$f->username}}</td>
+                  <td>{{$f->rol}}</td>
+                  <td>{{date('d/m/Y h:m', strtotime($f->created_at))}}</td>
+                  <td>
+                  @if($f->activo)                  
+                    <span class="badge badge-success">Activo</span>
+                  @else
+                    <span class="badge badge-danger">Inactivo</span>
+                  @endif
+                  <td>
+                  @if($f->activo)                  
+                  <a href="{{route('usuario.deshabilitar', $f->id)}}" type="button" class="btn btn-secondary btn-xs">Deshabilitar</a>
+                  @else
+                  <a href="{{route('usuario.habilitar', $f->id)}}" type="button" class="btn btn-primary btn-xs">Habilitar</a>
+                  @endif
+                  </td>
+                </tr>
+                @endforeach
+              </table>
             </div>
         </div>
         <!-- /.donut chart -->
     </div>
+
+      <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Crear un nuevo usuario</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <br>
         
+      <form method="POST" action="{{route('usuario.crear')}}"  enctype="multipart/form-data">
+      @csrf 
+      <div class="modal-body">        
+          <div class="form-row">   
+              <div class="form-group">
+                <label for="exampleFormControlInput1">Nombre</label>
+                <input type="text" class="form-control" name="name">
+              </div>
+              <div class="form-group">
+                <label for="">Username</label>
+                <input type="text" class="form-control" name="username">
+              </div>
+              <div class="form-group">
+                <label for="">Clave</label>
+                <input type="password" class="form-control" name="clave">
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlInput1">Rol</label>
+                <select class="form-control" name="rol" >
+                  @foreach($roles as $r)
+                  <option value="{{$r->id}}">{{$r->nombre}}</option>
+                  @endforeach
+                </select>
+              </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" type="submit">Guardar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div> 
 
 
 </div>

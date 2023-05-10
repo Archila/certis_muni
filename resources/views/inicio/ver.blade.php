@@ -52,9 +52,11 @@
                 @endif
                 </div>
                 <div class="col col-md-2">
+                @if($user->rol->id ==1)
                   <button type="button" class="btn btn-danger btn-block" data-toggle="modal" data-target="#rechazarModal">
                     RECHAZAR
                   </button>
+                @endif
                 </div>
               </div>  
 
@@ -142,8 +144,8 @@
           </div>
         </div>
 
-        <p>{{$certi_min}} - {{$certi_max}}</p>
 
+        @if($user->rol->id ==1)
         <div class="row">
           <div class="col offset-md-10 col-md-2">
             <nav aria-label="Page navigation example">
@@ -158,6 +160,7 @@
             </nav>
           </div>
         </div>        
+        @endif
 
     </div>
         

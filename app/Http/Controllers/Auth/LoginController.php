@@ -38,6 +38,19 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
+    /**
+     * Get the needed authorization credentials from the request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    protected function credentials(\Illuminate\Http\Request $request)
+    {
+        //return $request->only($this->username(), 'password');
+        return ['username' => $request->{$this->username()}, 'password' => $request->password, 'activo' => 1];
+    }
+
+
     public function username(){
         return 'username'; // this string is column of accounts table which we are going use for login
     }

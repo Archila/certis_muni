@@ -33,6 +33,7 @@
 
       <form method="POST" action="{{ route('login') }}">
       @csrf
+      <input type="hidden" value=1 name="activo">
         <div class="input-group mb-3">
         <input id="username" type="text" placeholder="Usuario" class="form-control @error('username') is-invalid @enderror" name="username" required autofocus>
           <div class="input-group-append">

@@ -20,11 +20,16 @@ class LoginNewController extends Controller
         $credentials = $request->validate([
             'username' => ['required'],
             'password' => ['required'],
+            'activo' => ['required'],
         ]);
 
         if (Auth::attempt($credentials)) {
             $usuario =  Auth::user();
             $usuario->rol =  Auth::user()->rol;
+            return $usuario;
+            if($usuario->activo == 0){
+                return response()->json(['success'=>false, 'message'=>'EL usuario no está activo']);
+            }
             return response()->json(['success'=>true, 'usuario'=>$usuario]);
         }
         return response()->json(['success'=>false, 'message'=>'Error al buscar usuario y clave']);
