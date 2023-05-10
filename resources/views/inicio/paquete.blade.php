@@ -73,26 +73,57 @@
               <input type="hidden" name="page" id="page" value="{{$data->pagina}}">
               <input type="hidden" name="nueva_busqueda" id="nueva_busqueda" value="1">
               <div class="row">
-                <div class="col col-sm-3">
-                  <div class="form-group mb-2">
-                    <label for="fecha1" >Fecha inicial </label>
-                    <input type="date" class="form-control" id="fecha1" name="fecha_inicio" value="{{$data->fecha_inicio}}">
+                <div class="col-md-10">
+                  <div class="row">                
+                    <div class="col col-sm-3">
+                      <div class="form-group mb-2">
+                        <label for="fecha1" >Fecha inicial </label>
+                        <input type="date" class="form-control" id="fecha1" name="fecha_inicio" value="{{$data->fecha_inicio}}">
+                      </div>
+                    </div>
+                    <div class="col col-sm-3">
+                      <div class="form-group mb-2">
+                        <label for="fecha2" >Fecha final </label>
+                        <input type="date" class="form-control" id="fecha2" name="fecha_fin" value="{{$data->fecha_fin}}">                    
+                      </div>
+                    </div>    
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="form-group mx-sm-3 mb-2">
+                      <label for="inputPassword2" class="sr-only">Licencia</label>
+                      <input type="text" class="form-control" name="licencia" placeholder="Licencia" value="{{$data->licencia}}">
+                    </div>
+                    <div class="form-group mx-sm-3 mb-2">
+                      <label for="inputPassword2" class="sr-only">Expediente</label>
+                      <input type="text" class="form-control" name="expediente" placeholder="Expediente" value="{{$data->expediente}}">
+                    </div>
+                    <div class="form-group mx-sm-3 mb-2">
+                      <label for="inputPassword2" class="sr-only">Propietario</label>
+                      <input type="text" class="form-control" name="propietario" placeholder="Propietario" value="{{$data->propietario}}">
+                    </div>
+                    <div class="form-group mx-sm-3 mb-2">
+                      <label for="inputPassword2" class="sr-only">Numero</label>
+                      <input type="text" class="form-control" name="numero" placeholder="Numero" value="{{$data->numero}}">
+                    </div>
+                    <div class="form-group mx-sm-3 mb-2">
+                      <label for="inputPassword2" class="sr-only">Inmueble</label>
+                      <input type="text" class="form-control" name="inmueble" placeholder="Código Inmueble" value="{{$data->inmueble}}">
+                      
+                    </div>
+                    <div class="form-group mx-sm-3 mb-2">                  
+                      
+                    </div>
                   </div>
                 </div>
-                <div class="col col-sm-3">
-                  <div class="form-group mb-2">
-                    <label for="fecha2" >Fecha final </label>
-                    <input type="date" class="form-control" id="fecha2" name="fecha_fin" value="{{$data->fecha_fin}}">                    
-                  </div>
-                </div>                
-                <div class="col col-sm-1">
-                  <div class="input-group-append mb-2 mt-4">
-                    <br>
-                    <button class="btn btn-success" onClick=enviarForm()>Buscar</button>
-                  </div>
+                <div class="col-md-2 mt-3">
+                  <br>
+                  <br>
+                  <button class="btn btn-success btn-block btn-lg" onClick=enviarForm()>Buscar</button>
                 </div>
-              </div>
-              </form>
+              </div>            
+
+            </form>
             
 
             <div class="col col-md-3">
@@ -189,6 +220,7 @@
                 <div class="input-group-append ml-3">
                   <button class="btn btn-outline-warning" type="submit">Guardar</button>
                 </div>
+                <small class="text-danger">Subir documento sin encabezados</small>
               </div>
             </form>
           </div>

@@ -69,6 +69,7 @@ class CertiController extends Controller
         $data->expediente = null;
         $data->propietario = null;
         $data->numero = null;
+        $data->inmueble = null;
 
         $pagina = 0;
         if($request->has('page')) $data->pagina = $request->page;
@@ -93,6 +94,10 @@ class CertiController extends Controller
         if ($request->has('numero') && trim($request->numero)!= '') {
             $tabla->where('numero', 'like', '%' . $request->numero . '%');
             $data->numero = $request->numero;
+        }
+        if ($request->has('inmueble') && trim($request->inmueble)!= '') {
+            $tabla->where('codigo_inmueble', 'like', '%' . $request->inmueble . '%');
+            $data->inmueble = $request->inmueble;
         }
         $tabla = $tabla->where('id_paquete','=', $id);
         if(Auth::user()->rol->id == 3) {

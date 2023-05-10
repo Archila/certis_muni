@@ -34,6 +34,11 @@ class InicioController extends Controller
         $data = (object) [];
         $data->fecha_inicio = null;
         $data->fecha_fin = null;
+        $data->licencia = null;
+        $data->expediente = null;
+        $data->propietario = null;
+        $data->numero = null;
+        $data->inmueble = null;
 
         $user = Auth::user();
         $rol = Auth::user()->rol;
@@ -46,15 +51,33 @@ class InicioController extends Controller
         if(Auth::user()->rol->id == 4){
             return view('inicio.informatica',compact(['data','tabla']));    
         }    
+        $tabla = Certi::select('paquete.fecha', 'paquete.observaciones', 'paquete.id', DB::raw("COUNT(*) as cantidad")); 
+        $tabla = $tabla->join('paquete', 'certi.id_paquete', '=', 'paquete.id');
+        $tabla->groupBy('paquete.fecha', 'paquete.observaciones', 'paquete.id');
         
-        
-        if(Auth::user()->rol->id == 3){
-            $tabla = Certi::select('paquete.fecha', 'paquete.observaciones', 'paquete.id', DB::raw("COUNT(*) as cantidad")); 
-            $tabla = $tabla->join('paquete', 'certi.id_paquete', '=', 'paquete.id');
-            $tabla->groupBy('paquete.fecha', 'paquete.observaciones', 'paquete.id');
+        if(Auth::user()->rol->id == 3){            
             $tabla->where("certi.estado", "=", 1); 
-        } else {
-            $tabla = Paquete::select('*');
+        } 
+
+        if ($request->has('licencia') && trim($request->licencia)!= '') {
+            $tabla->where('certi.no_licencia', 'like', '%' . $request->licencia . '%');
+            $data->licencia = $request->licencia;
+        }
+        if ($request->has('expediente') && trim($request->expediente)!= '') {
+            $tabla->where('certi.no_expediente', 'like', '%' . $request->expediente . '%');
+            $data->expediente = $request->expediente;
+        }
+        if ($request->has('propietario') && trim($request->propietario)!= '') {
+            $tabla->where('certi.nombre_propietario', 'like', '%' . $request->propietario . '%');
+            $data->propietario = $request->propietario;
+        }
+        if ($request->has('numero') && trim($request->numero)!= '') {
+            $tabla->where('certi.numero', 'like', '%' . $request->numero . '%');
+            $data->numero = $request->numero;
+        }
+        if ($request->has('inmueble') && trim($request->inmueble)!= '') {
+            $tabla->where('certi.codigo_inmueble', 'like', '%' . $request->inmueble . '%');
+            $data->inmueble = $request->inmueble;
         }
         
         if ($request->filled('fecha_inicio') && $request->filled('fecha_fin') ) {
@@ -73,7 +96,7 @@ class InicioController extends Controller
             $tabla = $tabla->orderBy('paquete.created_at', 'DESC')->paginate(15);
         }  else {
             $tabla = $tabla->orderBy('paquete.created_at', 'DESC')->paginate(15);
-        }
+        }       
 
         $error = '';
         if($request->filled('error')){

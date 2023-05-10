@@ -66,6 +66,10 @@
                   <label for="inputPassword2" class="sr-only">Numero</label>
                   <input type="text" class="form-control" name="numero" placeholder="Numero" value="{{$data->numero}}">
                 </div>
+                <div class="form-group mx-sm-3 mb-2">
+                  <label for="inputPassword2" class="sr-only">Inmueble</label>
+                  <input type="text" class="form-control" name="inmueble" placeholder="Código Inmueble" value="{{$data->inmueble}}">
+                </div>
                 <div class="input-group">                  
                   <div class="input-group-append ml-3">
                     <button class="btn btn-success" onClick=enviarForm()>Buscar</button>
@@ -87,8 +91,8 @@
                   <th>No. Licencia.</th>
                   <th>No. Exp.</th>
                   <th>Propietario</th>
+                  <th>Inmueble</th>
                   <th>Ubicación Inmueble</th>
-                  <th>Niveles</th>
                   <th>Opciones</th>
                 </thead>
                 @foreach($tabla as $f)
@@ -100,8 +104,8 @@
                   <td>{{$f->no_licencia}}</td>
                   <td>{{$f->no_expediente}}</td>
                   <td>{{$f->nombre_propietario}}</td>
+                  <td>{{$f->codigo_inmueble}}</td>
                   <td>{{$f->direccion_inmueble}}</td>
-                  <td>{{$f->cantidad_niveles}}</td>
                   <td>
                     <a href="{{route('certi.ver', $f->id)}}" type="button" class="btn btn-primary btn-xs"><i class="fas fa-eye"></i></a>
                     @if($f->estado == 0)
